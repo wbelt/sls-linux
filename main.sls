@@ -1,4 +1,4 @@
 include:
   - sls-linux.tz
-  - sls-linux.addwes
+  - sls-linux.addadminuser
   - sls-linux.rust-install
