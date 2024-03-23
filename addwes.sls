@@ -6,8 +6,8 @@ wheel group no sudo password:
   file.replace:
     - name: /etc/sudoers.d/85-wheel-group
     - append_if_not_found: True
-    - pattern: ^%wheel .*$
-    - repl: %wheel  ALL=(ALL)       NOPASSWD:ALL
+    - pattern: '^%wheel .*$'
+    - repl: '%wheel  ALL=(ALL)       NOPASSWD:ALL'
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
 {% endif %}
