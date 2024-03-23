@@ -1,7 +1,6 @@
 {% if 'timezone.system' in pillar %}
-Set Timezone:
-  timezone.system:
-    - name: {{ pillar['timezone.system'] }}
+include:
+  - tz
 {% endif %}
 
 {% if 'wes' in pillar %}
