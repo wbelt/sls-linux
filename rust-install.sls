@@ -34,7 +34,7 @@ rust server install:
   file.replace:
     - name: /home/rustserver/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
-    - pattern: ^rconpassword
-    - repl: rconpassword=Test987Wes123!
+    - pattern: ^rconpassword=.*$
+    - repl: salt://settings/rconpwd.conf
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
