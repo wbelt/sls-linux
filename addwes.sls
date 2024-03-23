@@ -3,11 +3,11 @@ wes:
   user.present: {{ pillar['wes']['user.present'] }}
   ssh_auth.present: {{ pillar['wes']['ssh_auth.present'] }}
 wheel group no sudo password:
-  file.replace:
+  file.line:
     - name: /etc/sudoers.d/85-wheel-group
-    - append_if_not_found: True
-    - pattern: '^%wheel .*$'
-    - repl: '%wheel  ALL=(ALL)       NOPASSWD:ALL'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
+    - content: '%wheel  ALL=(ALL)       NOPASSWD:ALL'
+    - match: '%wheel .*'
+    - mode: insert
+    - location: end
+    - create: True
 {% endif %}
