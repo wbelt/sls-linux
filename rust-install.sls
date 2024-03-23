@@ -1,6 +1,4 @@
-{% import_yaml 'settings/rconpwd.yaml' as testmap %}
-{% set rcon = testmap %}
-{% set rustuser = 'rustserver' %}
+{% import_yaml 'settings/rustserver.yaml' as rs %}
 
 rust server base:
   pkg.latest:
@@ -19,7 +17,7 @@ rust server base:
       - unzip
       - zlib-devel
   user.present:
-    - name: {{ rustuser }}
+    - name: {{ rs['user'] }}
     - fullname: Rust Server
     - shell: /bin/bash
     - createhome: True
@@ -27,18 +25,18 @@ rust server base:
 rust server download:
   cmd.run:
     - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh rustserver'
-    - runas: {{ rustuser }}
-    - creates: /home/{{ rustuser }}/rustserver
+    - runas: {{ rs['user'] }}
+    - creates: /home/{{ rs['user'] }}/rustserver
 
 rust server install:
   cmd.run:
     - name: './rustserver auto-install'
     - runas: rustserver
-    - creates: /home/{{ rustuser }}/serverfiles/server/rustserver/cfg/server.cfg
+    - creates: /home/{{ rs['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
   file.replace:
-    - name: /home/{{ rustuser }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
+    - name: /home/{{ rs['user'] }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
     - pattern: ^rconpassword=.*$
-    - repl: {{ testmap }}
+    - repl: rconpassword={{ rs['rconpassword'] }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
