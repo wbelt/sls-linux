@@ -33,6 +33,7 @@ rust server install:
     - creates: /home/rustserver/serverfiles/server/rustserver/cfg/server.cfg
   file.replace:
     - name: /home/rustserver/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
+    - prepend_if_not_found: rconpassword=Unknown123
     - pattern: ^rconpassword
     - repl: rconpassword=Test987Wes123!
     - count: 1
