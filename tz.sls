@@ -1,3 +1,3 @@
 tz:
   timezone.system:
-    - name: America/New_York
+    - name: {{ pillar['tz']['timezone.system']['name'] }}
