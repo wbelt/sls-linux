@@ -1,4 +1,4 @@
-{% if pillar['rustserver'] != '' %}
+{% if 'rustserver' in pillar %}
 rust server base:
   pkg.latest:
     - refresh: True
