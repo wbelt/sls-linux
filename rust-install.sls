@@ -1,3 +1,4 @@
+{% if pillar['rustserver'] != '' %}
 rust server base:
   pkg.latest:
     - refresh: True
@@ -38,3 +39,4 @@ rust server install:
     - repl: rconpassword={{ pillar['rustserver']['rconpassword'] }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
+{% endif %}
