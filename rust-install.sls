@@ -1,5 +1,6 @@
+{% import_yaml 'settings/rconpwd.yaml' as testmap %}
+{% set rcon = testmap %}
 {% set rustuser = 'rustserver' %}
-{% set rconpwd = 'salt://settings/rconpwd.conf' %}
 
 rust server base:
   pkg.latest:
@@ -38,6 +39,6 @@ rust server install:
     - name: /home/{{ rustuser }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
     - pattern: ^rconpassword=.*$
-    - repl: {{ rconpwd }}
+    - repl: {{ testmap }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
