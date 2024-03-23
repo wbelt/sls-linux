@@ -32,6 +32,8 @@ rust server install:
     - name: './rustserver auto-install'
     - runas: rustserver
     - creates: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+
+rust server config update:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
