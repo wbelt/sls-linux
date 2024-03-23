@@ -1,6 +1,6 @@
 {% if 'timezone.system' in pillar %}
 include:
-  - tz
+  - sls-linux.tz
 {% endif %}
 
 {% if 'wes' in pillar %}
