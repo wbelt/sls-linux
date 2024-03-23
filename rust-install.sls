@@ -31,3 +31,9 @@ rust server install:
     - name: './rustserver auto-install'
     - runas: rustserver
     - creates: /home/rustserver/serverfiles/server/rustserver/cfg/server.cfg
+  file.replace:
+    - name: /home/rustserver/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
+    - pattern: ^rconpassword
+    - repl: rconpassword=Test987Wes123!
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
