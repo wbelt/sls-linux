@@ -38,6 +38,6 @@ rust server install:
     - name: /home/{{ rustuser }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
     - pattern: ^rconpassword=.*$
-    - repl: {{ rcondpwd }}
+    - repl: {{ rconpwd }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
