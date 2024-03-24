@@ -83,12 +83,22 @@ rust set server tags:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
+rust set worldsize:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - append_if_not_found: True
+    - pattern: ^worldsize.*$
+    - repl: worldsize="55"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
 rust set server name:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^server\.name.*$
-    - repl: server.name "Doom Crickets | Private Server {{ grains['host'] }}"
+    - repl: server.name="Doom Crickets | Private Server {{ grains['host'] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
