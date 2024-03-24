@@ -88,7 +88,17 @@ rust set worldsize:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^worldsize.*$
-    - repl: worldsize="55"
+    - repl: worldsize="4500"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
+rust set maxplayers:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - append_if_not_found: True
+    - pattern: ^maxplayers.*$
+    - repl: maxplayers="55"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
