@@ -113,8 +113,8 @@ rust set server name:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
-{% if 'seeds' in pillar['rustserver'] %}
-{% if grains['host'] in pillar['rustserver']['seeds'] %}
+{% if ('seeds' in pillar['rustserver']) and
+      (grains['host'] in pillar['rustserver']['seeds']) %}
 rust set server seed:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
@@ -124,7 +124,15 @@ rust set server seed:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-{% endif %}
+{% else %}
+rust remove server seed:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - append_if_not_found: False
+    - pattern: ^seed=.*$
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
 {% endif %}
 
 rust set decay:
