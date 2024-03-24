@@ -1,4 +1,6 @@
 {% if 'rustserver' in pillar %}
+{% set user = salt['pillar.get']('rustserver:user','rustserver') %}
+{% set homeuser = /home/{{ user }} %}
 rust server base:
   pkg.latest:
     - refresh: True
@@ -16,7 +18,7 @@ rust server base:
       - unzip
       - zlib-devel
   user.present:
-    - name: {{ pillar['rustserver']['user'] }}
+    - name: {{ user }}
     - fullname: Rust Server
     - shell: /bin/bash
     - createhome: True
@@ -24,18 +26,18 @@ rust server base:
 rust server download:
   cmd.run:
     - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh rustserver'
-    - runas: {{ pillar['rustserver']['user'] }}
-    - creates: /home/{{ pillar['rustserver']['user'] }}/rustserver
+    - runas: {{ user }}
+    - creates: {{ homeuser }}/rustserver
 
 rust server install:
   cmd.run:
     - name: './rustserver auto-install'
     - runas: rustserver
-    - creates: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - creates: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
 
 rust server config update:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
+    - name: {{ homeuser }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
     - pattern: ^rconpassword=\.*$
     - repl: rconpassword={{ pillar['rustserver']['rconpassword'] }}
@@ -45,7 +47,7 @@ rust server config update:
 
 rust set server description:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.description.*$
     - repl: server.description "This is a private server ONLY. Blueprints wipe only when forced by Facepunch. Decay is 10% of normal and minis spawn on roads and motorboats spawn on coasts."
@@ -55,7 +57,7 @@ rust set server description:
 
 rust set header image:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.headerimage.*$
     - repl: server.headerimage "https://i.imgur.com/uReayFY.jpg"
@@ -65,7 +67,7 @@ rust set header image:
 
 rust set server URL:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.url.*$
     - repl: server.url "https://twitter.com/DoomCrickets"
@@ -75,7 +77,7 @@ rust set server URL:
 
 rust set server tags:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.tags.*$
     - repl: server.tags "monthly,na,vanilla"
@@ -85,7 +87,7 @@ rust set server tags:
 
 rust set worldsize:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ homeuser }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^worldsize.*$
     - repl: worldsize="4500"
@@ -95,7 +97,7 @@ rust set worldsize:
 
 rust set maxplayers:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ homeuser }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^maxplayers.*$
     - repl: maxplayers="55"
@@ -105,7 +107,7 @@ rust set maxplayers:
 
 rust set server name:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ homeuser }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^servername.*$
     - repl: servername="Doom Crickets | Private Server {{ grains['host'] }}"
@@ -117,7 +119,7 @@ rust set server name:
       (grains['host'] in pillar['rustserver']['seeds']) %}
 rust set server seed:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ homeuser }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^seed=.*$
     - repl: seed="{{ pillar['rustserver']['seeds'][grains['host']] }}"
@@ -127,7 +129,7 @@ rust set server seed:
 {% else %}
 rust remove server seed:
   file.replace:
-    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ homeuser }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: False
     - pattern: ^seed=.*$
     - repl: ''
@@ -138,7 +140,7 @@ rust remove server seed:
 
 rust set decay:
   file.append:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
     - text: |
         decay.bracket_0_costfraction 0.01
         decay.bracket_1_costfraction 0.015
@@ -147,7 +149,7 @@ rust set decay:
 
 rust set allow minis and motorboats to spawn:
   file.append:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/server.cfg
     - text: |
         minicopter.population 1
         motorrowboat.population 1
@@ -155,32 +157,31 @@ rust set allow minis and motorboats to spawn:
 {% for owner in salt['pillar.get']('rustserver:owners','') %}
 rust set owner {{ owner }}:
   file.append:
-    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/users.cfg
+    - name: {{ homeuser }}/serverfiles/server/rustserver/cfg/users.cfg
     - text: 'ownerid {{ owner }} "unnamed" "no reason"'
 {% endfor %}
 
 rust server cron monitor:
   cron.present:
     - name: "./rustserver monitor > /dev/null 2>&1"
-    - user: {{ pillar['rustserver']['user'] }}
+    - user: {{ user }}
     - minute: "*/5"
 
 rust server cron update:
   cron.present:
     - name: "./rustserver update > /dev/null 2>&1"
-    - user: {{ pillar['rustserver']['user'] }}
+    - user: {{ user }}
     - minute: "*/30"
 
 rust server cron update-lgsm:
   cron.present:
     - name: "./rustserver update-lgsm > /dev/null 2>&1"
-    - user: {{ pillar['rustserver']['user'] }}
+    - user: {{ user }}
     - minute: "42"
     - hour: "2"
 
 rust server set homedir owner:
   cmd.run:
-    - name: "chown -R {{ pillar['rustserver']['user'] }}.{{ pillar['rustserver']['user'] }} /home/{{ pillar['rustserver']['user'] }}"
-
+    - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
 
 {% endif %}
