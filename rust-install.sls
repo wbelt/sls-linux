@@ -103,4 +103,13 @@ rust set server name:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
+{% if 'owners' in pillar['rustserver'] %}
+{% for owner in pillar['rustserver']['owners'] %}
+rust set owner {{owner}}:
+  file.append:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/users.cfg
+    - text: 'ownerid {{ owner }}'
+{% endfor %}
+{% endif %}
+
 {% endif %}
