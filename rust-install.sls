@@ -41,6 +41,7 @@ rust server config update:
     - repl: rconpassword={{ pillar['rustserver']['rconpassword'] }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
 
 rust set server description:
   file.replace:
@@ -50,5 +51,6 @@ rust set server description:
     - repl: server.description "Doom Crickets {{ grains['host'] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
 
 {% endif %}
