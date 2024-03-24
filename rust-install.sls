@@ -143,7 +143,7 @@ rust set allow minis and motorboats to spawn:
 
 {% if 'owners' in pillar['rustserver'] %}
 {% for owner in pillar['rustserver']['owners'] %}
-rust set owner {{owner}}:
+rust set owner {{ owner }}:
   file.append:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/users.cfg
     - text: 'ownerid {{ owner }} "unnamed" "no reason"'
@@ -154,4 +154,4 @@ rust set owner {{owner}}:
 
 rust server set owner:
   cmd.run:
-    - name: 'chown -R {{ pillar['rustserver']['user'] }}.{{ pillar['rustserver']['user'] }} /home/{{ pillar['rustserver']['user'] }}'
+    - name: "chown -R {{ pillar['rustserver']['user'] }}.{{ pillar['rustserver']['user'] }} /home/{{ pillar['rustserver']['user'] }}"
