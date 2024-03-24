@@ -113,6 +113,15 @@ rust set server name:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
+rust set decay:
+  file.append:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - text: |
+        decay.bracket_0_costfraction 0.01
+        decay.bracket_1_costfraction 0.015
+        decay.bracket_2_costfraction 0.02
+        decay.bracket_3_costfraction 0.033
+
 {% if 'owners' in pillar['rustserver'] %}
 {% for owner in pillar['rustserver']['owners'] %}
 rust set owner {{owner}}:
