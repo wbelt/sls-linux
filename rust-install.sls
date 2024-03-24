@@ -37,7 +37,7 @@ rust server config update:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
-    - pattern: ^rconpassword=.*$
+    - pattern: ^rconpassword=\.*$
     - repl: rconpassword={{ pillar['rustserver']['rconpassword'] }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
@@ -47,8 +47,8 @@ rust set server description:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
-    - pattern: ^server.description.*$
-    - repl: server.description "Doom Crickets {{ grains['host'] }}"
+    - pattern: ^server\.description.*$
+    - repl: server.description "This is a private server ONLY. Blueprints wipe only when forced by Facepunch. Decay is 10% of normal and minis spawn on roads and motorboats spawn on coasts."
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
@@ -57,7 +57,7 @@ rust set header image:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
-    - pattern: ^server.headerimage.*$
+    - pattern: ^server\.headerimage.*$
     - repl: server.headerimage "https://i.imgur.com/uReayFY.jpg"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
@@ -67,7 +67,7 @@ rust set server URL:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
-    - pattern: ^server.url.*$
+    - pattern: ^server\.url.*$
     - repl: server.url "https://twitter.com/DoomCrickets"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
@@ -77,8 +77,18 @@ rust set server tags:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
-    - pattern: ^server.tags.*$
+    - pattern: ^server\.tags.*$
     - repl: server.tags "monthly,na,vanilla"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
+rust set server name:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - append_if_not_found: True
+    - pattern: ^server\.name.*$
+    - repl: server.name "Doom Crickets | Private Server {{ grains['host'] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
