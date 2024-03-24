@@ -1,6 +1,6 @@
 {% if 'rustserver' in pillar %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
-{% set homeuser = '/home/{{ user }}' %}
+{% set homeuser = '/home/' ~ user %}
 rust server base:
   pkg.latest:
     - refresh: True
