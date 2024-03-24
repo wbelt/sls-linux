@@ -35,6 +35,12 @@ rust server install:
     - runas: {{ user }}
     - creates: {{ userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
 
+rust server sudo admin command:
+  file.managed:
+    - name: /usr/local/bin/sudors
+    - source: salt://files/sudors
+    - mode: 755
+
 rust server config update:
   file.replace:
     - name: {{ userhomedir }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
