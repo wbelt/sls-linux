@@ -1,5 +1,5 @@
 {% if 'adminuser' in pillar %}
-{{ pillar['adminuser']['id'] }}:
+create adminsuser {{ pillar['adminuser']['id'] }}:
   user.present: {{ pillar['adminuser']['user.present'] }}
   ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
 wheel group no sudo password:
