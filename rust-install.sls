@@ -120,7 +120,7 @@ rust set server seed:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^seed=.*$
-    - repl: seed={{ pillar['rustserver']['seeds'][grains['host']] }}"
+    - repl: seed="{{ pillar['rustserver']['seeds'][grains['host']] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
