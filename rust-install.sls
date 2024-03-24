@@ -125,6 +125,7 @@ rust set server seed:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 {% endif %}
+{% endif %}
 
 rust set decay:
   file.append:
