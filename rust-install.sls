@@ -151,3 +151,7 @@ rust set owner {{owner}}:
 {% endif %}
 
 {% endif %}
+
+rust server set owner:
+  cmd.run:
+    - name: 'chown -R {{ pillar['rustserver']['user'] }}.{{ pillar['rustserver']['user'] }} /home/{{ pillar['rustserver']['user'] }}'
