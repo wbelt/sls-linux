@@ -97,8 +97,8 @@ rust set server name:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
-    - pattern: ^server\.name.*$
-    - repl: server.name="Doom Crickets | Private Server {{ grains['host'] }}"
+    - pattern: ^servername.*$
+    - repl: servername="Doom Crickets | Private Server {{ grains['host'] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
