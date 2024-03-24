@@ -45,7 +45,7 @@ rust server config update:
   file.replace:
     - name: {{ userhomedir }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
-    - pattern: ^rconpassword=\.*$
+    - pattern: ^rconpassword=.*$
     - repl: rconpassword={{ salt['pillar.get']('rustserver:rconpassword','LegoLAND$8973') }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
