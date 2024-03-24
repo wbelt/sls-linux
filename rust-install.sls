@@ -41,4 +41,14 @@ rust server config update:
     - repl: rconpassword={{ pillar['rustserver']['rconpassword'] }}
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
+
+rust set server description:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - append_if_not_found: True
+    - pattern: ^server.description.*$
+    - repl: server.description Doom Crickets {{ grains['host'] }}
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+
 {% endif %}
