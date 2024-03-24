@@ -113,6 +113,18 @@ rust set server name:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
+{% if 'seed' in pillar['rustserver'] %}
+rust set server seed:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - append_if_not_found: True
+    - pattern: ^seed=.*$
+    - repl: seed={{ pillar['rustserver']['seed'] }}"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+{% endif %}
+
 rust set decay:
   file.append:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
@@ -121,6 +133,13 @@ rust set decay:
         decay.bracket_1_costfraction 0.015
         decay.bracket_2_costfraction 0.02
         decay.bracket_3_costfraction 0.033
+
+rust set allow minis and motorboats to spawn:
+  file.append:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - text: |
+        minicopter.population 1
+        motorrowboat.population 1
 
 {% if 'owners' in pillar['rustserver'] %}
 {% for owner in pillar['rustserver']['owners'] %}
