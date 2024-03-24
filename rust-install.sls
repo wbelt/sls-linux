@@ -180,8 +180,8 @@ rust server cron update-lgsm:
     - minute: "42"
     - hour: "2"
 
-rust server set homedir owner:
-  cmd.run:
-    - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
+#rust server set homedir owner:
+#  cmd.run:
+#    - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
 
 {% endif %}
