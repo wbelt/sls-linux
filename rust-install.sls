@@ -113,13 +113,14 @@ rust set server name:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
-{% if 'seed' in pillar['rustserver'] %}
+{% if 'seeds' in pillar['rustserver'] %}
+{% if grains['host'] in pillar['rustserver']['seeds'] %}
 rust set server seed:
   file.replace:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^seed=.*$
-    - repl: seed={{ pillar['rustserver']['seed'] }}"
+    - repl: seed={{ pillar['rustserver']['seeds'][grains['host']] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
@@ -150,7 +151,7 @@ rust set owner {{ owner }}:
 {% endfor %}
 {% endif %}
 
-rust server set owner:
+rust server set homedir owner:
   cmd.run:
     - name: "chown -R {{ pillar['rustserver']['user'] }}.{{ pillar['rustserver']['user'] }} /home/{{ pillar['rustserver']['user'] }}"
 
