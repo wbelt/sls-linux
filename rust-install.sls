@@ -165,4 +165,23 @@ rust server set homedir owner:
   cmd.run:
     - name: "chown -R {{ pillar['rustserver']['user'] }}.{{ pillar['rustserver']['user'] }} /home/{{ pillar['rustserver']['user'] }}"
 
+rust server cron monitor:
+  cron.present:
+    - name: "./rustserver monitor > /dev/null 2>&1"
+    - user: {{ pillar['rustserver']['user'] }}
+    - minute: "*/5"
+
+rust server cron update:
+  cron.present:
+    - name: "./rustserver update > /dev/null 2>&1"
+    - user: {{ pillar['rustserver']['user'] }}
+    - minute: "*/30"
+
+rust server cron update-lgsm:
+  cron.present:
+    - name: "./rustserver update-lgsm > /dev/null 2>&1"
+    - user: {{ pillar['rustserver']['user'] }}
+    - minute: "42"
+    - hour: "2"
+
 {% endif %}
