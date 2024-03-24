@@ -53,4 +53,34 @@ rust set server description:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
+rust set header image:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - append_if_not_found: True
+    - pattern: ^server.headerimage.*$
+    - repl: server.headerimage "https://i.imgur.com/uReayFY.jpg"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
+rust set server URL:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - append_if_not_found: True
+    - pattern: ^server.url.*$
+    - repl: server.url "https://twitter.com/DoomCrickets"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
+rust set server tags:
+  file.replace:
+    - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
+    - append_if_not_found: True
+    - pattern: ^server.tags.*$
+    - repl: server.tags "monthly,na,vanilla"
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
 {% endif %}
