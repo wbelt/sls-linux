@@ -152,14 +152,12 @@ rust set allow minis and motorboats to spawn:
         minicopter.population 1
         motorrowboat.population 1
 
-{% if 'owners' in pillar['rustserver'] %}
-{% for owner in pillar['rustserver']['owners'] %}
+{% for owner in salt['pillar.get']('rustserver:owners','') %}
 rust set owner {{ owner }}:
   file.append:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/users.cfg
     - text: 'ownerid {{ owner }} "unnamed" "no reason"'
 {% endfor %}
-{% endif %}
 
 rust server cron monitor:
   cron.present:
