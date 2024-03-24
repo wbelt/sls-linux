@@ -130,7 +130,7 @@ rust remove server seed:
     - name: /home/{{ pillar['rustserver']['user'] }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: False
     - pattern: ^seed=.*$
-    - repl:
+    - repl: ''
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
