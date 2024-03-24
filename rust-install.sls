@@ -127,7 +127,7 @@ rust set decay:
 rust set owner {{owner}}:
   file.append:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/users.cfg
-    - text: 'ownerid {{ owner }}'
+    - text: 'ownerid {{ owner }} "unnamed" "no reason"'
 {% endfor %}
 {% endif %}
 
