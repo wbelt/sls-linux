@@ -47,7 +47,7 @@ rust set server description:
     - name: /home/{{ pillar['rustserver']['user'] }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server.description.*$
-    - repl: server.description Doom Crickets {{ grains['host'] }}
+    - repl: server.description "Doom Crickets {{ grains['host'] }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
 
