@@ -39,7 +39,7 @@ rust server sudo admin command:
   file.managed:
     - name: /usr/local/bin/sudors
     - source: salt://files/sudors
-    - mode: 755
+    - mode: "0755"
 
 rust server config update:
   file.replace:
@@ -56,7 +56,10 @@ rust set server description:
     - name: {{ userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.description.*$
-    - repl: server.description "This is a private server ONLY. Blueprints wipe only when forced by Facepunch. Decay is 10% of normal and minis spawn on roads and motorboats spawn on coasts."
+    - repl: |
+        server.description "This is a private server ONLY.
+        Blueprints wipe only when forced by Facepunch.
+        Decay is 10% of normal and minis spawn on roads and motorboats spawn on coasts."
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
