@@ -57,7 +57,9 @@ rust set server description:
     - append_if_not_found: True
     - pattern: ^server\.description.*$
     - repl: 'server.description
-        "This is a private server ONLY.\\nBlueprints wipe only when forced by Facepunch.\\nDecay is 10% of normal and minis spawn on roads and motorboats spawn on coasts."
+        "This is a private server ONLY.\\n\
+        Blueprints wipe only when forced by Facepunch.\\n\
+        Decay is 10% of normal and minis spawn on roads and motorboats spawn on coasts."
         '
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
