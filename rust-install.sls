@@ -37,9 +37,15 @@ rust server install:
 
 rust server sudo admin command:
   file.managed:
-    - name: /usr/local/bin/sudors
-    - source: salt://files/sudors
+    - name: /usr/local/bin/rssudo
+    - source: salt://files/rssudo
     - mode: "0755"
+
+rust server uptimers command:
+  file.managed:
+    - name: {{ userhomedir }}/rsuptime
+    - source: salt://files/rsuptime
+    - mode: "0700"
 
 rust server config update:
   file.replace:
