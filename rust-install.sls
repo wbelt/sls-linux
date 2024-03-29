@@ -41,11 +41,13 @@ rust server sudo admin command:
     - source: salt://files/rssudo
     - mode: "0755"
 
-rust server uptimers command:
+rust server uptime command:
   file.managed:
     - name: {{ userhomedir }}/rsuptime
     - source: salt://files/rsuptime
     - mode: "0700"
+    - user: {{ user }}
+    - group: {{ user }}
 
 rust server config update:
   file.replace:
