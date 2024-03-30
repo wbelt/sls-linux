@@ -1,4 +1,5 @@
-{% if 'rustserver' in pillar %}
+{% if ('rustserver' in pillar) and
+      (salt['grains.get']('rustserver:installed', False) == False) %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
@@ -71,5 +72,7 @@ rust server cron update-lgsm:
 rust server set homedir owner:
   cmd.run:
     - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
+
+{% set installed = salt['grains.set']('rustserver:installed',True) %}
 
 {% endif %}
