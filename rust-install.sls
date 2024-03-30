@@ -117,7 +117,7 @@ rust set maxplayers:
     - name: {{ userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^maxplayers.*$
-    - repl: maxplayers="55"
+    - repl: maxplayers="50"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
