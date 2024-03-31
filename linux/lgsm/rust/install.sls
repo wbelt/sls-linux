@@ -58,13 +58,13 @@ rust server cron monitor:
 
 rust server cron update:
   cron.present:
-    - name: "./rustserver update > /dev/null 2>&1"
+    - name: "./rustserver update >> rs-update.log 2>&1"
     - user: {{ user }}
     - minute: "*/30"
 
 rust server cron update-lgsm:
   cron.present:
-    - name: "./rustserver update-lgsm > /dev/null 2>&1"
+    - name: "./rustserver update-lgsm >> lgsm-update.log 2>&1"
     - user: {{ user }}
     - minute: "42"
     - hour: "2"
