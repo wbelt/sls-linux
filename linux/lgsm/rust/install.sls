@@ -53,18 +53,21 @@ rust server uptime command:
 rust server cron monitor:
   cron.present:
     - name: "./rustserver monitor > /dev/null 2>&1"
+    - identifier: "rustserver monitor"
     - user: {{ user }}
     - minute: "*/5"
 
 rust server cron update:
   cron.present:
     - name: "./rustserver update >> rs-update.log 2>&1"
+    - identifier: "rustserver update"
     - user: {{ user }}
     - minute: "*/30"
 
 rust server cron update-lgsm:
   cron.present:
     - name: "./rustserver update-lgsm >> lgsm-update.log 2>&1"
+    - identifier: "rustserver update-lgsm"
     - user: {{ user }}
     - minute: "42"
     - hour: "2"
