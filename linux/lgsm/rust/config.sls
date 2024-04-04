@@ -20,6 +20,7 @@ rust server daily reboot 2min:
     - minute: "43"
     - hour: "4"
 
+rust server daily reboot 1min:
   cron.present:
     - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 1 minute until daily reboot' 2>&1"
     - identifier: "daily reboot 1min"
