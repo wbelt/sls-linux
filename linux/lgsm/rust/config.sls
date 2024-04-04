@@ -3,7 +3,6 @@
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 
-
 rust server cron monitor:
   cron.present:
     - name: "./rustserver monitor > /dev/null 2>&1"
@@ -12,6 +11,7 @@ rust server cron monitor:
     - minute: "*/5"
 
 {% if 'rconpassword' in pillar['rustserver'] %}
+
 rust server daily reboot 2min:
   cron.present:
     - name: './rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} "say 2 minutes until daily reboot" 2>&1'
