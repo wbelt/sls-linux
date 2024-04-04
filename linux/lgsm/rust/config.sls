@@ -14,14 +14,14 @@ rust server cron monitor:
 
 rust server daily reboot 2min:
   cron.present:
-    - name: './rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} "say 2 minutes until daily reboot" 2>&1'
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 2 minutes until daily reboot' 2>&1"
     - identifier: "daily reboot 2min"
     - user: {{ user }}
     - minute: "43"
     - hour: "4"
 
   cron.present:
-    - name: './rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} "say 1 minute until daily reboot" 2>&1'
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 1 minute until daily reboot' 2>&1"
     - identifier: "daily reboot 1min"
     - user: {{ user }}
     - minute: "44"
