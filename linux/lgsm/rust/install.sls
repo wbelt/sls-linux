@@ -44,11 +44,29 @@ rust server sudo admin command:
 
 rust server uptime command:
   file.managed:
-    - name: {{ userhomedir }}/rsuptime
+    - name: /usr/local/bin/rsuptime
     - source: salt://files/rsuptime
-    - mode: "0700"
-    - user: {{ user }}
-    - group: {{ user }}
+    - mode: "0755"
+
+rust server rcon file:
+  file.managed:
+    - name: /usr/local/bin/rcon
+    - source: salt://files/rcon
+    - mode: "0755"
+
+{% if 'rconpassword' in pillar['rustserver'] %}
+
+rust server rconpwd file:
+  file.replace:
+    - name: {{ userhomedir }}/rconpwd
+    - append_if_not_found: False
+    - pattern: ^.*$
+    - repl: {{ pillar['rustserver']['rconpassword'] }}
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
+{% endif %}
 
 rust server set homedir owner:
   cmd.run:
