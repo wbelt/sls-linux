@@ -56,11 +56,14 @@ rust server rcon file:
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 
-rust server rconpwd file2:
+rust server rconpwd file:
   file.managed:
     - name: {{ userhomedir }}/rconpwd
     - contents:
       - {{ pillar['rustserver']['rconpassword'] }}
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: "0600"
 
 {% endif %}
 
