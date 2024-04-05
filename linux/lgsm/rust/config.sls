@@ -209,14 +209,14 @@ rust set allow minis and motorboats to spawn:
         minicopter.population 1
         motorrowboat.population 1
 
-{% for owner in salt['pillar.get']('rustserver:owners','') %}
-rust set owner {{ owner }}:
-  file.append:
+rust set owners:
+  file.managed:
     - name: {{ userhomedir }}/serverfiles/server/rustserver/cfg/users.cfg
     - user: {{ user }}
     - group: {{ user }}
-    - text: |
-        ownerid {{ owner }} "unnamed" "no reason"
+    - contents:
+{% for owner in salt['pillar.get']('rustserver:owners','') %}
+      - ownerid {{ owner }} "unnamed" "no reason"
 {% endfor %}
 
 {% endif %}
