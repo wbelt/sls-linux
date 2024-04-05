@@ -12,6 +12,46 @@ rust server cron monitor:
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 
+rust server daily reboot 15min:
+  cron.present:
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 15 minutes until daily reboot' 2>&1"
+    - identifier: "daily reboot 15min"
+    - user: {{ user }}
+    - minute: "30"
+    - hour: "4"
+
+rust server daily reboot 10min:
+  cron.present:
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 10 minutes until daily reboot' 2>&1"
+    - identifier: "daily reboot 10min"
+    - user: {{ user }}
+    - minute: "35"
+    - hour: "4"
+
+rust server daily reboot 5min:
+  cron.present:
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 5 minutes until daily reboot' 2>&1"
+    - identifier: "daily reboot 5min"
+    - user: {{ user }}
+    - minute: "40"
+    - hour: "4"
+
+rust server daily reboot 4min:
+  cron.present:
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 4 minutes until daily reboot' 2>&1"
+    - identifier: "daily reboot 4min"
+    - user: {{ user }}
+    - minute: "41"
+    - hour: "4"
+
+rust server daily reboot 3min:
+  cron.present:
+    - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 3 minutes until daily reboot' 2>&1"
+    - identifier: "daily reboot 3min"
+    - user: {{ user }}
+    - minute: "42"
+    - hour: "4"
+
 rust server daily reboot 2min:
   cron.present:
     - name: "./rcon-0.10.3-amd64_linux/rcon -t web -a localhost:28016 -p {{ pillar['rustserver']['rconpassword'] }} 'say 2 minutes until daily reboot' 2>&1"
