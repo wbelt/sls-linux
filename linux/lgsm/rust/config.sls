@@ -211,9 +211,12 @@ rust set allow minis and motorboats to spawn:
 
 {% for owner in salt['pillar.get']('rustserver:owners','') %}
 rust set owner {{ owner }}:
-  file.append:
+  file.managed:
     - name: {{ userhomedir }}/serverfiles/server/rustserver/cfg/users.cfg
-    - text: 'ownerid {{ owner }} "unnamed" "no reason"'
+    - user: {{ user }}
+    - group: {{ user }}
+    - contents:
+      - 'ownerid {{ owner }} "unnamed" "no reason"'
 {% endfor %}
 
 {% endif %}
