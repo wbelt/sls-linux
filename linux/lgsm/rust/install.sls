@@ -56,10 +56,14 @@ rust server rcon file:
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 
-rust server rconpwd file:
-  file.append:
+rust server rconpwd file2:
+  file.replace:
     - name: {{ userhomedir }}/rconpwd
-    - text: {{ pillar['rustserver']['rconpassword'] }}
+    - pattern: ^.*$
+    - repl: {{ pillar['rustserver']['rconpassword'] }}
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
 
 {% endif %}
 
