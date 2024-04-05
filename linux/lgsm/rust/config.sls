@@ -16,7 +16,7 @@ rust server cron monitor:
 
 rust server daily reboot 15min:
   cron.present:
-    - name: " 'say 15 minutes until daily reboot' 2>&1"
+    - name: {{ rconbase }} 'say 15 minutes until daily reboot' 2>&1
     - identifier: "daily reboot 15min"
     - user: {{ user }}
     - minute: "30"
