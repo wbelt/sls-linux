@@ -3,6 +3,12 @@
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 
+rust server rshelper file:
+  file.managed:
+    - name: {{ userhomedir }}/rshelper
+    - source: salt://files/rshelper
+    - mode: "0755"
+
 rust server cron monitor:
   cron.present:
     - name: "./rustserver monitor > /dev/null 2>&1"
@@ -79,7 +85,7 @@ rust server daily reboot 1min:
 
 rust server daily reboot final:
   cron.present:
-    - name: {{ rconbase }} 'save' 'quit' >> daily-reboot.log 2>&1
+    - name: ./rshelper stop >> daily-reboot.log 2>&1
     - identifier: "daily reboot final"
     - user: {{ user }}
     - minute: "45"
@@ -87,7 +93,7 @@ rust server daily reboot final:
 
 rust server daily reboot restart:
   cron.present:
-    - name: "./rustserver update-lgsm; ./rustserver update; ./rustserver start"
+    - name: "./rshelper update >> daily_update.log 2>&1"
     - identifier: "daily reboot restart"
     - user: {{ user }}
     - minute: "46"
