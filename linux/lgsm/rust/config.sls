@@ -19,7 +19,7 @@ rust server hourly time:
     - name:  TIME=$(date +"\%I:\%M \%p ET"); {{ rconbase }} "say current time is ${TIME}" >> time-reminder.log 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
-    - minute: "*/10"
+    - minute: "0"
 
 rust server daily reboot 15min:
   cron.present:
