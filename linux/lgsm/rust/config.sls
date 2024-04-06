@@ -16,7 +16,7 @@ rust server cron monitor:
 
 rust server hourly time:
   cron.present:
-    - name:  TIME=$(date +"\%I:\%M \%p ET"); {{ rconbase }} "say current time is ${TIME}" >> time-reminder.log 2>&1
+    - name: TIME=$(date +"\%I:\%M \%p ET"); {{ rconbase }} "say current time is ${TIME}" >> time-reminder.log 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
     - minute: "0"
