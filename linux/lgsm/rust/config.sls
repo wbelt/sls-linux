@@ -12,15 +12,14 @@ rust server cron monitor:
     - commented: True
 
 {% if 'rconpassword' in pillar['rustserver'] %}
-{% set rconbase = '/usr/local/bin/rcon -t web -a localhost:28016 -p $(cat rconpwd)' %}
+{% set rconbase = '/usr/local/bin/rcon -t web -a localhost:28016 -p $(cat /home/rustserver/rconpwd)' %}
 
 rust server hourly time:
   cron.present:
-    - name: {{ rconbase }} "say time is $(date '+%I:%M %p ET')" 2>&1
+    - name: {{ rconbase }} "say time is $(date '+%I:%M %p ET')" >> /home/rustserver/time-reminder.log 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
-    - minute: "0"
-    - hour: "*"
+    - minute: "*/10"
 
 rust server daily reboot 15min:
   cron.present:
