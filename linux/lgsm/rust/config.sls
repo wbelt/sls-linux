@@ -22,6 +22,7 @@ rust server hourly time:
     - minute: "0"
     - hour: "*"
 
+rust server daily reboot 15min:
   cron.present:
     - name: {{ rconbase }} 'say 15 minutes until daily reboot' 2>&1
     - identifier: "daily reboot 15min"
