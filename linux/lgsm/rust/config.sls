@@ -93,7 +93,7 @@ rust server daily reboot final:
 
 rust server daily reboot restart:
   cron.present:
-    - name: "./rshelper update >> daily_update.log 2>&1"
+    - name: "./rshelper update >> daily-update.log 2>&1"
     - identifier: "daily reboot restart"
     - user: {{ user }}
     - minute: "46"
