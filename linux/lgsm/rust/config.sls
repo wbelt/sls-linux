@@ -87,7 +87,7 @@ rust server daily reboot final:
 
 rust server daily reboot restart:
   cron.present:
-    - name: "./rustserver update-lgsm && ./rustserver update && ./rustserver start"
+    - name: "./rustserver update-lgsm; ./rustserver update; ./rustserver start"
     - identifier: "daily reboot restart"
     - user: {{ user }}
     - minute: "46"
