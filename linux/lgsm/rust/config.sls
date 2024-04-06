@@ -16,7 +16,7 @@ rust server cron monitor:
 
 rust server hourly time:
   cron.present:
-    - name: {{ rconbase }} time is $(date '+%I:%M %p ET') 2>&1
+    - name: {{ rconbase }} "say time is $(date '+%I:%M %p ET')" 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
     - minute: "0"
