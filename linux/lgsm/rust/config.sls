@@ -7,7 +7,9 @@ rust server rshelper file:
   file.managed:
     - name: {{ userhomedir }}/rshelper
     - source: salt://files/rshelper
-    - mode: "0755"
+    - mode: "0700"
+    - user: {{ user }}
+    - group: {{ user }}
 
 rust server cron monitor:
   cron.present:
