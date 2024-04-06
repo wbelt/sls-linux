@@ -80,7 +80,7 @@ rust server daily reboot 1min:
 
 rust server daily reboot final:
   cron.present:
-    - name: {{ rconbase }} quit >> daily-reboot.log 2>&1
+    - name: {{ rconbase }} 'save' 'quit' >> daily-reboot.log 2>&1
     - identifier: "daily reboot final"
     - user: {{ user }}
     - minute: "45"
