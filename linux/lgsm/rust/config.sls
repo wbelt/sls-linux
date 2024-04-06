@@ -16,7 +16,7 @@ rust server cron monitor:
 
 rust server hourly time:
   cron.present:
-    - name: RCONPWD=$(cat rconpwd); TIME=$(date "+%I:%M %p ET"); echo "say time is ${TIME} password ${RCONPWD}" >> time-reminder.log 2>&1
+    - name: RCONPWD=$(cat rconpwd); TIME=$(date "+\%I:\%M \%p ET"); echo "say time is ${TIME} password ${RCONPWD}" >> time-reminder.log 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
     - minute: "*/10"
