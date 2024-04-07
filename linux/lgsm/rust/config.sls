@@ -22,6 +22,14 @@ rust server cron monitor:
 {% if 'rconpassword' in pillar['rustserver'] %}
 {% set rconbase = 'RCONPWD=$(cat rconpwd); /usr/local/bin/rcon -t web -a localhost:28016 -p $RCONPWD' %}
 
+rust server maint.conf file:
+  file.managed:
+    - name: {{ userhomedir }}/maint.conf
+    - source: salt://files/maint.conf
+    - mode: "0700"
+    - user: {{ user }}
+    - group: {{ user }}
+
 rust server hourly time:
   cron.present:
     - name: ./rshelper saytime >> hourly-time.log 2>&1
