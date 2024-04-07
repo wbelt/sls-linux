@@ -26,7 +26,7 @@ rust server maint.conf file:
   file.managed:
     - name: {{ userhomedir }}/maint.conf
     - source: salt://files/maint.conf
-    - mode: "0700"
+    - mode: "0600"
     - user: {{ user }}
     - group: {{ user }}
 
