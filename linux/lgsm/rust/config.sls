@@ -24,81 +24,16 @@ rust server cron monitor:
 
 rust server hourly time:
   cron.present:
-    - name: TIME=$(date +"\%I:\%M \%p ET"); {{ rconbase }} "say current time is ${TIME}" >> time-reminder.log 2>&1
+    - name: ./rshelper auto >> hourly-time.log 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
     - minute: "0"
 
-rust server daily reboot 15min:
+rust server daily maintenance:
   cron.present:
-    - name: {{ rconbase }} 'say 15 minutes until daily reboot' 2>&1
-    - identifier: "daily reboot 15min"
+    - name: ./rshelper auto >> daily-maint.log 2>&1
+    - identifier: "daily maint"
     - user: {{ user }}
-    - minute: "30"
-    - hour: "4"
-
-rust server daily reboot 10min:
-  cron.present:
-    - name: {{ rconbase }} 'say 10 minutes until daily reboot' 2>&1
-    - identifier: "daily reboot 10min"
-    - user: {{ user }}
-    - minute: "35"
-    - hour: "4"
-
-rust server daily reboot 5min:
-  cron.present:
-    - name: {{ rconbase }} 'say 5 minutes until daily reboot' 2>&1
-    - identifier: "daily reboot 5min"
-    - user: {{ user }}
-    - minute: "40"
-    - hour: "4"
-
-rust server daily reboot 4min:
-  cron.present:
-    - name: {{ rconbase }} 'say 4 minutes until daily reboot' 2>&1
-    - identifier: "daily reboot 4min"
-    - user: {{ user }}
-    - minute: "41"
-    - hour: "4"
-
-rust server daily reboot 3min:
-  cron.present:
-    - name: {{ rconbase }} 'say 3 minutes until daily reboot' 2>&1
-    - identifier: "daily reboot 3min"
-    - user: {{ user }}
-    - minute: "42"
-    - hour: "4"
-
-rust server daily reboot 2min:
-  cron.present:
-    - name: {{ rconbase }} 'say 2 minutes until daily reboot' 2>&1
-    - identifier: "daily reboot 2min"
-    - user: {{ user }}
-    - minute: "43"
-    - hour: "4"
-
-rust server daily reboot 1min:
-  cron.present:
-    - name: {{ rconbase }} 'say 1 minute until daily reboot' 2>&1
-    - identifier: "daily reboot 1min"
-    - user: {{ user }}
-    - minute: "44"
-    - hour: "4"
-
-rust server daily reboot final:
-  cron.present:
-    - name: ./rshelper stop >> daily-reboot.log 2>&1
-    - identifier: "daily reboot final"
-    - user: {{ user }}
-    - minute: "45"
-    - hour: "4"
-
-rust server daily reboot restart:
-  cron.present:
-    - name: "./rshelper update >> daily-update.log 2>&1"
-    - identifier: "daily reboot restart"
-    - user: {{ user }}
-    - minute: "46"
     - hour: "4"
 
 rust server config update:
