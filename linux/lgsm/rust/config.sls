@@ -11,6 +11,18 @@ rust server rshelper file:
     - user: {{ user }}
     - group: {{ user }}
 
+rust server cron SHELL settings:
+  cron.env_present:
+    - user: {{ user }}
+    - name: SHELL
+    - value: /bin/bash
+
+rust server cron PATH settings:
+  cron.env_present:
+    - user: {{ user }}
+    - name: PATH
+    - value: /usr/sbin:/usr/bin:/bin
+
 rust server cron monitor:
   cron.present:
     - name: "./rustserver monitor > /dev/null 2>&1"
