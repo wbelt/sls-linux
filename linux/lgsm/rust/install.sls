@@ -62,7 +62,7 @@ rust server rconpwd file:
     - contents:
       - {{ pillar['rustserver']['rconpassword'] }}
     - user: {{ user }}
-    - group: {{ group }}
+    - group: {{ user }}
     - mode: "0600"
 
 rust server maint.conf file:
