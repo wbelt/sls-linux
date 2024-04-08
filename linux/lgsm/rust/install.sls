@@ -65,6 +65,14 @@ rust server rconpwd file:
     - group: {{ group }}
     - mode: "0600"
 
+rust server maint.conf file:
+  file.managed:
+    - name: {{ userhomedir }}/maint.conf
+    - source: salt://files/maint.conf
+    - mode: "0600"
+    - user: {{ user }}
+    - group: {{ user }}
+
 {% endif %}
 
 rust server set homedir owner:
