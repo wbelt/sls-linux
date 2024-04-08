@@ -17,7 +17,6 @@ rust server cron monitor:
     - identifier: "rustserver monitor"
     - user: {{ user }}
     - minute: "*/5"
-    - commented: True
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 {% set rconbase = 'RCONPWD=$(cat rconpwd); /usr/local/bin/rcon -t web -a localhost:28016 -p $RCONPWD' %}
