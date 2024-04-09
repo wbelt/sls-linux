@@ -1,3 +1,9 @@
+{% if 'timezone.system' in pillar %}
+set preferred timezone:
+  timezone.system:
+    - name: {{ pillar['timezone.system'] }}
+{% endif %}
+
 set custom ssh port:
   file.replace:
     - name: /etc/ssh/sshd_config
@@ -11,11 +17,12 @@ set custom ssh port:
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 
-{% if 'timezone.system' in pillar %}
-set preferred timezone:
-  timezone.system:
-    - name: {{ pillar['timezone.system'] }}
-{% endif %}
+restart ssh if needed:
+  service.running:
+    - name: sshd.service
+    - reload: True
+    - watch:
+      - file: /etc/ssh/sshd_config
 
 {% if 'adminuser' in pillar %}
 create adminsuser {{ pillar['adminuser']['id'] }}:
