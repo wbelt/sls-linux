@@ -1,9 +1,7 @@
 {% if ('rustserver' in pillar) %}
-{% if reinstall is not defined %}
-{% if (salt['grains.get']('rustserver:installed', False) == False) %}
-{% else %}
-{% if (reinstall==True) or (salt['grains.get']('rustserver:installed', False) == False) %}
-{% endif %}
+{% if (reinstall is not defined) or
+      (salt['grains.get']('rustserver:installed', False) == False) or
+      (reinstall==True) %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
@@ -83,13 +81,11 @@ rust server rshelper file:
     - source: salt://files/rshelper
     - mode: "0755"
 
-{% endif %}
-{% endif %}
-
 rust server set homedir owner:
   cmd.run:
     - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
 
 {% set installed = salt['grains.set']('rustserver:installed',True) %}
 
+{% endif %}
 {% endif %}
