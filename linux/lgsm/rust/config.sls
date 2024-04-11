@@ -45,7 +45,7 @@ rust server daily maintenance:
     - name: ./rshelper maint >> daily-maint.log 2>&1
     - identifier: "daily maint"
     - user: {{ user }}
-    - hour: "4"
+    - hour: "3"
 
 rust server config update:
   file.replace:
