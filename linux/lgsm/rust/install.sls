@@ -73,6 +73,15 @@ rust server maint.conf file:
     - user: {{ user }}
     - group: {{ user }}
 
+rust server rshelper file:
+  file.managed:
+    - name: {{ userhomedir }}/rshelper
+    - source: salt://files/rshelper
+    - mode: "0700"
+    - user: {{ user }}
+    - group: {{ user }}
+
+
 {% endif %}
 
 rust server set homedir owner:

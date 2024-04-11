@@ -3,14 +3,6 @@
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 
-rust server rshelper file:
-  file.managed:
-    - name: {{ userhomedir }}/rshelper
-    - source: salt://files/rshelper
-    - mode: "0700"
-    - user: {{ user }}
-    - group: {{ user }}
-
 rust server cron SHELL settings:
   cron.env_present:
     - user: {{ user }}
