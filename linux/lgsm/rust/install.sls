@@ -1,5 +1,5 @@
 {% if ('rustserver' in pillar) %}
-{% if reinstall or
+{% if (reinstall == False) or
       (salt['grains.get']('rustserver:installed', False) == False) %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
