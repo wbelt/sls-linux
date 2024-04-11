@@ -1,6 +1,9 @@
 {% if ('rustserver' in pillar) %}
-{% if (reinstall == False) or
-      (salt['grains.get']('rustserver:installed', False) == False) %}
+{% if reinstall is not defined %}
+{% if (salt['grains.get']('rustserver:installed', False) == False) %}
+{% else %}
+{% if (reinstall==True) or (salt['grains.get']('rustserver:installed', False) == False) %}
+{% endif %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
