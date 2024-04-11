@@ -1,4 +1,5 @@
-{% if ('rustserver' in pillar) and
+{% if ('rustserver' in pillar) %}
+{% if reinstall or
       (salt['grains.get']('rustserver:installed', False) == False) %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
@@ -79,6 +80,7 @@ rust server rshelper file:
     - source: salt://files/rshelper
     - mode: "0755"
 
+{% endif %}
 {% endif %}
 
 rust server set homedir owner:
