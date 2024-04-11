@@ -81,6 +81,8 @@ rust server rshelper file:
     - source: salt://files/rshelper
     - mode: "0755"
 
+{% endif %}
+
 rust server set homedir owner:
   cmd.run:
     - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
