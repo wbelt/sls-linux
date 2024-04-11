@@ -75,12 +75,9 @@ rust server maint.conf file:
 
 rust server rshelper file:
   file.managed:
-    - name: {{ userhomedir }}/rshelper
+    - name: /usr/local/bin/rscon
     - source: salt://files/rshelper
-    - mode: "0700"
-    - user: {{ user }}
-    - group: {{ user }}
-
+    - mode: "0755"
 
 {% endif %}
 

@@ -27,14 +27,14 @@ rust server cron monitor:
 
 rust server hourly time:
   cron.present:
-    - name: ./rshelper saytime >> hourly-time.log 2>&1
+    - name: /usr/local/bin/rscon saytime >> hourly-time.log 2>&1
     - identifier: "hourly time"
     - user: {{ user }}
     - minute: "0"
 
 rust server daily maintenance:
   cron.present:
-    - name: ./rshelper maint >> daily-maint.log 2>&1
+    - name: /usr/local/bin/rscon maint >> daily-maint.log 2>&1
     - identifier: "daily maint"
     - user: {{ user }}
     - hour: "3"
