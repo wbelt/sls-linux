@@ -1,5 +1,5 @@
 {% if ('rustserver' in pillar) %}
-{% if (salt['grains.get']('rustserver:installed', False) == false) %}
+{% if (salt['grains.get']('rustserver:installed', False) == False) %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
@@ -76,7 +76,7 @@ rust server maint.conf file:
 rust server rshelper file:
   file.managed:
     - name: /usr/local/bin/rscon
-    - source: salt://files/rshelper
+    - source: salt://files/rscon
     - mode: "0755"
 
 {% endif %}
