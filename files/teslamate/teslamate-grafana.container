@@ -6,7 +6,7 @@ Before=teslamate-database.service
 [Container]
 Environment=DATABASE_HOST=database DATABASE_NAME=teslamate DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER={{ pillar['teslamate']['database_user'] }} GF_AUTH_ANONYMOUS_ENABLED=false GF_AUTH_BASIC_ENABLED=true GF_SECURITY_ADMIN_PASSWORD={{ pillar['teslamate']['grafana_password'] }} GF_SECURITY_ADMIN_USER={{ pillar['teslamate']['grafana_user'] }} GF_SERVER_ROOT_URL=https://grafana.flbelt.com
 Image=docker.io/teslamate/grafana:latest
-Network=podman1
+Network=teslamate
 Volume=teslamate-grafana-data:/var/lib/grafana
 PublishPort=127.0.0.1:3000:3000
 

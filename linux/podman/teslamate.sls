@@ -22,6 +22,11 @@ teslamate update podman version:
   cmd.run:
     - name: "pacman --noconfirm -U /home/{{ user }}/{{ upname }}"
 
+teslamate create podman network:
+  cmd.run:
+    - name: "podman network create teslamate"
+    - user: {{ user }}
+
 teslamate container directory setup:
   file.directory:
     - name: /home/{{ user }}/.config/containers/systemd

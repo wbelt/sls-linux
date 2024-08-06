@@ -6,7 +6,7 @@ Before=teslamate-grafana.service
 [Container]
 Exec=mosquitto -c /mosquitto-no-auth.conf
 Image=docker.io/library/eclipse-mosquitto:2
-Network=podman1
+Network=teslamate
 NetworkAlias=mosquitto
 Volume=mosquitto-conf:/mosquitto/config
 Volume=mosquitto-data:/mosquitto/data
