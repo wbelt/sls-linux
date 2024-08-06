@@ -17,6 +17,7 @@ podman server base:
     - groups:
       - wheel
 
+{% set upname = 'podman-5.2.0-1-x86_64.pkg.tar.zst' %}
 teslamate podman copy:
   file.managed:
     - name: /home/{{ user }}/{{ upname }}
