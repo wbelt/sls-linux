@@ -174,11 +174,6 @@ teslamate set homedir owner:
   cmd.run:
     - name: "chown -R {{ user }}{{ seperator }}{{ user }} /home/{{ user }}"
 
-teslamate systemd generator:
-  cmd.run:
-    - name: "systemctl --user daemon-reload"
-    - runas: {{ user }}
-
 teslamate enable apache:
   cmd.run:
     - name: "systemctl enable --now httpd"
