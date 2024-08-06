@@ -1,9 +1,6 @@
 #!/bin/bash
-check_update()
+update()
 {
-        echo "${0}: ./mcbserver check-update..."
-        ./mcbserver check-update
-        local SAVEQUIT=$?
         echo "${0}: ./mcbserver update..."
         ./mcbserver update
         local SAVEQUIT=$?
@@ -24,11 +21,11 @@ if [ -z $1 ]; then
         echo "    select option"
         echo ""
         echo "      reboot        - reboot if up more than MAX_TIME"
-        echo "      update        - check-update"
+        echo "      uptime_reboot - check uptime and reboot if needed"
         echo ""
 else 
         if [ "$1" = "update" ]; then
-                check_update
+                update
         elif [ "$1" = "reboot" ]; then
                 uptime_reboot
         fi
