@@ -1,0 +1,16 @@
+[Unit]
+Description=Teslamate application container
+Requires=teslamate-grafana.service
+Before=teslamate-grafana.service
+
+[Container]
+DropCapability=all
+Environment=CHECK_ORIGIN=true DATABASE_HOST=database DATABASE_NAME=teslamate DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER=teslamate ENCRYPTION_KEY={{ pillar['teslamate']['encryption_key'] }} DISABLE_MQTT=true TZ=America/New_York VIRTUAL_HOST=teslamate.flbelt.com
+Image=docker.io/teslamate/teslamate:latest
+Network=podman1
+NetworkAlias=teslamate
+#Volume=./import:/opt/app/import
+PublishPort=127.0.0.1:4000:4000
+
+[Install]
+WantedBy=multi-user.target default.target

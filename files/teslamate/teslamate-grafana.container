@@ -1,0 +1,15 @@
+[Unit]
+Description=Teslamate Grafana container
+Requires=teslamate-database.service
+Before=teslamate-database.service
+
+[Container]
+Environment=DATABASE_HOST=database DATABASE_NAME=teslamate DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER=teslamate GF_AUTH_ANONYMOUS_ENABLED=false GF_AUTH_BASIC_ENABLED=true GF_SECURITY_ADMIN_PASSWORD=admin GF_SECURITY_ADMIN_USER=admin GF_SERVER_ROOT_URL=https://grafana.flbelt.com GRAFANA_PASSWD=admin
+Image=docker.io/teslamate/grafana:latest
+Network=podman1
+Volume=teslamate-grafana-data:/var/lib/grafana
+PublishPort=127.0.0.1:3000:3000
+
+[Install]
+WantedBy=multi-user.target default.target
+

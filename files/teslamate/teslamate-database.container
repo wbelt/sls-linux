@@ -1,0 +1,14 @@
+[Unit]
+Description=Teslamate Postgres Database container
+Before=local-fs.target
+
+[Container]
+Environment=POSTGRES_DB=teslamate POSTGRES_PASSWORD={{ pillar['teslamate']['database_password'] }} POSTGRES_USER=teslamate
+Image=docker.io/library/postgres:16
+Network=podman1
+NetworkAlias=database
+Volume=teslamate-db:/var/lib/postgresql/data
+
+[Install]
+WantedBy=multi-user.target default.target
+

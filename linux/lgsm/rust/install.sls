@@ -1,0 +1,91 @@
+{% if ('rustserver' in pillar) %}
+{% if (salt['grains.get']('rustserver:installed', False) == False) %}
+{% set user = salt['pillar.get']('rustserver:user','rustserver') %}
+{% set userhomedir = '/home/' ~ user %}
+rust server base:
+  pkg.latest:
+    - refresh: True
+    - pkgs:
+      - bc
+      - binutils
+      - bzip2
+      - epel-release
+      - glibc.i686
+      - jq
+      - libstdc++.i686
+      - nmap-ncat
+      - python3
+      - tmux
+      - unzip
+      - zlib-devel
+  user.present:
+    - name: {{ user }}
+    - fullname: Rust Server
+    - shell: /bin/bash
+    - createhome: True
+
+rust server download:
+  cmd.run:
+    - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh rustserver'
+    - runas: {{ user }}
+    - creates: {{ userhomedir }}/rustserver
+
+rust server install:
+  cmd.run:
+    - name: './rustserver auto-install'
+    - runas: {{ user }}
+    - creates: {{ userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+
+rust server sudo admin command:
+  file.managed:
+    - name: /usr/local/bin/rssudo
+    - source: salt://files/rssudo
+    - mode: "0755"
+
+rust server uptime command:
+  file.managed:
+    - name: /usr/local/bin/rsuptime
+    - source: salt://files/rsuptime
+    - mode: "0755"
+
+rust server rcon file:
+  file.managed:
+    - name: /usr/local/bin/rcon
+    - source: salt://files/rcon
+    - mode: "0755"
+
+{% if 'rconpassword' in pillar['rustserver'] %}
+
+rust server rconpwd file:
+  file.managed:
+    - name: {{ userhomedir }}/rconpwd
+    - contents:
+      - {{ pillar['rustserver']['rconpassword'] }}
+    - user: {{ user }}
+    - group: {{ user }}
+    - mode: "0600"
+
+rust server maint.conf file:
+  file.managed:
+    - name: {{ userhomedir }}/maint.conf
+    - source: salt://files/maint.conf
+    - mode: "0600"
+    - user: {{ user }}
+    - group: {{ user }}
+
+rust server rshelper file:
+  file.managed:
+    - name: /usr/local/bin/rscon
+    - source: salt://files/rscon
+    - mode: "0755"
+
+{% endif %}
+
+rust server set homedir owner:
+  cmd.run:
+    - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
+
+{% set installed = salt['grains.set']('rustserver:installed',True) %}
+
+{% endif %}
+{% endif %}
