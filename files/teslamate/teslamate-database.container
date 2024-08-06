@@ -3,7 +3,7 @@ Description=Teslamate Postgres Database container
 Before=local-fs.target
 
 [Container]
-Environment=POSTGRES_DB=teslamate POSTGRES_PASSWORD={{ pillar['teslamate']['database_password'] }} POSTGRES_USER=teslamate
+Environment=POSTGRES_DB=teslamate POSTGRES_PASSWORD={{ pillar['teslamate']['database_password'] }} POSTGRES_USER={{ pillar['teslamate']['database_user'] }}
 Image=docker.io/library/postgres:16
 Network=podman1
 NetworkAlias=database

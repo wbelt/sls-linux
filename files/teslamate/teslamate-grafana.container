@@ -4,7 +4,7 @@ Requires=teslamate-database.service
 Before=teslamate-database.service
 
 [Container]
-Environment=DATABASE_HOST=database DATABASE_NAME=teslamate DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER=teslamate GF_AUTH_ANONYMOUS_ENABLED=false GF_AUTH_BASIC_ENABLED=true GF_SECURITY_ADMIN_PASSWORD=admin GF_SECURITY_ADMIN_USER=admin GF_SERVER_ROOT_URL=https://grafana.flbelt.com GRAFANA_PASSWD=admin
+Environment=DATABASE_HOST=database DATABASE_NAME=teslamate DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER={{ pillar['teslamate']['database_user'] }} GF_AUTH_ANONYMOUS_ENABLED=false GF_AUTH_BASIC_ENABLED=true GF_SECURITY_ADMIN_PASSWORD={{ pillar['teslamate']['grafana_password'] }} GF_SECURITY_ADMIN_USER={{ pillar['teslamate']['grafana_user'] }} GF_SERVER_ROOT_URL=https://grafana.flbelt.com
 Image=docker.io/teslamate/grafana:latest
 Network=podman1
 Volume=teslamate-grafana-data:/var/lib/grafana
