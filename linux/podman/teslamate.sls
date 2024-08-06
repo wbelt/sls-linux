@@ -9,13 +9,6 @@ podman server base:
       - podman-compose
       - fuse-overlayfs
       - apache
-  user.present:
-    - name: {{ user }}
-    - fullname: Teslamate User
-    - shell: /bin/bash
-    - createhome: True
-    - groups:
-      - wheel
 
 {% set upname = 'podman-5.2.0-1-x86_64.pkg.tar.zst' %}
 teslamate podman copy:
