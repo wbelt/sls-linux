@@ -25,7 +25,7 @@ teslamate update podman version:
 teslamate create podman network:
   cmd.run:
     - name: "podman network create teslamate"
-    - user: {{ user }}
+    - runas: {{ user }}
 
 teslamate container directory setup:
   file.directory:
@@ -177,7 +177,7 @@ teslamate set homedir owner:
 teslamate systemd generator:
   cmd.run:
     - name: "systemctl --user daemon-reload"
-    - user: {{ user }}
+    - runas: {{ user }}
 
 teslamate enable apache:
   cmd.run:
