@@ -20,7 +20,7 @@ CREATE OR REPLACE FUNCTION public.ll_to_earth(float8, float8)
     AS 'SELECT public.cube(public.cube(public.cube(public.earth()*cos(radians(\$1))*cos(radians(\$2))),public.earth()*cos(radians(\$1))*sin(radians(\$2))),public.earth()*sin(radians(\$1)))::public.earth';
 \q
 .
-    podman exec -i systemd-teslamate-database psql -U teslamate -d teslamate < gzip -dc $1
+    /usr/bin/gzip -dc $1 | podman exec -i systemd-teslamate-database psql -U teslamate -d teslamate
     systemctl --user start teslamate-grafana teslamate-teslamate
   fi
 fi
