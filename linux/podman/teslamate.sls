@@ -59,6 +59,19 @@ teslamate enable apache:
 {% set installed = salt['grains.set']('teslamate:installed',True) %}
 {% endif %}
 
+teslamate backup script:
+  file.managed:
+    - name: /home/{{ user }}/backup.sh
+    - source: salt://diydev/files/teslamate/teslamate-backup.sh
+    - mode: "0644"
+    - user: {{ user }}
+teslamate restore script:
+  file.managed:
+    - name: /home/{{ user }}/restore.sh
+    - source: salt://diydev/files/teslamate/teslamate-restore.sh
+    - mode: "0644"
+    - user: {{ user }}
+
 teslamate database container setup:
   file.managed:
     - name: /home/{{ user }}/.config/containers/systemd/teslamate-database.container
