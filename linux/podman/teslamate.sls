@@ -42,6 +42,30 @@ teslamate container directory setup:
     - makedirs: true
     - user: {{ user }}
 
+teslamate database container setup:
+  file.managed:
+    - name: /home/{{ user }}/.config/containers/systemd/teslamate-database.container
+    - source: salt://diydev/files/teslamate/teslamate-database.container
+    - mode: "0644"
+    - user: {{ user }}
+    - template: jinja
+
+teslamate grafana container setup:
+  file.managed:
+    - name: /home/{{ user }}/.config/containers/systemd/teslamate-grafana.container
+    - source: salt://diydev/files/teslamate/teslamate-grafana.container
+    - mode: "0644"
+    - user: {{ user }}
+    - template: jinja
+
+teslamate app container setup:
+  file.managed:
+    - name: /home/{{ user }}/.config/containers/systemd/teslamate-teslamate.container
+    - source: salt://diydev/files/teslamate/teslamate-teslamate.container
+    - mode: "0644"
+    - user: {{ user }}
+    - template: jinja
+
 {% if grains['os_family'] in ['Arch'] %}
   {% set seperator = ':' %}
 {% else %}
@@ -71,30 +95,6 @@ teslamate restore script:
     - source: salt://diydev/files/teslamate/teslamate-restore.sh
     - mode: "0744"
     - user: {{ user }}
-
-teslamate database container setup:
-  file.managed:
-    - name: /home/{{ user }}/.config/containers/systemd/teslamate-database.container
-    - source: salt://diydev/files/teslamate/teslamate-database.container
-    - mode: "0644"
-    - user: {{ user }}
-    - template: jinja
-
-teslamate grafana container setup:
-  file.managed:
-    - name: /home/{{ user }}/.config/containers/systemd/teslamate-grafana.container
-    - source: salt://diydev/files/teslamate/teslamate-grafana.container
-    - mode: "0644"
-    - user: {{ user }}
-    - template: jinja
-
-teslamate app container setup:
-  file.managed:
-    - name: /home/{{ user }}/.config/containers/systemd/teslamate-teslamate.container
-    - source: salt://diydev/files/teslamate/teslamate-teslamate.container
-    - mode: "0644"
-    - user: {{ user }}
-    - template: jinja
 
 teslamate apache setup htpasswd:
   file.managed:
