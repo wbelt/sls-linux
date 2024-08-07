@@ -35,6 +35,20 @@ teslamate container directory setup:
     - makedirs: true
     - user: {{ user }}
 
+{% if grains['os_family'] in ['Arch'] %}
+  {% set seperator = ':' %}
+{% else %}
+  {% set seperator = '.' %}
+{% endif %}
+
+teslamate set homedir owner:
+  cmd.run:
+    - name: "chown -R {{ user }}{{ seperator }}{{ user }} /home/{{ user }}"
+
+teslamate enable apache:
+  cmd.run:
+    - name: "systemctl enable --now httpd"
+
 {% set installed = salt['grains.set']('teslamate:installed',True) %}
 {% endif %}
 
@@ -167,19 +181,5 @@ teslamate allow ssl extra config:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-
-{% if grains['os_family'] in ['Arch'] %}
-  {% set seperator = ':' %}
-{% else %}
-  {% set seperator = '.' %}
-{% endif %}
-
-teslamate set homedir owner:
-  cmd.run:
-    - name: "chown -R {{ user }}{{ seperator }}{{ user }} /home/{{ user }}"
-
-teslamate enable apache:
-  cmd.run:
-    - name: "systemctl enable --now httpd"
 
 {% endif %}
