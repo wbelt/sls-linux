@@ -3,6 +3,13 @@
 {% if salt['grains.get']('teslamate:installed', False) == False %}
 
 podman server base:
+  user.present:
+    - name: {{ user }}
+    - fullname: Teslamate User
+    - shell: /bin/bash
+    - createhome: True
+  cmd.run:
+    - name: "loginctl enable-linger {{ user }}"
   pkg.installed:
     - refresh: True
     - pkgs:
