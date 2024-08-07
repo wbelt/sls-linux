@@ -77,12 +77,14 @@ teslamate backup script:
     - source: salt://diydev/files/teslamate/teslamate-backup.sh
     - mode: "0744"
     - user: {{ user }}
+    - template: jinja
 teslamate restore script:
   file.managed:
     - name: /home/{{ user }}/restore.sh
     - source: salt://diydev/files/teslamate/teslamate-restore.sh
     - mode: "0744"
     - user: {{ user }}
+    - template: jinja
 
 teslamate apache setup htpasswd:
   file.managed:
