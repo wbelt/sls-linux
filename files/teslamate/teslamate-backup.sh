@@ -13,6 +13,7 @@ banner_help()
 }
 perform_backup()
 {
+  echo "Performing backup to ${BACKUPFILE}..."
   podman exec -t systemd-teslamate-database pg_dump -U teslamate teslamate | gzip -c > $BACKUPFILE
 }
 if [ -z $1 ]; then
@@ -24,6 +25,7 @@ if [ -z $1 ]; then
 else
   if [ "$1" == "--over-write" ]; then
     if [ -f $BACKUPFILE ]; then
+      echo "Removing file ${BACKUPFILE} per over-write flag..."
       rm $BACKUPFILE
     fi
     perform_backup
