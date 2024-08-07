@@ -1,5 +1,6 @@
 {% if grains['os_family'] in ['Arch'] %}
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
+{% if salt['grains.get']('teslamate:installed', False) == False %}
 
 podman server base:
   pkg.installed:
@@ -33,6 +34,9 @@ teslamate container directory setup:
     - mode: "0755"
     - makedirs: true
     - user: {{ user }}
+
+{% set installed = salt['grains.set']('teslamate:installed',True) %}
+{% endif %}
 
 teslamate database container setup:
   file.managed:
