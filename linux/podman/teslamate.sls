@@ -63,13 +63,13 @@ teslamate backup script:
   file.managed:
     - name: /home/{{ user }}/backup.sh
     - source: salt://diydev/files/teslamate/teslamate-backup.sh
-    - mode: "0644"
+    - mode: "0744"
     - user: {{ user }}
 teslamate restore script:
   file.managed:
     - name: /home/{{ user }}/restore.sh
     - source: salt://diydev/files/teslamate/teslamate-restore.sh
-    - mode: "0644"
+    - mode: "0744"
     - user: {{ user }}
 
 teslamate database container setup:
