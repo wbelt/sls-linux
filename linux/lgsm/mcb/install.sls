@@ -57,7 +57,7 @@
 {{ defname }} mcbcron file:
   file.managed:
     - name: /usr/local/bin/mcbcron
-    - source: salt://files/mcbcron
+    - source: salt://diydev/files/mcb/mcbcron
     - mode: "0755"
 
 {{ defname }} cron update:
