@@ -1,8 +1,8 @@
-{% if (grains['os_family'] in ['RedHat']) %}
+{% if grains['os_family'] in ['RedHat'] %}
 {% set defname = 'mcbserver' %}
 {% set user = salt['pillar.get']('mcbserver:user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
-{% if salt['grains.get']('mcbserver:installed', False) == False) %}
+{% if salt['grains.get']('mcbserver:installed', False) == False %}
 {{ defname }} base:
   pkg.latest:
     - refresh: True
