@@ -1,0 +1,119 @@
+#!/bin/bash
+echo_rcon_error()
+{
+        if [ $1 -eq 110 ]; then
+                echo "${0}: RCON DISABLED: RustDedicated running process not found"
+        elif [ $1 -eq 100 ]; then
+                echo "${0}: RCON DISABLED: No rconpwd file was found"
+        fi
+}
+
+rcon_cmd()
+{
+        if [ -f "rconpwd" ]; then
+                if pgrep "RustDedicated" &> /dev/null 2>&1; then
+                        /usr/local/bin/rcon -s -t web -a "localhost:28016" -p $(cat rconpwd) "$@" 2>&1
+                else
+                        return 110
+               fi
+        else
+                return 100
+        fi
+        return $?
+}
+
+warning_minute()
+{
+        local RETVAL=0
+        local ENDMIN=45
+        local WARNMIN=(44 43 42 41 40 35)
+        local CURMIN=$(date +%M)
+        local LEFTMINS=0
+        if [ -f "maint.conf" ]; then
+                . ./maint.conf
+        fi
+        local DIFFMIN=$((${CURMIN#0}-${ENDMIN#0}))
+        local MESG=""
+        if [ $DIFFMIN -eq 0 ]; then
+                MESG="reboot"
+                RETVAL=1
+        elif [[ " ${WARNMIN[*]} " =~ [[:space:]]${DIFFMIN}[[:space:]] ]]; then
+                LEFTMINS=${DIFFMIN#-}
+                if [ $LEFTMINS -eq 1 ]; then
+                        MESG="WARNING: daily reboot in ONE minute!!! (60 seconds)"
+                        RETVAL=100
+                else
+                        MESG="WARNING: daily reboot in ${LEFTMINS} minutes"
+                        RETVAL=200
+                fi
+        else
+                MESG="DEBUG: CURMIN=${CURMIN} DIFFMIN=${DIFFMIN}/${DIFFMIN#-} ENDMIN=${ENDMIN} WARNMIN={${WARNMIN[@]}}"
+        fi
+        echo $MESG
+        return $RETVAL
+}
+
+save_quit_update_restart()
+{
+        echo "${0}: rustserver RCON save quit..."
+        rcon_cmd "save" "quit"
+        local SAVEQUIT=$?
+        echo "${0}: rustserver stop..."
+        ./rustserver stop
+        echo "${0}: rustserver update-lgsm..."
+        ./rustserver update-lgsm
+        echo "${0}: rustserver update..."
+        ./rustserver update
+        local dayofweek=$(date +%u) # day of week (1..7); 1 is Monday
+        local dayofmonth=$(date +%d) # day of month (e.g., 01)
+        if (( dayofweek == 5 && 10#$dayofmonth < 8 )); then
+                echo "${0}: rustserver map-wipe..."
+                ./rustserver map-wipe
+        fi
+        if [ $SAVEQUIT -eq 0 ]; then
+                echo "${0}: rustserver restart..."
+                ./rustserver start
+        fi
+}
+
+if [ -z $1 ]; then
+        echo $0
+        echo ""
+        echo "    select option"
+        echo ""
+        echo "      update        - save, update and restart"
+        echo "      saytime       - server time annoucement"
+        echo "      maint         - auto maintenance"
+        echo "      cmd status    - run status RCON command"
+        echo "      cmd <string>  - run any RCON command"
+        echo ""
+else 
+        if [ "$1" = "update" ]; then
+                save_quit_update_restart
+        elif [ "$1" = "cmd" ]; then
+                shift
+                rcon_cmd "$@"
+                RETVAL=$?
+                if [ $RETVAL -ne 0 ]; then
+                        echo_rcon_error $RETVAL
+                fi
+        elif [ "$1" = "saytime" ]; then
+                MESG="time now is $(date +'%I:%M %p ET')"
+                rcon_cmd "say ${MESG}"
+                RETVAL=$?
+                if [ $RETVAL -eq 0 ]; then
+                        echo "${0}: said ${MESG}"
+                fi
+        elif [ "$1" = "maint" ]; then
+                OUTPUT=$(warning_minute)
+                RETVAL="${?}"
+                if [ $RETVAL -eq 1 ]; then
+                        save_quit_update_restart
+                elif (( $RETVAL == 100 || $RETVAL == 200 )); then
+                        rcon_cmd "say ${OUTPUT}"
+                        if [ $? -eq 0 ]; then
+                                echo "${0}: said ${OUTPUT}"
+                        fi
+                fi
+        fi
+fi

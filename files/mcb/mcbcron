@@ -11,8 +11,9 @@ uptime_reboot()
         local MAX_UPTIME=86300
         local PS_UPTIME=$(ps -o etimes= -p $(pgrep bedrock) | xargs)
         echo "${0}: process uptime ${PS_UPTIME}"
-        if [ $PS_UPTIME -gt MAX_UPTIME ]; then
+        if [ $PS_UPTIME -gt $MAX_UPTIME ]; then
           echo "${0}: Max uptime exceeded"
+          ./mcbserver restart
         fi
 }
 if [ -z $1 ]; then
@@ -21,7 +22,7 @@ if [ -z $1 ]; then
         echo "    select option"
         echo ""
         echo "      reboot        - reboot if up more than MAX_TIME"
-        echo "      uptime_reboot - check uptime and reboot if needed"
+        echo "      update        - check update and reboot if needed"
         echo ""
 else 
         if [ "$1" = "update" ]; then

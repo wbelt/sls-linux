@@ -39,19 +39,19 @@ rust server install:
 rust server sudo admin command:
   file.managed:
     - name: /usr/local/bin/rssudo
-    - source: salt://files/rssudo
+    - source: salt://diydev/files/rust/rssudo
     - mode: "0755"
 
 rust server uptime command:
   file.managed:
     - name: /usr/local/bin/rsuptime
-    - source: salt://files/rsuptime
+    - source: salt://diydev/files/rust/rsuptime
     - mode: "0755"
 
 rust server rcon file:
   file.managed:
     - name: /usr/local/bin/rcon
-    - source: salt://files/rcon
+    - source: salt://files/rust/rcon
     - mode: "0755"
 
 {% if 'rconpassword' in pillar['rustserver'] %}
@@ -68,7 +68,7 @@ rust server rconpwd file:
 rust server maint.conf file:
   file.managed:
     - name: {{ userhomedir }}/maint.conf
-    - source: salt://files/maint.conf
+    - source: salt://diydev/files/maint.conf
     - mode: "0600"
     - user: {{ user }}
     - group: {{ user }}
@@ -76,7 +76,7 @@ rust server maint.conf file:
 rust server rshelper file:
   file.managed:
     - name: /usr/local/bin/rscon
-    - source: salt://files/rscon
+    - source: salt://diydev/files/rscon
     - mode: "0755"
 
 {% endif %}

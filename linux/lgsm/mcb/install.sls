@@ -1,8 +1,8 @@
+{% if (grains['os_family'] in ['RedHat']) %}
 {% set defname = 'mcbserver' %}
 {% set user = salt['pillar.get']('mcbserver:user',defname) %}
-{% if (grains['os_family'] in ['RedHat']) and
-      (salt['grains.get']('mcbserver:installed', False) == False) %}
 {% set userhomedir = '/home/' ~ user %}
+{% if salt['grains.get']('mcbserver:installed', False) == False) %}
 {{ defname }} base:
   pkg.latest:
     - refresh: True
@@ -51,6 +51,9 @@
   cmd.run:
     - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
 
+{% set installed = salt['grains.set']('mcbserver:installed',True) %}
+{% endif %}
+
 {{ defname }} mcbcron file:
   file.managed:
     - name: /usr/local/bin/mcbcron
@@ -73,6 +76,5 @@
     - hour: "3"
     - minute: "35"
 
-{% set installed = salt['grains.set']('mcbserver:installed',True) %}
 {% endif %}
 
