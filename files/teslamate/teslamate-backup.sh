@@ -1,20 +1,23 @@
 #!/bin/bash
 BACKUPFILE="teslamate-database-backup.tgz"
+banner_help()
+{
+  echo $0
+  echo ""
+  echo $1
+  echo ""
+  echo "    select option"
+  echo ""
+  echo "      --over-write  - Overwrite backup file if it already exists"
+  echo ""
+}
 perform_backup()
 {
   podman exec -t systemd-teslamate-database pg_dump -U teslamate teslamate | gzip -c > $BACKUPFILE
 }
-
 if [ -z $1 ]; then
   if [ -f $BACKUPFILE ]; then
-    echo $0
-    echo ""
-    echo "Backup File ${1} already exists and over-write not provided!"
-    echo ""
-    echo "    select option"
-    echo ""
-    echo "      --over-write  - Overwrite backup file if it already exists"
-    echo ""
+    banner_help "Backup File ${BACKUPFILE} already exists and over-write not provided!"
   else
     perform_backup
   fi
@@ -25,13 +28,6 @@ else
     fi
     perform_backup
   else
-    echo $0
-    echo ""
-    echo "Unknown option {$1}"
-    echo ""
-    echo "    select option"
-    echo ""
-    echo "      --over-write  - Overwrite backup file if it already exists"
-    echo ""
+    banner_help "Unknown option ${1}"
   fi
 fi
