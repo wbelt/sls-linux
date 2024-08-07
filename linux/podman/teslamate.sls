@@ -18,18 +18,6 @@ podman server base:
       - fuse-overlayfs
       - apache
 
-{% set upname = 'podman-5.2.0-1-x86_64.pkg.tar.zst' %}
-teslamate podman copy:
-  file.managed:
-    - name: /home/{{ user }}/{{ upname }}
-    - source: salt://files/teslamate/{{ upname }}
-    - mode: "0644"
-    - user: {{ user }}
-
-teslamate update podman version:
-  cmd.run:
-    - name: "pacman --noconfirm -U /home/{{ user }}/{{ upname }}"
-
 teslamate create podman network:
   cmd.run:
     - name: "podman network create teslamate"
