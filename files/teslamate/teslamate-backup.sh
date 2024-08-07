@@ -14,7 +14,7 @@ banner_help()
 perform_backup()
 {
   echo "Performing backup to ${BACKUPFILE}..."
-  podman exec -t systemd-teslamate-database pg_dump -U teslamate teslamate | gzip -c > $BACKUPFILE
+  podman exec -t systemd-teslamate-database pg_dump -U {{ pillar['teslamate']['database_user'] }} {{ pillar['teslamate']['database_name'] }} | gzip -c > $BACKUPFILE
 }
 if [ -z $1 ]; then
   if [ -f $BACKUPFILE ]; then
