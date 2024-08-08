@@ -77,7 +77,7 @@ teslamate server sudo command local bin:
     - source: salt://diydev/files/teslamate/tmsudo
     - mode: "0755"
     - context:
-      user: {{ user }}
+      svcuser: {{ user }}
     - template: jinja
 
 {% set admuser = salt['pillar.get']('adminuser:id',user) %}
@@ -89,7 +89,7 @@ teslamate server sudo command home:
     - user: {{ admuser }}
     - group: {{ admuser }}
     - context:
-      user: {{ user }}
+      svcuser: {{ user }}
     - template: jinja
 
 teslamate backup script:
