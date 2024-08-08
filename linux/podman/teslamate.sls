@@ -79,6 +79,8 @@ teslamate server sudo command local bin:
     - context:
       user: {{ user }}
     - template: jinja
+
+{% set admuser = salt['pillar.get']('adminuser:id',user) %}
 teslamate server sudo command home:
   file.managed:
     - name: /home/{{ user }}/tmsudo
@@ -86,7 +88,7 @@ teslamate server sudo command home:
     - mode: "0744"
     - user: {{ user }}
     - context:
-      user: {{ user }}
+      user: {{ admuser }}
     - template: jinja
 
 teslamate backup script:
