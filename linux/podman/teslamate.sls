@@ -76,6 +76,8 @@ teslamate server sudo command local bin:
     - name: /usr/local/bin/tmsudo
     - source: salt://diydev/files/teslamate/tmsudo
     - mode: "0755"
+    - context:
+      user: {{ user }}
     - template: jinja
 teslamate server sudo command home:
   file.managed:
@@ -83,6 +85,8 @@ teslamate server sudo command home:
     - source: salt://diydev/files/teslamate/tmsudo
     - mode: "0744"
     - user: {{ user }}
+    - context:
+      user: {{ user }}
     - template: jinja
 
 teslamate backup script:
