@@ -83,12 +83,12 @@ teslamate server sudo command local bin:
 {% set admuser = salt['pillar.get']('adminuser:id',user) %}
 teslamate server sudo command home:
   file.managed:
-    - name: /home/{{ user }}/tmsudo
+    - name: /home/{{ admuser }}/tmsudo
     - source: salt://diydev/files/teslamate/tmsudo
     - mode: "0744"
     - user: {{ user }}
     - context:
-      user: {{ admuser }}
+      user: {{ user }}
     - template: jinja
 
 teslamate backup script:
