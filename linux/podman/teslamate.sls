@@ -93,14 +93,14 @@ teslamate server sudo command home:
 
 teslamate backup script:
   file.managed:
-    - name: /home/{{ user }}/backup.sh
+    - name: /home/{{ user }}/db-backup
     - source: salt://diydev/files/teslamate/teslamate-backup.sh
     - mode: "0744"
     - user: {{ user }}
     - template: jinja
 teslamate restore script:
   file.managed:
-    - name: /home/{{ user }}/restore.sh
+    - name: /home/{{ user }}/db-restore
     - source: salt://diydev/files/teslamate/teslamate-restore.sh
     - mode: "0744"
     - user: {{ user }}
