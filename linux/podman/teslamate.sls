@@ -86,7 +86,8 @@ teslamate server sudo command home:
     - name: /home/{{ admuser }}/tmsudo
     - source: salt://diydev/files/teslamate/tmsudo
     - mode: "0744"
-    - user: {{ user }}
+    - user: {{ admuser }}
+    - group: {{ admuser }}
     - context:
       user: {{ user }}
     - template: jinja
@@ -97,6 +98,7 @@ teslamate backup script:
     - source: salt://diydev/files/teslamate/teslamate-backup.sh
     - mode: "0744"
     - user: {{ user }}
+    - group: {{ user }}
     - template: jinja
 teslamate restore script:
   file.managed:
@@ -104,6 +106,7 @@ teslamate restore script:
     - source: salt://diydev/files/teslamate/teslamate-restore.sh
     - mode: "0744"
     - user: {{ user }}
+    - group: {{ user }}
     - template: jinja
 
 teslamate apache setup htpasswd:
