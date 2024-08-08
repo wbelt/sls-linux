@@ -1,0 +1,3 @@
+#!/bin/bash
+echo Switching to {{ user }} user with machinectl shell...
+sudo machinectl shell {{ user }}@

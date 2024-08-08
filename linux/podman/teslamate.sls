@@ -71,6 +71,20 @@ teslamate enable apache:
 {% set installed = salt['grains.set']('teslamate:installed',True) %}
 {% endif %}
 
+teslamate server sudo command local bin:
+  file.managed:
+    - name: /usr/local/bin/tmsudo
+    - source: salt://diydev/files/teslamate/tmsudo
+    - mode: "0755"
+    - template: jinja
+teslamate server sudo command home:
+  file.managed:
+    - name: /home/{{ user }}/tmsudo
+    - source: salt://diydev/files/teslamate/tmsudo
+    - mode: "0744"
+    - user: {{ user }}
+    - template: jinja
+
 teslamate backup script:
   file.managed:
     - name: /home/{{ user }}/backup.sh
