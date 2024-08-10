@@ -156,6 +156,7 @@ teslamate apache teslamate vhost:
     - name: /etc/httpd/conf/teslamate.conf
     - source: salt://diydev/files/teslamate/teslamate-apache-vhost.conf
     - mode: "0644"
+    - template: jinja
 
 teslamate allow conf teslamate:
   file.replace:
