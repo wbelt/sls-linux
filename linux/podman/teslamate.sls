@@ -115,22 +115,40 @@ teslamate apache setup htpasswd:
     - source: salt://files/teslamate/htpasswd
     - mode: "0644"
 
-teslamate apache setup server.crt:
+teslamate apache setup server.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/server.crt
-    - source: salt://files/certs/splat.flbelt.com.crt
+    - name: /etc/httpd/conf/teslamate.skipgilbert.com.crt
+    - source: salt://files/certs/teslamate.skipgilbert.com.crt
     - mode: "0644"
 
-teslamate apache setup server.key:
+teslamate apache setup server.key teslamate:
   file.managed:
-    - name: /etc/httpd/conf/server.key
-    - source: salt://files/certs/splat.flbelt.com.key
+    - name: /etc/httpd/conf/teslamate.skipgilbert.com.key
+    - source: salt://files/certs/teslamate.skipgilbert.com.key
     - mode: "0644"
 
-teslamate apache setup server-ca.crt:
+teslamate apache setup server-ca.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/server-ca.crt
-    - source: salt://files/certs/splat.flbelt.com.ca-bundle
+    - name: /etc/httpd/conf/teslamate.skipgilbert.com.ca-bundle
+    - source: salt://files/certs/teslamate.skipgilbert.com.ca-bundle
+    - mode: "0644"
+
+teslamate apache setup server.crt grafana:
+  file.managed:
+    - name: /etc/httpd/conf/grafana.skipgilbert.com.crt
+    - source: salt://files/certs/grafana.skipgilbert.com.crt
+    - mode: "0644"
+
+teslamate apache setup server.key grafana:
+  file.managed:
+    - name: /etc/httpd/conf/grafana.skipgilbert.com.key
+    - source: salt://files/certs/grafana.skipgilbert.com.key
+    - mode: "0644"
+
+teslamate apache setup server-ca.crt grafana:
+  file.managed:
+    - name: /etc/httpd/conf/grafana.skipgilbert.com.ca-bundle
+    - source: salt://files/certs/grafana.skipgilbert.com.ca-bundle
     - mode: "0644"
 
 teslamate apache teslamate vhost:
