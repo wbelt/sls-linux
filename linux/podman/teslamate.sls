@@ -1,6 +1,8 @@
 {% if grains['os_family'] in ['Arch'] %}
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
-{% if salt['grains.get']('teslamate:installed2', False) == False %}
+{% set domain = salt['grains.get']('teslamate:domain','none') %}
+{% if (salt['grains.get']('teslamate:installed2', False) == False) and
+      (domain != 'none') %}
 
 podman server base:
   user.present:
@@ -241,7 +243,7 @@ teslamate disable standard SSLCertificateFile:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-teslamate disable standard SSLCertificateFile:
+teslamate disable standard SSLCertificateKeyFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
     - pattern: ^(SSLCertificateKeyFile.*)$
@@ -249,7 +251,7 @@ teslamate disable standard SSLCertificateFile:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-teslamate disable standard SSLCertificateFile:
+teslamate disable standard SSLCertificateChainFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
     - pattern: ^(SSLCertificateChainFile.*)$
