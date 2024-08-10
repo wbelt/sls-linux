@@ -47,6 +47,8 @@ teslamate grafana container setup:
     - mode: "0644"
     - user: {{ user }}
     - template: jinja
+    - context:
+        dns_domain: {{ domain }}
 
 teslamate app container setup:
   file.managed:
@@ -55,6 +57,8 @@ teslamate app container setup:
     - mode: "0644"
     - user: {{ user }}
     - template: jinja
+    - context:
+        dns_domain: {{ domain }}
 
 {% if grains['os_family'] in ['Arch'] %}
   {% set seperator = ':' %}
@@ -119,38 +123,38 @@ teslamate apache setup htpasswd:
 
 teslamate apache setup server.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.{{ pillar['teslamate']['dns_domain'] }}.crt
-    - source: salt://files/certs/teslamate.{{ pillar['teslamate']['dns_domain'] }}.crt
+    - name: /etc/httpd/conf/teslamate.{{ domain }}.crt
+    - source: salt://files/certs/teslamate.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.{{ pillar['teslamate']['dns_domain'] }}.key
-    - source: salt://files/certs/teslamate.{{ pillar['teslamate']['dns_domain'] }}.key
+    - name: /etc/httpd/conf/teslamate.{{ domain }}.key
+    - source: salt://files/certs/teslamate.{{ domain }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
-    - source: salt://files/certs/teslamate.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
+    - name: /etc/httpd/conf/teslamate.{{ domain }}.ca-bundle
+    - source: salt://files/certs/teslamate.{{ domain }}.ca-bundle
     - mode: "0644"
 
 teslamate apache setup server.crt grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.{{ pillar['teslamate']['dns_domain'] }}.crt
-    - source: salt://files/certs/grafana.{{ pillar['teslamate']['dns_domain'] }}.crt
+    - name: /etc/httpd/conf/grafana.{{ domain }}.crt
+    - source: salt://files/certs/grafana.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.{{ pillar['teslamate']['dns_domain'] }}.key
-    - source: salt://files/certs/grafana.{{ pillar['teslamate']['dns_domain'] }}.key
+    - name: /etc/httpd/conf/grafana.{{ domain }}.key
+    - source: salt://files/certs/grafana.{{ domain }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
-    - source: salt://files/certs/grafana.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
+    - name: /etc/httpd/conf/grafana.{{ domain }}.ca-bundle
+    - source: salt://files/certs/grafana.{{ domain }}.ca-bundle
     - mode: "0644"
 
 teslamate apache teslamate vhost:
@@ -159,6 +163,8 @@ teslamate apache teslamate vhost:
     - source: salt://diydev/files/teslamate/teslamate-apache-vhost.conf
     - mode: "0644"
     - template: jinja
+    - context:
+        dns_domain: {{ domain }}
 
 teslamate allow conf teslamate:
   file.replace:

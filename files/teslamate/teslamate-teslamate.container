@@ -5,7 +5,7 @@ Before=teslamate-grafana.service
 
 [Container]
 DropCapability=all
-Environment=CHECK_ORIGIN=true DATABASE_HOST=database DATABASE_NAME={{ pillar['teslamate']['database_name'] }} DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER={{ pillar['teslamate']['database_user'] }} ENCRYPTION_KEY={{ pillar['teslamate']['encryption_key'] }} DISABLE_MQTT=true TZ=America/New_York VIRTUAL_HOST=teslamate.{{ pillar['teslamate']['dns_domain'] }}
+Environment=CHECK_ORIGIN=true DATABASE_HOST=database DATABASE_NAME={{ pillar['teslamate']['database_name'] }} DATABASE_PASS={{ pillar['teslamate']['database_password'] }} DATABASE_USER={{ pillar['teslamate']['database_user'] }} ENCRYPTION_KEY={{ pillar['teslamate']['encryption_key'] }} DISABLE_MQTT=true TZ=America/New_York VIRTUAL_HOST=teslamate.{{ dns_domain }}
 Image=docker.io/teslamate/teslamate:latest
 Network=teslamate
 NetworkAlias=teslamate
