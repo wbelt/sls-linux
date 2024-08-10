@@ -1,6 +1,6 @@
 {% if grains['os_family'] in ['Arch'] %}
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
-{% if salt['grains.get']('teslamate:installed', False) == False %}
+{% if salt['grains.get']('teslamate:installed2', False) == False %}
 
 podman server base:
   user.present:
@@ -117,38 +117,38 @@ teslamate apache setup htpasswd:
 
 teslamate apache setup server.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.skipgilbert.com.crt
-    - source: salt://files/certs/teslamate.skipgilbert.com.crt
+    - name: /etc/httpd/conf/teslamate.{{ pillar['teslamate']['dns_domain'] }}.crt
+    - source: salt://files/certs/teslamate.{{ pillar['teslamate']['dns_domain'] }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.skipgilbert.com.key
-    - source: salt://files/certs/teslamate.skipgilbert.com.key
+    - name: /etc/httpd/conf/teslamate.{{ pillar['teslamate']['dns_domain'] }}.key
+    - source: salt://files/certs/teslamate.{{ pillar['teslamate']['dns_domain'] }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.skipgilbert.com.ca-bundle
-    - source: salt://files/certs/teslamate.skipgilbert.com.ca-bundle
+    - name: /etc/httpd/conf/teslamate.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
+    - source: salt://files/certs/teslamate.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
     - mode: "0644"
 
 teslamate apache setup server.crt grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.skipgilbert.com.crt
-    - source: salt://files/certs/grafana.skipgilbert.com.crt
+    - name: /etc/httpd/conf/grafana.{{ pillar['teslamate']['dns_domain'] }}.crt
+    - source: salt://files/certs/grafana.{{ pillar['teslamate']['dns_domain'] }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.skipgilbert.com.key
-    - source: salt://files/certs/grafana.skipgilbert.com.key
+    - name: /etc/httpd/conf/grafana.{{ pillar['teslamate']['dns_domain'] }}.key
+    - source: salt://files/certs/grafana.{{ pillar['teslamate']['dns_domain'] }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.skipgilbert.com.ca-bundle
-    - source: salt://files/certs/grafana.skipgilbert.com.ca-bundle
+    - name: /etc/httpd/conf/grafana.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
+    - source: salt://files/certs/grafana.{{ pillar['teslamate']['dns_domain'] }}.ca-bundle
     - mode: "0644"
 
 teslamate apache teslamate vhost:
@@ -230,6 +230,30 @@ teslamate allow ssl extra config:
     - name: /etc/httpd/conf/httpd.conf
     - pattern: ^#(Include conf/extra/httpd-ssl\.conf.*)$
     - repl: '\1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate disable standard SSLCertificateFile:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(SSLCertificateFile.*)$
+    - repl: '#\1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate disable standard SSLCertificateFile:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(SSLCertificateKeyFile.*)$
+    - repl: '#\1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate disable standard SSLCertificateFile:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(SSLCertificateChainFile.*)$
+    - repl: '#\1'
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
