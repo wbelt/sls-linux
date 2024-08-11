@@ -241,7 +241,7 @@ teslamate allow ssl extra config:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-teslamate disable standard SSLCertificateFile:
+teslamate replace default SSLCertificateFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
     - pattern: ^(S|#S)SLCertificateFile.*$
@@ -249,7 +249,7 @@ teslamate disable standard SSLCertificateFile:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-teslamate disable standard SSLCertificateKeyFile:
+teslamate replace default SSLCertificateKeyFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
     - pattern: ^(S|#S)SLCertificateKeyFile.*$
@@ -257,19 +257,11 @@ teslamate disable standard SSLCertificateKeyFile:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
-teslamate disable standard SSLCertificateChainFile:
+teslamate replace default SSLCertificateChainFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
     - pattern: ^(S|#S)SLCertificateChainFile.*$
     - repl: 'SSLCertificateChainFile /etc/httpd/conf/teslamate.{{ domain }}.ca-bundle'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate disable standard SSLCertificateChainFile:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(SSLCertificateChainFile.*)$
-    - repl: '#\1'
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
