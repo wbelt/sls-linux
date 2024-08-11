@@ -1,8 +1,10 @@
 {% if grains['os_family'] in ['Arch'] %}
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
-{% set domain = salt['grains.get']('teslamate:domain','none') %}
-{% if (salt['grains.get']('teslamate:installed2', False) == False) and
-      (domain != 'none') %}
+{% set domain = salt['grains.get']('teslamate:domain','') %}
+{% set extra_admin = salt['grains.get']('teslamate:extra_admin','')  %}
+
+{% if (salt['grains.get']('teslamate:installed', False) == False) and
+      (domain != '') %}
 
 podman server base:
   user.present:
@@ -120,6 +122,18 @@ teslamate apache setup htpasswd:
     - name: /etc/httpd/conf/htpasswd
     - source: salt://files/teslamate/htpasswd
     - mode: "0644"
+
+{% if extra_admin != '' %}
+teslamate apache setup htpasswd extra admin:
+  file.replace:
+    - name: /etc/httpd/conf/htpasswd
+    - pattern: ^{{ extra_admin }}$
+    - repl: '{{ extra_admin }}'
+    - count: 1
+    - append_if_not_found: true
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+{% endif %}
 
 teslamate apache setup server.crt teslamate:
   file.managed:
