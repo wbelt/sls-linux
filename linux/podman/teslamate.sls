@@ -62,6 +62,12 @@ teslamate app container setup:
     - context:
         dns_domain: {{ domain }}
 
+teslamate apache setup htpasswd:
+  file.managed:
+    - name: /etc/httpd/conf/htpasswd
+    - source: salt://files/teslamate/htpasswd
+    - mode: "0644"
+
 {% if grains['os_family'] in ['Arch'] %}
   {% set seperator = ':' %}
 {% else %}
@@ -116,12 +122,6 @@ teslamate restore script:
     - user: {{ user }}
     - group: {{ user }}
     - template: jinja
-
-teslamate apache setup htpasswd:
-  file.managed:
-    - name: /etc/httpd/conf/htpasswd
-    - source: salt://files/teslamate/htpasswd
-    - mode: "0644"
 
 {% if extra_admin != '' %}
 teslamate apache setup htpasswd extra admin:
