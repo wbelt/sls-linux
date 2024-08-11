@@ -244,16 +244,24 @@ teslamate allow ssl extra config:
 teslamate disable standard SSLCertificateFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(SSLCertificateFile.*)$
-    - repl: '#\1'
+    - pattern: ^(S|#S)SLCertificateFile.*$
+    - repl: 'SSLCertificateFile /etc/httpd/conf/teslamate.{{ domain }}.crt'
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
 teslamate disable standard SSLCertificateKeyFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(SSLCertificateKeyFile.*)$
-    - repl: '#\1'
+    - pattern: ^(S|#S)SLCertificateKeyFile.*$
+    - repl: 'SSLCertificateKeyFile /etc/httpd/conf/teslamate.{{ domain }}.key'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate disable standard SSLCertificateChainFile:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(S|#S)SLCertificateChainFile.*$
+    - repl: 'SSLCertificateChainFile /etc/httpd/conf/teslamate.{{ domain }}.ca-bundle'
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False

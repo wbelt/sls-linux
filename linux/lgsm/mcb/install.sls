@@ -60,6 +60,12 @@
     - source: salt://diydev/files/mcb/mcbcron
     - mode: "0755"
 
+{{ defname }} cron path:
+  cron.env_present:
+    - name: PATH
+    - value: /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+    - user: {{ user }}
+
 {{ defname }} cron update:
   cron.present:
     - name: /usr/local/bin/mcbcron update >> update.log 2>&1
