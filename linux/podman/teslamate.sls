@@ -255,6 +255,46 @@ teslamate allow ssl extra config:
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
+teslamate replace default SSLCipherSuite:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(S|#S)SLCipherSuite .*$
+    - repl: 'SSLCipherSuite HIGH:!MEDIUM:!SSLv3:!kRSA:!SHA1:!SHA256:!SHA384:!DSS:!aNULL'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLProxyCipherSuite:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(S|#S)SLProxyCipherSuite .*$
+    - repl: 'SSLProxyCipherSuite HIGH:!MEDIUM:!SSLv3:!kRSA:!SHA1:!SHA256:!SHA384:!DSS:!aNULL'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLProtocol:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(S|#S)SLProtocol .*$
+    - repl: 'SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLProxyProtocol:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(S|#S)SLProxyProtocol .*$
+    - repl: 'SSLProxyProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLHonorCipherOrder:
+  file.replace:
+    - name: /etc/httpd/conf/extra/httpd-ssl.conf
+    - pattern: ^(S|#S)SLHonorCipherOrder .*$
+    - repl: 'SSLHonorCipherOrder off'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
 teslamate replace default SSLCertificateFile:
   file.replace:
     - name: /etc/httpd/conf/extra/httpd-ssl.conf
