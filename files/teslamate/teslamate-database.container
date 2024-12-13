@@ -4,7 +4,7 @@ Before=local-fs.target
 
 [Container]
 Environment=POSTGRES_DB={{ pillar['teslamate']['database_name'] }} POSTGRES_PASSWORD={{ pillar['teslamate']['database_password'] }} POSTGRES_USER={{ pillar['teslamate']['database_user'] }}
-Image=docker.io/library/postgres:16
+Image=docker.io/library/postgres:17
 Network=teslamate
 NetworkAlias=database
 Volume=teslamate-db:/var/lib/postgresql/data
