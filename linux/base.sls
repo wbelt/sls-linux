@@ -1,7 +1,9 @@
 {% if grains['os_family'] in ['Debian'] %}
   {% set sshd_name = 'ssh.service' %}
+  {% set sudo_group = 'sudo' %}
 {% else %}
   {% set sshd_name = 'sshd.service' %}
+  {% set sudo_group = 'wheel' %}
 {% endif %}
 
 set preferred timezone:
@@ -33,5 +35,5 @@ create adminsuser:
   ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
 wheel group no sudo password:
   file.append:
-    - name: /etc/sudoers.d/85-wheel-group
-    - text: '%wheel  ALL=(ALL)       NOPASSWD:ALL'
+    - name: /etc/sudoers.d/85-{{ sudo_group }}-group
+    - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
