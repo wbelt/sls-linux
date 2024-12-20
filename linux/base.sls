@@ -31,8 +31,8 @@ restart ssh if needed:
       - file: /etc/ssh/sshd_config
 
 create adminsuser:
-  user.present: {{ pillar['adminuser']['user.present'] }}
-  ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
+  user.present: {{ pillar['user.present'] }}
+  ssh_auth.present: {{ pillar['ssh_auth.present'] }}
   user.present.groups: {{ sudo_group }}
 wheel group no sudo password:
   file.append:
