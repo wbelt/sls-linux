@@ -7,7 +7,7 @@
 {% if 'timezone.system' in pillar %}
 set preferred timezone:
   timezone.system:
-    - name: {{ pillar['timezone.system'] }}
+    - name: America/New_York
 {% endif %}
 
 set custom ssh port:
