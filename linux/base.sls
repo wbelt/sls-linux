@@ -4,11 +4,9 @@
   {% set sshd_name = 'sshd.service' %}
 {% endif %}
 
-{% if 'tzsystem' in pillar %}
 set preferred timezone:
   timezone.system:
     - name: America/New_York
-{% endif %}
 
 set custom ssh port:
   file.replace:
