@@ -1,3 +1,9 @@
+{% if grains['os_family'] in ['Debian'] %}
+  {% set sshd_name = 'ssh.service' %}
+{% else %}
+  {% set sshd_name = 'sshd.service' %}
+{% endif %}
+
 {% if 'timezone.system' in pillar %}
 set preferred timezone:
   timezone.system:
@@ -19,7 +25,7 @@ set custom ssh port:
 
 restart ssh if needed:
   service.running:
-    - name: sshd.service
+    - name: {{ sshd_name }}
     - reload: True
     - watch:
       - file: /etc/ssh/sshd_config
