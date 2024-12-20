@@ -4,10 +4,10 @@
   {% set sshd_name = 'sshd.service' %}
 {% endif %}
 
-{% if 'timezone' in pillar %}
+{% if 'timezone.system' in pillar %}
 set preferred timezone:
   timezone.system:
-    - name: {{ pillar['timezone']['system'] }}
+    - name: {{ pillar['timezone.system'] }}
 {% endif %}
 
 set custom ssh port:
