@@ -28,11 +28,10 @@ restart ssh if needed:
     - watch:
       - file: /etc/ssh/sshd_config
 
-create adminsuser {{ pillar['adminuser']['id'] }}:
+create adminsuser:
   user.present: {{ pillar['adminuser']['user.present'] }}
   ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
 wheel group no sudo password:
   file.append:
     - name: /etc/sudoers.d/85-wheel-group
     - text: '%wheel  ALL=(ALL)       NOPASSWD:ALL'
-    
