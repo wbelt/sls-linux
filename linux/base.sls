@@ -4,7 +4,7 @@
   {% set sshd_name = 'sshd.service' %}
 {% endif %}
 
-{% if 'timezone.system' in pillar %}
+{% if 'tzsystem' in pillar %}
 set preferred timezone:
   timezone.system:
     - name: America/New_York
