@@ -8,7 +8,7 @@
 
 set preferred timezone:
   timezone.system:
-    - name: {{ pillar['timezone'] }}
+    - name: {{ pillar.get('timezone') }}
 
 set custom ssh port:
   file.replace:
