@@ -157,7 +157,8 @@ teslamate apache setup server.key teslamate:
   file.managed:
     - name: {{ key_path }}/teslamate.{{ domain }}.key
     - source: salt://files/certs/teslamate.{{ domain }}.key
-    - mode: "0644"
+    - group: ssl-cert
+    - mode: "0640"
 
 teslamate apache setup server-ca.crt teslamate:
   file.managed:
@@ -175,7 +176,8 @@ teslamate apache setup server.key grafana:
   file.managed:
     - name: {{ key_path }}/grafana.{{ domain }}.key
     - source: salt://files/certs/grafana.{{ domain }}.key
-    - mode: "0644"
+    - group: ssl-cert
+    - mode: "0640"
 
 teslamate apache setup server-ca.crt grafana:
   file.managed:
@@ -194,3 +196,15 @@ teslamate apache teslamate vhost:
         log_path: /var/log/{{ apache_service }}
         key_path: {{ key_path }}
         cert_path: {{ cert_path }}
+
+teslamate disable apache default sites:
+  cmd.run:
+    - name: "a2dissite 000-default default-ssl"
+  
+teslamate enable apache modules:
+  cmd.run:
+    - name: "a2enmod rewrite ssl proxy proxy_http proxy_wstunnel xml2enc"
+
+teslamate apache reload/restart:
+  cmd.run:
+    - name: "systemctl reload apache2"
