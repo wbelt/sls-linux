@@ -1,4 +1,13 @@
 {% if grains['os_family'] in ['Arch'] %}
+  {% set install_packages = [ 'podman', 'podman-compose', 'fuse-overlayfs', 'apache' ]  %}
+  {% set apache_service = 'httpd' %}
+  {% set apache_base = '/etc/' + apache_service %}
+{% elif grains['os_family'] in ['Debian'] %}
+  {% set install_packages = [ 'podman', 'podman-compose', 'apache2' ]  %}
+  {% set apache_service = 'apache2' %}
+  {% set apache_base = '/etc/' + apache_service %}
+{% endif %}
+
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
 {% set domain = salt['grains.get']('teslamate:domain','none') %}
 {% set extra_admin = salt['grains.get']('teslamate:extra_admin','none') %}
@@ -16,11 +25,7 @@ podman server base:
     - name: "loginctl enable-linger {{ user }}"
   pkg.installed:
     - refresh: True
-    - pkgs:
-      - podman
-      - podman-compose
-      - fuse-overlayfs
-      - apache
+    - pkgs: {{ install_packages }}
 
 teslamate create podman network:
   cmd.run:
@@ -64,11 +69,11 @@ teslamate app container setup:
 
 teslamate apache setup htpasswd:
   file.managed:
-    - name: /etc/httpd/conf/htpasswd
+    - name: {{ apache_base }}/htpasswd
     - source: salt://files/teslamate/htpasswd
     - mode: "0644"
 
-{% if grains['os_family'] in ['Arch'] %}
+{% if grains['os_family'] in ['Arch','Debian'] %}
   {% set seperator = ':' %}
 {% else %}
   {% set seperator = '.' %}
@@ -80,7 +85,7 @@ teslamate set homedir owner:
 
 teslamate enable apache:
   cmd.run:
-    - name: "systemctl enable --now httpd"
+    - name: "systemctl enable --now {{ apache_service }}"
 
 {% set installed = salt['grains.set']('teslamate:installed',True) %}
 {% endif %}
@@ -126,7 +131,7 @@ teslamate restore script:
 {% if extra_admin != 'none' %}
 teslamate apache setup htpasswd extra admin:
   file.replace:
-    - name: /etc/httpd/conf/htpasswd
+    - name: {{ apache_base }}/htpasswd
     - pattern: ^{{ extra_admin }}$
     - repl: '{{ extra_admin }}'
     - count: 1
@@ -137,187 +142,38 @@ teslamate apache setup htpasswd extra admin:
 
 teslamate apache setup server.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.{{ domain }}.crt
+    - name: {{ apache_base }}/teslamate.{{ domain }}.crt
     - source: salt://files/certs/teslamate.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.{{ domain }}.key
+    - name: {{ apache_base }}/teslamate.{{ domain }}.key
     - source: salt://files/certs/teslamate.{{ domain }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt teslamate:
   file.managed:
-    - name: /etc/httpd/conf/teslamate.{{ domain }}.ca-bundle
+    - name: {{ apache_base }}/teslamate.{{ domain }}.ca-bundle
     - source: salt://files/certs/teslamate.{{ domain }}.ca-bundle
     - mode: "0644"
 
 teslamate apache setup server.crt grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.{{ domain }}.crt
+    - name: {{ apache_base }}/grafana.{{ domain }}.crt
     - source: salt://files/certs/grafana.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.{{ domain }}.key
+    - name: {{ apache_base }}/grafana.{{ domain }}.key
     - source: salt://files/certs/grafana.{{ domain }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt grafana:
   file.managed:
-    - name: /etc/httpd/conf/grafana.{{ domain }}.ca-bundle
+    - name: {{ apache_base }}/grafana.{{ domain }}.ca-bundle
     - source: salt://files/certs/grafana.{{ domain }}.ca-bundle
     - mode: "0644"
-
-teslamate apache teslamate vhost:
-  file.managed:
-    - name: /etc/httpd/conf/teslamate.conf
-    - source: salt://diydev/files/teslamate/teslamate-apache-vhost.conf
-    - mode: "0644"
-    - template: jinja
-    - context:
-        dns_domain: {{ domain }}
-
-teslamate allow conf teslamate:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^Include conf/teslamate.conf$
-    - repl: 'Include conf/teslamate.conf'
-    - count: 1
-    - append_if_not_found: true
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-
-teslamate allow xml2enc_module:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule xml2enc_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-
-teslamate allow ssl_module:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule ssl_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate allow socache_shmcb_module:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule socache_shmcb_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate allow rewrite_module:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule rewrite_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate allow mod_proxy:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule proxy_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate allow mod_proxy_http:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule proxy_http_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate allow mod_proxy_wstunnel:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(LoadModule proxy_wstunnel_module.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate allow ssl extra config:
-  file.replace:
-    - name: /etc/httpd/conf/httpd.conf
-    - pattern: ^#(Include conf/extra/httpd-ssl\.conf.*)$
-    - repl: '\1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLCipherSuite:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLCipherSuite .*$
-    - repl: 'SSLCipherSuite HIGH:!MEDIUM:!SSLv3:!kRSA:!SHA1:!SHA256:!SHA384:!DSS:!aNULL'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLProxyCipherSuite:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLProxyCipherSuite .*$
-    - repl: 'SSLProxyCipherSuite HIGH:!MEDIUM:!SSLv3:!kRSA:!SHA1:!SHA256:!SHA384:!DSS:!aNULL'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLProtocol:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLProtocol .*$
-    - repl: 'SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLProxyProtocol:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLProxyProtocol .*$
-    - repl: 'SSLProxyProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLHonorCipherOrder:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLHonorCipherOrder .*$
-    - repl: 'SSLHonorCipherOrder off'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLCertificateFile:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLCertificateFile.*$
-    - repl: 'SSLCertificateFile "/etc/httpd/conf/teslamate.{{ domain }}.crt"'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLCertificateKeyFile:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLCertificateKeyFile.*$
-    - repl: 'SSLCertificateKeyFile "/etc/httpd/conf/teslamate.{{ domain }}.key"'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
-teslamate replace default SSLCertificateChainFile:
-  file.replace:
-    - name: /etc/httpd/conf/extra/httpd-ssl.conf
-    - pattern: ^(S|#S)SLCertificateChainFile.*$
-    - repl: 'SSLCertificateChainFile "/etc/httpd/conf/teslamate.{{ domain }}.ca-bundle"'
-    - count: 1
-    - flags: ['IGNORECASE', 'MULTILINE']
-    - backup: False
 
 {% endif %}
