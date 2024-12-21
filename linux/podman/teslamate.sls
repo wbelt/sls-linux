@@ -2,10 +2,17 @@
   {% set install_packages = [ 'podman', 'podman-compose', 'fuse-overlayfs', 'apache' ]  %}
   {% set apache_service = 'httpd' %}
   {% set apache_base = '/etc/' + apache_service %}
+  {% set apache_sites = apache_base + '/conf' %}
+  {% set key_path = apache_base + '/conf' %}
+  {% set cert_path = apache_base + '/conf' %}
+  /etc/httpd/conf
 {% elif grains['os_family'] in ['Debian'] %}
-  {% set install_packages = [ 'podman', 'podman-compose', 'apache2' ]  %}
+  {% set install_packages = [ 'podman', 'podman-compose', 'apache2' ] %}
   {% set apache_service = 'apache2' %}
   {% set apache_base = '/etc/' + apache_service %}
+  {% set apache_sites = apache_base + '/sites-available' %}
+  {% set key_path = '/etc/ssl/private' %}
+  {% set cert_path = '/etc/ssl/certs' %}
 {% endif %}
 
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
@@ -142,36 +149,48 @@ teslamate apache setup htpasswd extra admin:
 
 teslamate apache setup server.crt teslamate:
   file.managed:
-    - name: {{ apache_base }}/teslamate.{{ domain }}.crt
+    - name: {{ cert_path }}/teslamate.{{ domain }}.crt
     - source: salt://files/certs/teslamate.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key teslamate:
   file.managed:
-    - name: {{ apache_base }}/teslamate.{{ domain }}.key
+    - name: {{ key_path }}/teslamate.{{ domain }}.key
     - source: salt://files/certs/teslamate.{{ domain }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt teslamate:
   file.managed:
-    - name: {{ apache_base }}/teslamate.{{ domain }}.ca-bundle
+    - name: {{ cert_path }}/teslamate.{{ domain }}.ca-bundle
     - source: salt://files/certs/teslamate.{{ domain }}.ca-bundle
     - mode: "0644"
 
 teslamate apache setup server.crt grafana:
   file.managed:
-    - name: {{ apache_base }}/grafana.{{ domain }}.crt
+    - name: {{ cert_path }}/grafana.{{ domain }}.crt
     - source: salt://files/certs/grafana.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key grafana:
   file.managed:
-    - name: {{ apache_base }}/grafana.{{ domain }}.key
+    - name: {{ key_path }}/grafana.{{ domain }}.key
     - source: salt://files/certs/grafana.{{ domain }}.key
     - mode: "0644"
 
 teslamate apache setup server-ca.crt grafana:
   file.managed:
-    - name: {{ apache_base }}/grafana.{{ domain }}.ca-bundle
+    - name: {{ cert_path }}/grafana.{{ domain }}.ca-bundle
     - source: salt://files/certs/grafana.{{ domain }}.ca-bundle
     - mode: "0644"
+
+teslamate apache teslamate vhost:
+  file.managed:
+    - name: {{ apache_sites }}/teslamate.conf
+    - source: salt://diydev/files/teslamate/teslamate-apache-vhost.conf
+    - mode: "0644"
+    - template: jinja
+    - context:
+        dns_domain: {{ domain }}
+        log_path: /var/log/{{ apache_service }}
+        key_path: {{ key_path }}
+        cert_path: {{ cert_path }}
