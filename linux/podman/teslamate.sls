@@ -175,5 +175,3 @@ teslamate apache setup server-ca.crt grafana:
     - name: {{ apache_base }}/grafana.{{ domain }}.ca-bundle
     - source: salt://files/certs/grafana.{{ domain }}.ca-bundle
     - mode: "0644"
-
-{% endif %}
