@@ -34,7 +34,10 @@ restart ssh if needed:
 create adminsuser {{ pillar['adminuser']['id'] }}:
   user.present: {{ pillar['adminuser']['user.present'] }}
   ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
-  user.present.groups: [ {{ sudo_group }} ]
+add adminsuser {{ pillar['adminuser']['id'] }} to group
+  group.adduser:
+    - name: {{ sudo_group }}
+    - username: {{ pillar['adminuser']['id'] }}
 wheel group no sudo password:
   file.append:
     - name: /etc/sudoers.d/85-{{ sudo_group }}-group
