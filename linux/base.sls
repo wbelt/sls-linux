@@ -8,7 +8,7 @@
 
 set preferred timezone:
   timezone.system:
-    - name: {{ pillar.get('timezone') }}
+    - name: {{ salt['pillar.get']('system:timezone') }}
 
 set custom ssh port:
   file.replace:
