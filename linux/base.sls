@@ -8,7 +8,7 @@
 
 set preferred timezone:
   timezone.system:
-    - name: {{ salt['pillar.get']('linux:timezone') }}
+    - name: {{ pillar['timezone'] }}
 
 set custom ssh port:
   file.replace:
@@ -31,12 +31,12 @@ restart ssh if needed:
       - file: /etc/ssh/sshd_config
 
 {% if 'adminuser' in pillar %}
-create adminsuser:
-  user.present: {{ pillar['adminuser']['user.present'] }}
-  ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
-  user.present.groups: {{ sudo_group }}
-wheel group no sudo password:
-  file.append:
-    - name: /etc/sudoers.d/85-{{ sudo_group }}-group
-    - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
+  create adminsuser:
+    user.present: {{ pillar['adminuser']['user.present'] }}
+    ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
+    user.present.groups: {{ sudo_group }}
+  wheel group no sudo password:
+    file.append:
+      - name: /etc/sudoers.d/85-{{ sudo_group }}-group
+      - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
 {% endif %}
