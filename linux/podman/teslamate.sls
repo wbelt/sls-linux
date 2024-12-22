@@ -5,9 +5,8 @@
   {% set apache_sites = apache_base + '/conf' %}
   {% set key_path = apache_base + '/conf' %}
   {% set cert_path = apache_base + '/conf' %}
-  /etc/httpd/conf
 {% elif grains['os_family'] in ['Debian'] %}
-  {% set install_packages = [ 'podman', 'podman-compose', 'apache2' ] %}
+  {% set install_packages = [ 'podman', 'podman-compose', 'apache2', 'systemd-container' ] %}
   {% set apache_service = 'apache2' %}
   {% set apache_base = '/etc/' + apache_service %}
   {% set apache_sites = apache_base + '/sites-available' %}
@@ -157,7 +156,9 @@ teslamate apache setup server.key teslamate:
   file.managed:
     - name: {{ key_path }}/teslamate.{{ domain }}.key
     - source: salt://files/certs/teslamate.{{ domain }}.key
+{% if grains['os_family'] in ['Debian'] %}
     - group: ssl-cert
+{% endif %}
     - mode: "0640"
 
 teslamate apache setup server-ca.crt teslamate:
@@ -176,7 +177,9 @@ teslamate apache setup server.key grafana:
   file.managed:
     - name: {{ key_path }}/grafana.{{ domain }}.key
     - source: salt://files/certs/grafana.{{ domain }}.key
+{% if grains['os_family'] in ['Debian'] %}
     - group: ssl-cert
+{% endif %}
     - mode: "0640"
 
 teslamate apache setup server-ca.crt grafana:
@@ -198,13 +201,19 @@ teslamate apache teslamate vhost:
         cert_path: {{ cert_path }}
 
 teslamate disable apache default sites:
+{% if grains['os_family'] in ['Debian'] %}
   cmd.run:
     - name: "a2dissite 000-default default-ssl"
+{% endif %}
   
 teslamate enable apache modules:
+{% if grains['os_family'] in ['Debian'] %}
   cmd.run:
     - name: "a2enmod rewrite ssl proxy proxy_http proxy_wstunnel xml2enc"
+{% endif %}
 
 teslamate apache reload/restart:
+{% if grains['os_family'] in ['Debian'] %}
   cmd.run:
     - name: "systemctl reload apache2"
+{% endif %}
