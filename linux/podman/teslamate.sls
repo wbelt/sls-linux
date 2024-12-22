@@ -98,7 +98,7 @@ teslamate set homedir owner:
 
 teslamate enable apache:
   cmd.run:
-    - name: "systemctl enable --now {{ apache_service }}"
+    - name: "systemctl enable {{ apache_service }}"
 
 {% set installed = salt['grains.set']('teslamate:installed',True) %}
 {% endif %}
