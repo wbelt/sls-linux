@@ -12,6 +12,13 @@
   {% set apache_sites = apache_base + '/sites-available' %}
   {% set key_path = '/etc/ssl/private' %}
   {% set cert_path = '/etc/ssl/certs' %}
+{% elif grains['os'] == 'Fedora' %}
+  {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container' ] %}
+  {% set apache_service = 'httpd' %}
+  {% set apache_base = '/etc/' + apache_service %}
+  {% set apache_sites = apache_base + '/conf.d' %}
+  {% set key_path = '/etc/pki/tls/private' %}
+  {% set cert_path = '/etc/pki/tls/certs' %}
 {% endif %}
 
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
@@ -159,19 +166,19 @@ teslamate apache setup server.key teslamate:
 {% if grains['os_family'] in ['Debian'] %}
     - group: ssl-cert
 {% endif %}
-    - mode: "0640"
+    - mode: "0600"
 
 teslamate apache setup server-ca.crt teslamate:
   file.managed:
     - name: {{ cert_path }}/teslamate.{{ domain }}.ca-bundle
     - source: salt://files/certs/teslamate.{{ domain }}.ca-bundle
-    - mode: "0644"
+    - mode: "0600"
 
 teslamate apache setup server.crt grafana:
   file.managed:
     - name: {{ cert_path }}/grafana.{{ domain }}.crt
     - source: salt://files/certs/grafana.{{ domain }}.crt
-    - mode: "0644"
+    - mode: "0600"
 
 teslamate apache setup server.key grafana:
   file.managed:
@@ -180,13 +187,13 @@ teslamate apache setup server.key grafana:
 {% if grains['os_family'] in ['Debian'] %}
     - group: ssl-cert
 {% endif %}
-    - mode: "0640"
+    - mode: "0600"
 
 teslamate apache setup server-ca.crt grafana:
   file.managed:
     - name: {{ cert_path }}/grafana.{{ domain }}.ca-bundle
     - source: salt://files/certs/grafana.{{ domain }}.ca-bundle
-    - mode: "0644"
+    - mode: "0600"
 
 teslamate apache teslamate vhost:
   file.managed:
