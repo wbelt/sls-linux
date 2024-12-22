@@ -86,7 +86,7 @@ teslamate apache setup htpasswd:
     - source: salt://files/teslamate/htpasswd
     - mode: "0644"
 
-{% if grains['os_family'] in ['Arch','Debian'] %}
+{% if grains['os_family'] in ['Arch','Debian','RedHat'] %}
   {% set seperator = ':' %}
 {% else %}
   {% set seperator = '.' %}
