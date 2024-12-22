@@ -22,8 +22,8 @@
 {% endif %}
 
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
-{% set domain = salt['grains.get']('teslamate:domain','none') %}
-{% set extra_admin = salt['grains.get']('teslamate:extra_admin','none') %}
+{% set domain = salt['pillar.get']('teslamate:domain','none') %}
+{% set extra_admin = salt['pillar.get']('teslamate:extra_admin','none') %}
 
 {% if (salt['grains.get']('teslamate:installed', False) == False) and
       (domain != 'none') %}
