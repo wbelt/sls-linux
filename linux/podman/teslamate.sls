@@ -207,20 +207,14 @@ teslamate apache teslamate vhost:
         key_path: {{ key_path }}
         cert_path: {{ cert_path }}
 
-teslamate disable apache default sites:
 {% if grains['os_family'] in ['Debian'] %}
+teslamate disable apache default sites:
   cmd.run:
     - name: "a2dissite 000-default default-ssl"
-{% endif %}
-  
 teslamate enable apache modules:
-{% if grains['os_family'] in ['Debian'] %}
   cmd.run:
     - name: "a2enmod rewrite ssl proxy proxy_http proxy_wstunnel xml2enc"
-{% endif %}
-
 teslamate apache reload/restart:
-{% if grains['os_family'] in ['Debian'] %}
   cmd.run:
     - name: "systemctl reload apache2"
 {% endif %}
