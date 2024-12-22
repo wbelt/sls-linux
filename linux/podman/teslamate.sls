@@ -13,7 +13,7 @@
   {% set key_path = '/etc/ssl/private' %}
   {% set cert_path = '/etc/ssl/certs' %}
 {% elif grains['os'] == 'Fedora' %}
-  {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container' ] %}
+  {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container', 'mod_proxy_html' ] %}
   {% set apache_service = 'httpd' %}
   {% set apache_base = '/etc/' + apache_service %}
   {% set apache_sites = apache_base + '/conf.d' %}
