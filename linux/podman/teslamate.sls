@@ -212,11 +212,11 @@ teslamate disable apache module {{ module }}:
 teslamate patch apache module 00-base.conf:
   file.patch:
     - name: {{ apache_modules_conf }}/00-base.conf
-    - source: salt://diydev/files/teslamate/00-base.patch
+    - source: salt://diydev/files/teslamate/00-base.conf.patch
 teslamate patch apache module 00-proxy.conf:
   file.patch:
     - name: {{ apache_modules_conf }}/00-proxy.conf
-    - source: salt://diydev/files/teslamate/00-proxy.patch
+    - source: salt://diydev/files/teslamate/00-proxy.conf.patch
 teslamate replace default SSLCertificateFile:
   file.replace:
     - name: {{ apache_sites }}/ssl.conf

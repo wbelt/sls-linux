@@ -1,6 +1,6 @@
---- orig/00-base.conf	2024-12-22 15:46:32.542856937 -0500
-+++ 00-base.conf	2024-12-22 16:25:42.144280298 -0500
-@@ -4,66 +4,66 @@
+--- orig/00-base.conf	2024-12-23 13:59:06.562152566 +0000
++++ 00-base.conf	2024-12-23 14:01:35.316906812 +0000
+@@ -4,66 +4,65 @@
  #
  
  LoadModule access_compat_module modules/mod_access_compat.so
@@ -103,4 +103,3 @@
 -
 +#LoadModule vhost_alias_module modules/mod_vhost_alias.so
 +#LoadModule watchdog_module modules/mod_watchdog.so
-+LoadModule mpm_event_module modules/mod_mpm_event.so
