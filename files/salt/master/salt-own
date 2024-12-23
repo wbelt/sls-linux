@@ -1,0 +1,2 @@
+#!/bin/bash
+chown -R salt:salt /srv/pillar /srv/salt /etc/salt
