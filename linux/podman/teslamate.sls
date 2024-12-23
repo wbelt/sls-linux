@@ -217,6 +217,46 @@ teslamate patch apache module 00-proxy.conf:
   file.patch:
     - name: {{ apache_modules_conf }}/00-proxy.conf
     - source: salt://diydev/files/teslamate/00-proxy.conf.patch
+teslamate replace default SSLCipherSuite:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLCipherSuite .*$
+    - repl: 'SSLCipherSuite HIGH:!MEDIUM:!SSLv3:!kRSA:!SHA1:!SHA256:!SHA384:!DSS:!aNULL'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLProxyCipherSuite:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLProxyCipherSuite .*$
+    - repl: 'SSLProxyCipherSuite HIGH:!MEDIUM:!SSLv3:!kRSA:!SHA1:!SHA256:!SHA384:!DSS:!aNULL'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLProtocol:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLProtocol .*$
+    - repl: 'SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLProxyProtocol:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLProxyProtocol .*$
+    - repl: 'SSLProxyProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLHonorCipherOrder:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLHonorCipherOrder .*$
+    - repl: 'SSLHonorCipherOrder off'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
 teslamate replace default SSLCertificateFile:
   file.replace:
     - name: {{ apache_sites }}/ssl.conf
