@@ -5,6 +5,7 @@
   {% set apache_sites = apache_base + '/conf' %}
   {% set key_path = apache_base + '/conf' %}
   {% set cert_path = apache_base + '/conf' %}
+  {% set htpasswd_path = apache_sites %}
 {% elif grains['os_family'] in ['Debian'] %}
   {% set install_packages = [ 'podman', 'podman-compose', 'apache2', 'systemd-container' ] %}
   {% set apache_service = 'apache2' %}
@@ -12,6 +13,7 @@
   {% set apache_sites = apache_base + '/sites-available' %}
   {% set key_path = '/etc/ssl/private' %}
   {% set cert_path = '/etc/ssl/certs' %}
+  {% set htpasswd_path = apache_sites %}
 {% elif grains['os'] == 'Fedora' %}
   {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container', 'mod_ssl', 'mod_proxy_html' ] %}
   {% set apache_service = 'httpd' %}
@@ -19,6 +21,7 @@
   {% set apache_sites = apache_base + '/conf.d' %}
   {% set key_path = '/etc/pki/tls/private' %}
   {% set cert_path = '/etc/pki/tls/certs' %}
+  {% set htpasswd_path = apache_sites %}
 {% endif %}
 
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
@@ -82,7 +85,7 @@ teslamate app container setup:
 
 teslamate apache setup htpasswd:
   file.managed:
-    - name: {{ apache_base }}/htpasswd
+    - name: {{ htpasswd_path }}/htpasswd
     - source: salt://files/teslamate/htpasswd
     - mode: "0644"
 
@@ -144,7 +147,7 @@ teslamate restore script:
 {% if extra_admin != 'none' %}
 teslamate apache setup htpasswd extra admin:
   file.replace:
-    - name: {{ apache_base }}/htpasswd
+    - name: {{ htpasswd_path }}/htpasswd
     - pattern: ^{{ extra_admin }}$
     - repl: '{{ extra_admin }}'
     - count: 1
@@ -206,6 +209,7 @@ teslamate apache teslamate vhost:
         log_path: /var/log/{{ apache_service }}
         key_path: {{ key_path }}
         cert_path: {{ cert_path }}
+        htpasswd_path: {{ htpasswd_path }}
 
 {% if grains['os_family'] in ['Debian'] %}
 teslamate disable apache default sites:
