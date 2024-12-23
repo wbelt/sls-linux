@@ -15,7 +15,7 @@
   {% set cert_path = '/etc/ssl/certs' %}
   {% set htpasswd_path = apache_sites %}
 {% elif grains['os'] == 'Fedora' %}
-  {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container', 'mod_ssl', 'mod_proxy_html' ] %}
+  {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container', 'mod_ssl', 'mod_proxy_html', 'patch' ] %}
   {% set apache_service = 'httpd' %}
   {% set apache_base = '/etc/' + apache_service %}
   {% set apache_sites = apache_base + '/conf.d' %}
@@ -202,7 +202,7 @@ teslamate apache reload/restart:
   cmd.run:
     - name: "systemctl reload apache2"
 {% elif grains['os'] == 'Fedora' %}
-{% set rename_module_files = [ '00-brotli.conf','00-lua.conf','00-optional.conf','00-dav.conf','01-cgi.conf','10-proxy_h2.conf','10-h2.conf' ] %}
+{% set rename_module_files = [ '00-brotli.conf','00-proxyhtml.conf','00-lua.conf','00-optional.conf','00-dav.conf','01-cgi.conf','10-proxy_h2.conf','10-h2.conf' ] %}
 {% for module in rename_module_files %}
 teslamate disable apache module {{ module }}:
   file.rename:
