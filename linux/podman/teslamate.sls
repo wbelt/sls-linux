@@ -22,6 +22,7 @@
   {% set key_path = '/etc/pki/tls/private' %}
   {% set cert_path = '/etc/pki/tls/certs' %}
   {% set htpasswd_path = apache_sites %}
+  {% set apache_modules_conf = apache_base + '/conf.modules.d' %}
 {% endif %}
 
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
@@ -156,46 +157,25 @@ teslamate apache setup htpasswd extra admin:
     - backup: False
 {% endif %}
 
-teslamate apache setup server.crt teslamate:
+teslamate apache setup server.crt:
   file.managed:
-    - name: {{ cert_path }}/teslamate.{{ domain }}.crt
+    - name: {{ cert_path }}/tslam8.{{ domain }}.crt
     - source: salt://files/certs/teslamate.{{ domain }}.crt
     - mode: "0644"
 
-teslamate apache setup server.key teslamate:
+teslamate apache setup server.key:
   file.managed:
-    - name: {{ key_path }}/teslamate.{{ domain }}.key
+    - name: {{ key_path }}/tslam8.{{ domain }}.key
     - source: salt://files/certs/teslamate.{{ domain }}.key
 {% if grains['os_family'] in ['Debian'] %}
     - group: ssl-cert
 {% endif %}
     - mode: "0600"
 
-teslamate apache setup server-ca.crt teslamate:
+teslamate apache setup server-ca.crt:
   file.managed:
-    - name: {{ cert_path }}/teslamate.{{ domain }}.ca-bundle
+    - name: {{ cert_path }}/tslam8.{{ domain }}.ca-bundle
     - source: salt://files/certs/teslamate.{{ domain }}.ca-bundle
-    - mode: "0600"
-
-teslamate apache setup server.crt grafana:
-  file.managed:
-    - name: {{ cert_path }}/grafana.{{ domain }}.crt
-    - source: salt://files/certs/grafana.{{ domain }}.crt
-    - mode: "0600"
-
-teslamate apache setup server.key grafana:
-  file.managed:
-    - name: {{ key_path }}/grafana.{{ domain }}.key
-    - source: salt://files/certs/grafana.{{ domain }}.key
-{% if grains['os_family'] in ['Debian'] %}
-    - group: ssl-cert
-{% endif %}
-    - mode: "0600"
-
-teslamate apache setup server-ca.crt grafana:
-  file.managed:
-    - name: {{ cert_path }}/grafana.{{ domain }}.ca-bundle
-    - source: salt://files/certs/grafana.{{ domain }}.ca-bundle
     - mode: "0600"
 
 teslamate apache teslamate vhost:
@@ -221,4 +201,53 @@ teslamate enable apache modules:
 teslamate apache reload/restart:
   cmd.run:
     - name: "systemctl reload apache2"
+{% elif grains['os'] == 'Fedora' %}
+{% set rename_module_files = [ '00-brotli.conf','00-lua.conf','00-optional.conf','00-dav.conf','01-cgi.conf','10-proxy_h2.conf','10-h2.conf' ] %}
+{% for module in rename_module_files %}
+teslamate disable apache module {{ module }}:
+  file.rename:
+    - source: {{ apache_modules_conf }}/{{ module }}
+    - name: {{ apache_modules_conf }}/{{ module }}.bak
+{% endfor %}
+teslamate patch apache module 00-base.conf:
+  file.patch:
+    - name: {{ apache_modules_conf }}/00-base.conf
+    - source: salt://diydev/files/teslamate/00-base.patch
+teslamate patch apache module 00-proxy.conf:
+  file.patch:
+    - name: {{ apache_modules_conf }}/00-proxy.conf
+    - source: salt://diydev/files/teslamate/00-proxy.patch
+teslamate replace default SSLCertificateFile:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLCertificateFile.*$
+    - repl: 'SSLCertificateFile {{ cert_path }}/tslam8.{{ domain }}.crt'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLCertificateKeyFile:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLCertificateKeyFile.*$
+    - repl: 'SSLCertificateKeyFile {{ key_path }}/tslam8.{{ domain }}.key'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+teslamate replace default SSLCertificateChainFile:
+  file.replace:
+    - name: {{ apache_sites }}/ssl.conf
+    - pattern: ^(S|#S)SLCertificateChainFile.*$
+    - repl: 'SSLCertificateChainFile {{cert_path}}/tslam8.{{ domain }}.ca-bundle"'
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
+{% set rename_conf_files = [ 'userdir.conf','welcome.conf' ] %}
+{% for site in rename_conf_files %}
+teslamate disable apache site {{ site }}:
+  file.rename:
+    - source: {{ apache_sites }}/{{ site }}
+    - name: {{ apache_sites }}/{{ site }}.bak
+{% endfor %}
+
 {% endif %}
