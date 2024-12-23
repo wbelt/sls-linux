@@ -86,7 +86,7 @@ teslamate app container setup:
 
 teslamate apache setup htpasswd:
   file.managed:
-    - name: {{ htpasswd_path }}/htpasswd
+    - name: {{ htpasswd_path }}/tslam8-htpasswd
     - source: salt://files/teslamate/htpasswd
     - mode: "0644"
 
@@ -160,13 +160,13 @@ teslamate apache setup htpasswd extra admin:
 teslamate apache setup server.crt:
   file.managed:
     - name: {{ cert_path }}/tslam8.{{ domain }}.crt
-    - source: salt://files/certs/teslamate.{{ domain }}.crt
+    - source: salt://files/certs/tslam8.{{ domain }}.crt
     - mode: "0644"
 
 teslamate apache setup server.key:
   file.managed:
     - name: {{ key_path }}/tslam8.{{ domain }}.key
-    - source: salt://files/certs/teslamate.{{ domain }}.key
+    - source: salt://files/certs/tslam8.{{ domain }}.key
 {% if grains['os_family'] in ['Debian'] %}
     - group: ssl-cert
 {% endif %}
@@ -175,12 +175,12 @@ teslamate apache setup server.key:
 teslamate apache setup server-ca.crt:
   file.managed:
     - name: {{ cert_path }}/tslam8.{{ domain }}.ca-bundle
-    - source: salt://files/certs/teslamate.{{ domain }}.ca-bundle
+    - source: salt://files/certs/tslam8.{{ domain }}.ca-bundle
     - mode: "0600"
 
 teslamate apache teslamate vhost:
   file.managed:
-    - name: {{ apache_sites }}/teslamate.conf
+    - name: {{ apache_sites }}/tslam8.conf
     - source: salt://diydev/files/teslamate/teslamate-apache-vhost.conf
     - mode: "0644"
     - template: jinja
