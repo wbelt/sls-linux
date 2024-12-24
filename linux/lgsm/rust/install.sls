@@ -2,6 +2,14 @@
 {% if (salt['grains.get']('rustserver:installed2', False) == False) %}
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
+
+debconf-base:
+  debconf.set:
+    - name: dash
+    - data:
+        steam/question: {'type': 'select', 'value': 'I AGREE'}
+        steam/license: {'type': 'note', 'value': ''}
+
 rust server base:
   user.present:
     - name: {{ user }}
@@ -18,12 +26,10 @@ rust server base:
       - netcat
       - pigz
       - unzip
-  debconf.set:
-    - data:
-        steam/question: {'type': 'select', 'value': 'I AGREE'}
-        steam/license: {'type': 'select', 'value': 'I AGREE'}
   cmd.run:
     - name: 'dpkg --add-architecture i386; apt update; apt install --yes libsdl2-2.0-0:i386 steamcmd'
+    - onchanges:
+      - debconf: debconf-base
 
 rust server download:
   cmd.run:
