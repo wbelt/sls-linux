@@ -200,8 +200,20 @@ teslamate apache setup server-ca.crt grafana:
     - name: {{ cert_path }}/{{ grafana_cert }}.{{ domain }}.ca-bundle
     - source: salt://files/certs/{{ grafana_cert }}.{{ domain }}.ca-bundle
     - mode: "0600"
-{% endif %}
-
+teslamate apache teslamate vhost:
+  file.managed:
+    - name: {{ apache_sites }}/tslam8.conf
+    - source: salt://diydev/files/teslamate/teslamate-apache-vhost-grafana.conf
+    - mode: "0644"
+    - template: jinja
+    - context:
+        dns_domain: {{ domain }}
+        log_path: /var/log/{{ apache_service }}
+        key_path: {{ key_path }}
+        cert_path: {{ cert_path }}
+        htpasswd_path: {{ htpasswd_path }}
+        grafana_cert: {{ grafana_cert }}
+{% else %}
 teslamate apache teslamate vhost:
   file.managed:
     - name: {{ apache_sites }}/tslam8.conf
@@ -215,6 +227,7 @@ teslamate apache teslamate vhost:
         cert_path: {{ cert_path }}
         htpasswd_path: {{ htpasswd_path }}
         grafana_cert: {{ grafana_cert }}
+{% endif %}
 
 {% if grains['os_family'] in ['Debian'] %}
 teslamate disable apache default sites:
