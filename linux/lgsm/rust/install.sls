@@ -3,42 +3,13 @@
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
-  cmd.run:
-    - name: 'dpkg --add-architecture i386 && apt-get update'
-  pkg.latest:
-    - pkgs:
-      - bc
-      - binutils
-      - bsdmainutils
-      - bzip2
-      - ca-certificates
-      - cpio
-      - curl
-      - distro-info
-      - file
-      - gzip
-      - hostname
-      - jq
-      - lib32gcc-s1
-      - lib32stdc++6
-      - lib32z1
-      - libsdl2-2.0-0:i386
-      - netcat
-      - pigz
-      - python3
-      - steamcmd
-      - tar
-      - tmux
-      - unzip
-      - util-linux
-      - uuid-runtime
-      - wget
-      - xz-utils
   user.present:
     - name: {{ user }}
     - fullname: Rust Server
     - shell: /bin/bash
     - createhome: True
+  cmd.run:
+    - name: 'dpkg --add-architecture i386; apt update; apt install bc binutils bsdmainutils bzip2 ca-certificates cpio curl distro-info file gzip hostname jq lib32gcc-s1 lib32stdc++6 lib32z1 libsdl2-2.0-0:i386 netcat pigz python3 steamcmd tar tmux unzip util-linux uuid-runtime wget xz-utils'
 
 rust server download:
   cmd.run:
