@@ -21,7 +21,7 @@ rust server base:
   debconf.set:
     - data:
         steam/question: {'type': 'select', 'value': 'I AGREE'}
-        steam/license: {'type': 'note', 'value': ''}
+        steam/license: {'type': 'select', 'value': 'I AGREE'}
   cmd.run:
     - name: 'dpkg --add-architecture i386; apt update; apt install --yes libsdl2-2.0-0:i386 steamcmd'
 
