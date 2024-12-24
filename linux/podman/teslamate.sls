@@ -277,7 +277,7 @@ teslamate replace default SSLCertificateChainFile:
   file.replace:
     - name: {{ apache_sites }}/ssl.conf
     - pattern: ^(S|#S)SLCertificateChainFile.*$
-    - repl: 'SSLCertificateChainFile {{cert_path}}/tslam8.{{ domain }}.ca-bundle'
+    - repl: 'SSLCertificateChainFile {{ cert_path }}/tslam8.{{ domain }}.ca-bundle'
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
