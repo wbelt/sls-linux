@@ -75,7 +75,7 @@ rust server rconpwd file:
 rust server maint.conf file:
   file.managed:
     - name: {{ userhomedir }}/maint.conf
-    - source: salt://diydev/files/maint.conf
+    - source: salt://diydev/files/rust/maint.conf
     - mode: "0600"
     - user: {{ user }}
     - group: {{ user }}
@@ -83,7 +83,7 @@ rust server maint.conf file:
 rust server rshelper file:
   file.managed:
     - name: /usr/local/bin/rscon
-    - source: salt://diydev/files/rscon
+    - source: salt://diydev/files/rust/rscon
     - mode: "0755"
 
 {% endif %}
