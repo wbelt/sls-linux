@@ -6,7 +6,6 @@ rust server base:
   cmd.run:
     - name: 'dpkg --add-architecture i386 && apt-get update'
   pkg.latest:
-    - refresh: True
     - pkgs:
       - bc
       - binutils
