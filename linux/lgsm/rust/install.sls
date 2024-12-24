@@ -4,7 +4,7 @@
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
   cmd.run:
-    - name: 'dpkg --add-architecture i386'
+    - name: 'dpkg --add-architecture i386 && apt-get update'
   pkg.latest:
     - refresh: True
     - pkgs:
