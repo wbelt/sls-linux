@@ -185,7 +185,6 @@ teslamate apache setup server.crt grafana:
     - name: {{ cert_path }}/{{ grafana_cert }}.{{ domain }}.crt
     - source: salt://files/certs/{{ grafana_cert }}.{{ domain }}.crt
     - mode: "0644"
-
 teslamate apache setup server.key grafana:
   file.managed:
     - name: {{ key_path }}/{{ grafana_cert }}.{{ domain }}.key
@@ -194,7 +193,6 @@ teslamate apache setup server.key grafana:
     - group: ssl-cert
 {% endif %}
     - mode: "0600"
-
 teslamate apache setup server-ca.crt grafana:
   file.managed:
     - name: {{ cert_path }}/{{ grafana_cert }}.{{ domain }}.ca-bundle

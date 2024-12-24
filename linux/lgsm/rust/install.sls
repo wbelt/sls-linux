@@ -8,16 +8,31 @@ rust server base:
     - pkgs:
       - bc
       - binutils
+      - bsdmainutils
       - bzip2
-      - epel-release
-      - glibc.i686
+      - ca-certificates
+      - cpio
+      - curl
+      - distro-info
+      - file
+      - gzip
+      - hostname
       - jq
-      - libstdc++.i686
-      - nmap-ncat
+      - lib32gcc-s1
+      - lib32stdc++6
+      - lib32z1
+      - libsdl2-2.0-0:i386
+      - netcat
+      - pigz
       - python3
+      - steamcmd
+      - tar
       - tmux
       - unzip
-      - zlib-devel
+      - util-linux
+      - uuid-runtime
+      - wget
+      - xz-utils
   user.present:
     - name: {{ user }}
     - fullname: Rust Server

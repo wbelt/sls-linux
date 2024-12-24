@@ -1,4 +1,3 @@
 include:
-  - ...base
   - .install
   - .config
