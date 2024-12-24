@@ -8,8 +8,22 @@ rust server base:
     - fullname: Rust Server
     - shell: /bin/bash
     - createhome: True
+  pkg.latest:
+    - pkgs:
+      - bzip2
+      - jq
+      - lib32gcc-s1
+      - lib32stdc++6
+      - lib32z1
+      - netcat
+      - pigz
+      - unzip
+  debconf.set:
+    - data:
+        steam/question: {'type': 'select', 'value': 'I AGREE'}
+        steam/license: {'type': 'note', 'value': ''}
   cmd.run:
-    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes bc binutils bsdmainutils bzip2 ca-certificates cpio curl distro-info file gzip hostname jq lib32gcc-s1 lib32stdc++6 lib32z1 libsdl2-2.0-0:i386 netcat pigz python3 steamcmd tar tmux unzip util-linux uuid-runtime wget xz-utils'
+    - name: 'dpkg --add-architecture i386; apt update; apt install --yes libsdl2-2.0-0:i386 steamcmd'
 
 rust server download:
   cmd.run:
