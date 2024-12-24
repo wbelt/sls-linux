@@ -3,6 +3,8 @@
 {% set user = salt['pillar.get']('rustserver:user','rustserver') %}
 {% set userhomedir = '/home/' ~ user %}
 rust server base:
+  cmd.run:
+    - name: 'dpkg --add-architecture i386'
   pkg.latest:
     - refresh: True
     - pkgs:
