@@ -28,6 +28,7 @@
 {% set user = salt['pillar.get']('teslamate:user','wes') %}
 {% set domain = salt['pillar.get']('teslamate:domain','none') %}
 {% set extra_admin = salt['pillar.get']('teslamate:extra_admin','none') %}
+{% set grafana_cert = salt['pillar.get']('teslamate:grafana_cert','none') %}
 
 {% if (salt['grains.get']('teslamate:installed', False) == False) and
       (domain != 'none') %}
@@ -178,6 +179,29 @@ teslamate apache setup server-ca.crt:
     - source: salt://files/certs/tslam8.{{ domain }}.ca-bundle
     - mode: "0600"
 
+{% if grafana_cert != 'none' %}
+teslamate apache setup server.crt grafana:
+  file.managed:
+    - name: {{ cert_path }}/{{ grafana_cert }}.{{ domain }}.crt
+    - source: salt://files/certs/{{ grafana_cert }}.{{ domain }}.crt
+    - mode: "0644"
+
+teslamate apache setup server.key grafana:
+  file.managed:
+    - name: {{ key_path }}/{{ grafana_cert }}.{{ domain }}.key
+    - source: salt://files/certs/{{ grafana_cert }}.{{ domain }}.key
+{% if grains['os_family'] in ['Debian'] %}
+    - group: ssl-cert
+{% endif %}
+    - mode: "0600"
+
+teslamate apache setup server-ca.crt grafana:
+  file.managed:
+    - name: {{ cert_path }}/{{ grafana_cert }}.{{ domain }}.ca-bundle
+    - source: salt://files/certs/{{ grafana_cert }}.{{ domain }}.ca-bundle
+    - mode: "0600"
+{% endif %}
+
 teslamate apache teslamate vhost:
   file.managed:
     - name: {{ apache_sites }}/tslam8.conf
@@ -190,6 +214,7 @@ teslamate apache teslamate vhost:
         key_path: {{ key_path }}
         cert_path: {{ cert_path }}
         htpasswd_path: {{ htpasswd_path }}
+        grafana_cert: {{ grafana_cert }}
 
 {% if grains['os_family'] in ['Debian'] %}
 teslamate disable apache default sites:
@@ -202,7 +227,8 @@ teslamate apache reload/restart:
   cmd.run:
     - name: "systemctl reload apache2"
 {% elif grains['os'] == 'Fedora' %}
-{% set rename_module_files = [ '00-brotli.conf','00-proxyhtml.conf','00-lua.conf','00-optional.conf','00-dav.conf','01-cgi.conf','10-proxy_h2.conf','10-h2.conf' ] %}
+{% set rename_module_files = [ '00-brotli.conf','00-proxyhtml.conf','00-lua.conf','00-optional.conf',
+  '00-dav.conf','01-cgi.conf','10-proxy_h2.conf','10-h2.conf' ] %}
 {% for module in rename_module_files %}
 teslamate disable apache module {{ module }}:
   file.rename:
