@@ -23,7 +23,11 @@ rust server base:
       - lib32gcc-s1
       - lib32stdc++6
       - lib32z1
+{% if grains['osrelease_info'][0] == '22' %}
       - netcat
+{% else %}
+      - binutils
+{% endif %}
       - pigz
       - unzip
   cmd.run:
