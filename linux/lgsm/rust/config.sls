@@ -118,7 +118,7 @@ rust set server name:
     - name: {{ userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^servername.*$
-    - repl: servername="Doom Crickets | Private Server {{ grains['host'] | regex_replace('rs|srv([0-9])|lgsm([0-9])', '\1', ignorecase=True) }}"
+    - repl: servername="Doom Crickets | Private Server {{ grains['host'] | regex_replace('lgsm([0-9])', '\\1', ignorecase=True) }}"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
