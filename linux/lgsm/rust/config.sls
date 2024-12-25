@@ -21,7 +21,7 @@ rust server cron monitor:
     - identifier: "rustserver monitor"
     - user: {{ user }}
     - minute: "*/5"
-{% if grains['osrelease_info'][0] == '22' %}
+{% if (grains['os'] == 'Ubuntu') and (grains['osrelease_info'][0] == '22') %}
     - commented: False
 {% else %}
     - commented: True
