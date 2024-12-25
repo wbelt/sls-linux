@@ -21,10 +21,10 @@ rust server cron monitor:
     - identifier: "rustserver monitor"
     - user: {{ user }}
     - minute: "*/5"
-{% if grains['osrelease_info'][0] != '22' %}
-    - commented: True
-{% else %}
+{% if grains['osrelease_info'][0] == '22' %}
     - commented: False
+{% else %}
+    - commented: True
 {% endif %}
 
 {% if 'rconpassword' in pillar['rustserver'] %}
