@@ -17,13 +17,15 @@ rust server cron PATH settings:
 
 rust server cron monitor:
   cron.present:
+{% if (grains['os'] != 'Ubuntu') or (grains['osrelease_info'][0] != '22') %}
+    - commented: True
+{% else %}
+    - commented: False
+{% endif %}
     - name: "./rustserver monitor > /dev/null 2>&1"
     - identifier: "rustserver monitor"
     - user: {{ user }}
     - minute: "*/5"
-{% if (grains['os'] != 'Ubuntu') or (grains['osrelease_info'][0] != '22') %}
-    - commented: True
-{% endif %}
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 {% set rconbase = 'RCONPWD=$(cat rconpwd); /usr/local/bin/rcon -t web -a localhost:28016 -p $RCONPWD' %}
