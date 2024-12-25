@@ -149,7 +149,7 @@ teslamate restore script:
 {% if extra_admin != 'none' %}
 teslamate apache setup htpasswd extra admin:
   file.replace:
-    - name: {{ htpasswd_path }}/htpasswd
+    - name: {{ htpasswd_path }}/tslam8-htpasswd
     - pattern: ^{{ extra_admin }}$
     - repl: '{{ extra_admin }}'
     - count: 1
