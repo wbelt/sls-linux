@@ -27,7 +27,7 @@ rust server base:
       - pigz
       - unzip
   cmd.run:
-    - name: 'dpkg --add-architecture i386; apt update; apt install --yes libsdl2-2.0-0:i386 steamcmd'
+    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes libsdl2-2.0-0:i386 steamcmd'
     - onchanges:
       - debconf: debconf-base
 
