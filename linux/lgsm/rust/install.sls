@@ -94,7 +94,7 @@ rust server rshelper file:
 
 rust server set homedir owner:
   cmd.run:
-    - name: "chown -R {{ user }}.{{ user }} /home/{{ user }}"
+    - name: "chown -R {{ user }}:{{ user }} /home/{{ user }}"
 
 {% set installed = salt['grains.set']('rustserver:installed',True) %}
 
