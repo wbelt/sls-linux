@@ -1,6 +1,5 @@
-reboot-on-pending:
-  system.reboot:
-    - timeout: 5
-    - in_seconds: true
-    - only_on_pending_reboot: false
+reboot-system:
+  cmd.run:
+    - name: reboot
     - order: last
+    - bg: true
