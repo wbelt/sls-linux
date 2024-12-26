@@ -167,6 +167,16 @@ rust set allow minis and motorboats to spawn:
         minicopter.population 1
         motorrowboat.population 1
 
+rust set to no censor:
+  file.replace:
+    - name: {{ userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - append_if_not_found: True
+    - pattern: ^server\.censorplayerlist.*$
+    - repl: server.censorplayerlist false
+    - count: 1
+    - flags: ['IGNORECASE', 'MULTILINE']
+    - backup: False
+
 rust set owners:
   file.managed:
     - name: {{ userhomedir }}/serverfiles/server/rustserver/cfg/users.cfg
