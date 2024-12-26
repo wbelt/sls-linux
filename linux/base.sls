@@ -6,9 +6,12 @@
   {% set sudo_group = 'wheel' %}
 {% endif %}
 
+{% if 'linux' in pillar %}
+{% if 'timezone' in pillar['linux'] %}
 set preferred timezone:
   timezone.system:
-    - name: {{ pillar['timezone'] }}
+    - name: {{ pillar['linux']['timezone'] }}
+{% endif %}
 
 set custom ssh port:
   file.replace:
@@ -30,16 +33,18 @@ restart ssh if needed:
     - watch:
       - file: /etc/ssh/sshd_config
 
-{% if 'adminuser' in pillar %}
-create adminsuser {{ pillar['adminuser']['id'] }}:
-  user.present: {{ pillar['adminuser']['user.present'] }}
-  ssh_auth.present: {{ pillar['adminuser']['ssh_auth.present'] }}
-add adminsuser {{ pillar['adminuser']['id'] }} to sudo group:
+{% if 'adminuser' in pillar['linux'] %}
+{% set adminref = pillar['linux']['adminuser'] %}
+create adminsuser {{ adminref['id'] }}:
+  user.present: {{ adminref['user.present'] }}
+  ssh_auth.present: {{ adminref['ssh_auth.present'] }}
+add adminsuser {{ adminref['id'] }} to sudo group:
   user.present.groups:
-    - name: {{ pillar['adminuser']['id'] }}
+    - name: {{ adminref['id'] }}
     - groups: [ {{ sudo_group }} ]
 wheel group no sudo password:
   file.append:
     - name: /etc/sudoers.d/85-{{ sudo_group }}-group
     - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
+{% endif %}
 {% endif %}
