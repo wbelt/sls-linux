@@ -117,7 +117,7 @@ teslamate server sudo command local bin:
         svcuser: {{ user }}
     - template: jinja
 
-{% set admuser = salt['pillar.get']('adminuser:id',user) %}
+{% set admuser = salt['pillar.get']('linux:adminuser:id',user) %}
 teslamate server sudo command home:
   file.managed:
     - name: /home/{{ admuser }}/tmsudo
