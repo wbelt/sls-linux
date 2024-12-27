@@ -1,0 +1,23 @@
+#!/bin/bash
+banner_help()
+{
+  echo $0
+  echo ""
+  echo "Usage: ${0} [filename]"
+  echo "Example: ${0} test.txt"
+  echo ""
+}
+perform_put()
+{
+  HOST=$(hostname -f)
+  scp -P 25022 -i /etc/mytu.key "${1}" "${HOST}@salt.diydev.io:"
+}
+if [ -z $1 ]; then
+    banner_help
+else
+  if [ -f $1 ]; then
+    perform_put "${1}"
+  else
+    echo "${0}: file ${1} not found."
+  fi
+fi

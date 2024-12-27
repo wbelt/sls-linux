@@ -1,0 +1,19 @@
+#!/bin/bash
+banner_help()
+{
+  echo $0
+  echo ""
+  echo "Usage: ${0} [filename]"
+  echo "Example: ${0} test.txt"
+  echo ""
+}
+perform_get()
+{
+  HOST=$(hostname -f)
+  scp -P 25022 -i /etc/mytu.key "${HOST}@salt.diydev.io:${1}" .
+}
+if [ -z $1 ]; then
+  banner_help
+else
+  perform_get "${1}"
+fi
