@@ -10,7 +10,7 @@
     - name: ssh-keygen -t ed25519 -q -N '' -t ed25519 -f /home/{{ mytu_user }}/.ssh/id_ed25519
     - runas: {{ mytu_user }}
     - creates: /home/{{ mytu_user}}/.ssh/id_ed25519
-  file.copy
+  file.copy:
     - name: /etc/{{ mytu_user}}.key
     - mode: "0755"
     - source: /home/{{ mytu_user}}/.ssh/id_ed25519
