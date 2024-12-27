@@ -18,7 +18,6 @@ capture_ssh_key_output:
   cmd.run:
     - name: cat /home/{{ mytu_user}}/.ssh/id_ed25519.pub
     - output_loglevel: quiet
-    - stateful: True
   file.managed:
     - name: /home/{{ mytu_user}}/test_output_file.txt
     - contents_pillar: ssh_key_output
