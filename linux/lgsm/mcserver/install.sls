@@ -1,4 +1,4 @@
-{% if grains['os_family'] in ['RedHat'] %}
+{% if grains['osrelease_info'][0] == '22' %}
 {% set defname = 'mcserver' %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
