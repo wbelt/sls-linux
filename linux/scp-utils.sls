@@ -20,7 +20,7 @@ capture_ssh_key_output:
     - output_loglevel: quiet
   file.managed:
     - name: /home/{{ mytu_user}}/test_output_file.txt
-    - contents_pillar: ssh_key_output
+    - contents: ssh_key_output
     - require:
       - cmd: capture_ssh_key_output
 
