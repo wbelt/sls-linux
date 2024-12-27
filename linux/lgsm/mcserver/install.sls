@@ -1,7 +1,6 @@
 {% set defname = 'mcserver' %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
-{% if salt['grains.get'](defname ~ ':installed', False) == False %}
 {{ defname }} base:
   pkg.latest:
     - refresh: True
@@ -39,8 +38,6 @@
 
 include:
   - ...install.sls
-{% set installed = salt['grains.set'](defname ~ ':installed',True) %}
-{% endif %}
 
 {{ defname }} mcbcron file:
   file.managed:
