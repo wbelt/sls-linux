@@ -1,4 +1,3 @@
-{% if grains['osrelease_info'][0] == '22' %}
 {% set defname = 'mcserver' %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
@@ -86,6 +85,3 @@
     - hour: "3"
     - minute: "35"
     - commented: True
-
-{% endif %}
-
