@@ -1,3 +1,6 @@
+include:
+  - .bootstrap.sls
+
 {{ defname }} install:
   cmd.run:
     - name: './{{ defname }} auto-install'

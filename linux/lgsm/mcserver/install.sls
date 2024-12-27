@@ -38,7 +38,7 @@
     - createhome: True
 
 include:
-  - ...bootstrap.sls
+  - ...install.sls
 {% set installed = salt['grains.set'](defname ~ ':installed',True) %}
 {% endif %}
 
