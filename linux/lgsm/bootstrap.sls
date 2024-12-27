@@ -1,5 +1,3 @@
-{% set user = salt['pillar.get'](defname ~ ':user',defname) %}
-{% set userhomedir = '/home/' ~ user %}
 {{ defname }} download:
   cmd.run:
     - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh {{ defname }}'
