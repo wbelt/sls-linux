@@ -39,19 +39,19 @@
 {% set creates = userhomedir ~ '/serverfiles/server.properties' %}
 {% include '../install.sls' %}
 
-{{ defname }} mcbcron file:
+{{ defname }} copy cron script:
   file.managed:
     - name: /usr/local/bin/mccron
     - source: salt://diydev/files/mcserver/mccron
     - mode: "0755"
 
-{{ defname }} cron path:
+{{ defname }} set cron path:
   cron.env_present:
     - name: PATH
     - value: /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
     - user: {{ user }}
 
-{{ defname }} cron update:
+{{ defname }} add cron update job:
   cron.present:
     - name: /usr/local/bin/mccron update >> update.log 2>&1
     - identifier: '{{ defname }} update'
@@ -59,7 +59,7 @@
     - hour: "3"
     - minute: "15"
 
-{{ defname }} cron reboot:
+{{ defname }} add cron reboot job:
   cron.present:
     - name: /usr/local/bin/mccron reboot >> reboot.log 2>&1
     - identifier: '{{ defname }} reboot'
