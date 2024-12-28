@@ -58,7 +58,6 @@
     - user: {{ user }}
     - hour: "3"
     - minute: "15"
-    - commented: True
 
 {{ defname }} cron reboot:
   cron.present:
@@ -67,4 +66,4 @@
     - user: {{ user }}
     - hour: "3"
     - minute: "35"
-    - commented: True
+    - commented: False

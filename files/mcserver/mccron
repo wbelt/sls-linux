@@ -9,7 +9,7 @@ update()
 uptime_reboot()
 {
         local MAX_UPTIME=86300
-        local PS_UPTIME=$(ps -o etimes= -p $(pgrep bedrock) | xargs)
+        local PS_UPTIME=$(ps -o etimes= -p $(pgrep -f '^java.*minecraft_server.*$') | xargs)
         echo "${0}: process uptime ${PS_UPTIME}"
         if [ $PS_UPTIME -gt $MAX_UPTIME ]; then
           echo "${0}: Max uptime exceeded"
