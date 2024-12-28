@@ -2,12 +2,17 @@
 lgsm {{ defname }} package install:
   pkg.latest: {{ pkg_latest }}
 
-{% if pkg_i386 and debconf_base %}
+{% if pkg_i386 and (grains['os'] == 'Ubuntu') %}
+debconf-base:
+  debconf.set:
+    - name: dash
+    - data:
+        steam/question: {'type': 'select', 'value': 'I AGREE'}
+        steam/license: {'type': 'note', 'value': ''}
+
 lgsm {{ defname }} i386 install:
   cmd.run:
     - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ pkg_i386 | join(" ") }}'
-    - onchanges:
-      - debconf: debconf-base
 {% endif %}
 
 lgsm {{ defname }} user creation:
