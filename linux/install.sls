@@ -1,3 +1,3 @@
 include:
-  - base
-  - scp-uitils
+  - .wesbase
+  - .scp-uitils
