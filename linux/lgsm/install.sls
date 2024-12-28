@@ -2,6 +2,14 @@
 lgsm {{ defname }} package install:
   pkg.latest: {{ pkg_latest }}
 
+{% if pkg_i386 amd debconf_base %}
+lgsm {{ defname }} i386 install:
+  cmd.run:
+    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ pkg_i386 }}'
+    - onchanges:
+      - debconf: debconf-base
+{% endif %}
+
 lgsm {{ defname }} user creation:
   user.present: {{ user_present }}
 

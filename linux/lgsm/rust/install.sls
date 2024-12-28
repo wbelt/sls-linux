@@ -3,51 +3,16 @@
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
 {% set creates = userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' %}
-
-debconf-base:
-  debconf.set:
-    - name: dash
-    - data:
-        steam/question: {'type': 'select', 'value': 'I AGREE'}
-        steam/license: {'type': 'note', 'value': ''}
-
-TODO rust server base:
-  user.present:
-    - name: {{ user }}
-    - fullname: Rust Server
-    - shell: /bin/bash
-    - createhome: True
-  pkg.latest:
-    - pkgs:
-      - bzip2
-      - jq
-      - lib32gcc-s1
-      - lib32stdc++6
-      - lib32z1
-{% if grains['osrelease_info'][0] == '22' %}
-      - netcat
+{% set pkg_base = [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ] %}
+{% if (grains['os'] == 'Ubuntu') and (grains['osrelease_info'][0] == '22') %}
+  {% set pkg_extra = [ 'netcat' ] %}
 {% else %}
-      - binutils
+  {% set pkg_extra = [ 'binutils' ] %}
 {% endif %}
-      - pigz
-      - unzip
-  cmd.run:
-    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes libsdl2-2.0-0:i386 steamcmd'
-    - onchanges:
-      - debconf: debconf-base
-
-TODO rust server download:
-  cmd.run:
-    - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh rustserver'
-    - runas: {{ user }}
-    - creates: {{ userhomedir }}/rustserver
-
-TODO rust server install:
-  cmd.run:
-    - name: './rustserver auto-install'
-    - runas: {{ user }}
-    - creates: {{ userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
-
+{% set pkg_latest = pkg_base + pkg_extra %}
+{% set pkg_i386 = [ 'libsdl2-2.0-0:i386', 'steamcmd' ] %}
+{% set debconf_base = { 'steam/question': { 'type': 'select', 'value': 'I AGREE' }, 'steam/license': { 'type': 'note', 'value': '' } } %}
+{% include '../install.sls' %}
 {{ defname }} sudo admin command:
   file.managed:
     - name: /usr/local/bin/rssudo
@@ -92,9 +57,4 @@ TODO rust server install:
     - mode: "0755"
 
 {% endif %}
-
-{{ defname }} set homedir owner:
-  cmd.run:
-    - name: "chown -R {{ user }}:{{ user }} /home/{{ user }}"
-
 {% endif %}
