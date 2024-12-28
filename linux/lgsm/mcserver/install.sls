@@ -36,6 +36,7 @@
     - shell: /bin/bash
     - createhome: True
 
+{% set creates = userhomedir ~ '/serverfiles/server.properties' %}
 {% include '../install.sls' %}
 
 {{ defname }} mcbcron file:

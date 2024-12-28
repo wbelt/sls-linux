@@ -8,6 +8,9 @@ lgsm {{ defname }} auto-install:
   cmd.run:
     - name: './{{ defname }} auto-install'
     - runas: {{ user }}
+{% if creates %}
+    - creates: {{ creates }}
+{% endif %}
 
 lgsm {{ defname }} set homedir owner:
   cmd.run:
