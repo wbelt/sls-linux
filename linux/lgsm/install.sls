@@ -14,5 +14,5 @@ lgsm {{ defname }} auto-install:
 
 lgsm {{ defname }} set homedir owner:
   cmd.run:
-    - name: "touch /home/{{ user }}/.setowner.flag && chown -R {{ user }}:{{ user }} /home/{{ user }}"
-    - creates: /home/{{ user }}/.setowner.flag
+    - name: "echo $(date) > /home/{{ user }}/.completed-set-owner.flag && chown -R {{ user }}:{{ user }} /home/{{ user }}"
+    - creates: /home/{{ user }}/.completed-set-owner.flag
