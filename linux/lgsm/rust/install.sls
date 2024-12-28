@@ -9,6 +9,7 @@
 {% else %}
   {% set pkg_extra = [ 'binutils' ] %}
 {% endif %}
+{% set user_present = [ { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True } ] %}
 {% set pkg_latest = pkg_base + pkg_extra %}
 {% set pkg_i386 = [ 'libsdl2-2.0-0:i386', 'steamcmd' ] %}
 {% set debconf_base = { 'steam/question': { 'type': 'select', 'value': 'I AGREE' }, 'steam/license': { 'type': 'note', 'value': '' } } %}
