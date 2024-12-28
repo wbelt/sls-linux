@@ -3,7 +3,7 @@ banner_help()
 {
   echo $0
   echo ""
-  echo "Usage: ${0} [filename]"
+  echo "Usage: ${0} <filename>"
   echo "Example: ${0} test.txt"
   echo ""
 }
