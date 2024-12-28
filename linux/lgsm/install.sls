@@ -13,6 +13,7 @@ lgsm {{ defname }} debconf set:
 lgsm {{ defname }} i386 install:
   cmd.run:
     - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ pkg_i386 | join(" ") }}'
+    - creates: /usr/games/steamcmd
 {% endif %}
 {% endif %}
 
