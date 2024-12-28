@@ -17,7 +17,7 @@ rust server cron PATH settings:
 
 rust server cron monitor:
   cron.present:
-{% if (grains['os'] != 'Ubuntu') or (grains['osrelease_info'][0] != '22') %}
+{% if (grains['os'] != 'Ubuntu') or (grains['osrelease_info'][0] != 22 ) %}
     - commented: True
 {% else %}
     - commented: False
