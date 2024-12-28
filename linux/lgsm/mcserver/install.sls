@@ -37,7 +37,7 @@
     - createhome: True
 
 include:
-  - ..install.sls
+  - ..install
 
 {{ defname }} mcbcron file:
   file.managed:
