@@ -2,7 +2,7 @@
 lgsm {{ defname }} package install:
   pkg.latest: {{ pkg_latest }}
 
-{% if grains['os'] == 'Ubuntu') %}
+{% if grains['os'] == 'Ubuntu' %}
 lgsm {{ defname }} debconf set:
   debconf.set:
     - name: dash
