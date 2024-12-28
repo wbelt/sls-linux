@@ -4,7 +4,7 @@
 {% set userhomedir = '/home/' ~ user %}
 {% set creates = userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' %}
 {% set pkg_base = [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ] %}
-{% if (grains['os'] == 'Ubuntu') and (grains['osrelease_info'][0] == '22') %}
+{% if (grains['os'] == 'Ubuntu') and (grains['osrelease_info'][0] == 22 ) %}
   {% set pkg_extra = [ 'netcat' ] %}
 {% else %}
   {% set pkg_extra = [ 'binutils' ] %}
