@@ -47,6 +47,4 @@ wheel group no sudo password:
     - name: /etc/sudoers.d/85-{{ sudo_group }}-group
     - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
 {% endif %}
-include:
-  - .scp-utils
 {% endif %}
