@@ -1,11 +1,11 @@
 include:
-  - .bootstrap.sls
+  - .bootstrap
 
-{{ defname }} install:
+lgsm {{ defname }} auto-install:
   cmd.run:
     - name: './{{ defname }} auto-install'
     - runas: {{ user }}
 
-{{ defname }} set homedir owner:
+lgsm {{ defname }} set homedir owner:
   cmd.run:
     - name: "chown -R {{ user }}:{{ user }} /home/{{ user }}"

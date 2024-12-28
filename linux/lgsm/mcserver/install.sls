@@ -36,8 +36,7 @@
     - shell: /bin/bash
     - createhome: True
 
-include:
-  - ..install
+{% include '../install.sls' %}
 
 {{ defname }} mcbcron file:
   file.managed:
