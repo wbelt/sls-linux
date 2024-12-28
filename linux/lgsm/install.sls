@@ -1,12 +1,12 @@
 {% if defname %}
-{% if pkg.latest %}
+{% if pkg_latest %}
 lgsm {{ defname }} package install:
-  pkg.latest: {{ pkg.latest }}
+  pkg.latest: {{ pkg_latest }}
 {% endif %}
 
-{% if user.present %}
+{% if user_present %}
 lgsm {{ defname }} user creation:
-  user.present: {{ user.present }}
+  user.present: {{ user_present }}
 {% endif %}
 
 lgsm {{ defname }} download:

@@ -1,8 +1,8 @@
 {% set defname = 'mcserver' %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
-{% set user.present = { 'name': user, 'fullname': 'Minecraft Java Server', 'shell': '/bin/bash', 'createhome': True } %}
-{% set pkg.latest = { 'refresh': True, 'pkgs': ['bc', 'binutils', 'bsdmainutils', 'bzip2', 'ca-certificates', 'cpio', 'curl',
+{% set user_present = { 'name': user, 'fullname': 'Minecraft Java Server', 'shell': '/bin/bash', 'createhome': True } %}
+{% set pkg_latest = { 'refresh': True, 'pkgs': ['bc', 'binutils', 'bsdmainutils', 'bzip2', 'ca-certificates', 'cpio', 'curl',
   'distro-info', 'file', 'gzip', 'hostname', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'netcat', 'openjdk-21-jre', 'pigz', 'python3',
   'tar', 'tmux', 'unzip', 'util-linux', 'uuid-runtime', 'wget', 'xz-utils'] } %}
 {% set creates = userhomedir ~ '/serverfiles/server.properties' %}
