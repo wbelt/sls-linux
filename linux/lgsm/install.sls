@@ -1,5 +1,4 @@
-include:
-  - .bootstrap
+{% include 'bootstrap.sls' %}
 
 lgsm {{ defname }} auto-install:
   cmd.run:
