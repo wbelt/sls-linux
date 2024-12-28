@@ -1,3 +1,3 @@
 include:
-  - .wesbase
-  - .scp-uitils
+  - .core
+  - .scp-utils
