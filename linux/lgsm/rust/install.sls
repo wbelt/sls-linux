@@ -1,7 +1,8 @@
-{% if ('rustserver' in pillar) %}
-{% if (salt['grains.get']('rustserver:installed', False) == False) %}
-{% set user = salt['pillar.get']('rustserver:user','rustserver') %}
+{% set defname = 'rustserver' %}
+{% if 'rustserver' in pillar %}
+{% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
+{% set creates = userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' %}
 
 debconf-base:
   debconf.set:
@@ -10,7 +11,7 @@ debconf-base:
         steam/question: {'type': 'select', 'value': 'I AGREE'}
         steam/license: {'type': 'note', 'value': ''}
 
-rust server base:
+TODO rust server base:
   user.present:
     - name: {{ user }}
     - fullname: Rust Server
@@ -35,31 +36,31 @@ rust server base:
     - onchanges:
       - debconf: debconf-base
 
-rust server download:
+TODO rust server download:
   cmd.run:
     - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh rustserver'
     - runas: {{ user }}
     - creates: {{ userhomedir }}/rustserver
 
-rust server install:
+TODO rust server install:
   cmd.run:
     - name: './rustserver auto-install'
     - runas: {{ user }}
     - creates: {{ userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
 
-rust server sudo admin command:
+{{ defname }} sudo admin command:
   file.managed:
     - name: /usr/local/bin/rssudo
     - source: salt://diydev/files/rust/rssudo
     - mode: "0755"
 
-rust server uptime command:
+{{ defname }} uptime command:
   file.managed:
     - name: /usr/local/bin/rsuptime
     - source: salt://diydev/files/rust/rsuptime
     - mode: "0755"
 
-rust server rcon file:
+{{ defname }} rcon file:
   file.managed:
     - name: /usr/local/bin/rcon
     - source: salt://files/rust/rcon
@@ -67,7 +68,7 @@ rust server rcon file:
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 
-rust server rconpwd file:
+{{ defname }} rconpwd file:
   file.managed:
     - name: {{ userhomedir }}/rconpwd
     - contents:
@@ -76,7 +77,7 @@ rust server rconpwd file:
     - group: {{ user }}
     - mode: "0600"
 
-rust server maint.conf file:
+{{ defname }} maint.conf file:
   file.managed:
     - name: {{ userhomedir }}/maint.conf
     - source: salt://diydev/files/rust/maint.conf
@@ -84,7 +85,7 @@ rust server maint.conf file:
     - user: {{ user }}
     - group: {{ user }}
 
-rust server rshelper file:
+{{ defname }} rshelper file:
   file.managed:
     - name: /usr/local/bin/rscon
     - source: salt://diydev/files/rust/rscon
@@ -92,11 +93,8 @@ rust server rshelper file:
 
 {% endif %}
 
-rust server set homedir owner:
+{{ defname }} set homedir owner:
   cmd.run:
     - name: "chown -R {{ user }}:{{ user }} /home/{{ user }}"
 
-{% set installed = salt['grains.set']('rustserver:installed',True) %}
-
-{% endif %}
 {% endif %}
