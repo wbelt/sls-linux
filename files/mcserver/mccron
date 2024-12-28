@@ -1,0 +1,33 @@
+#!/bin/bash
+update()
+{
+        echo "${0}: ./mcserver update..."
+        ./mcserver update
+        local SAVEQUIT=$?
+        echo "${0}: update returned status code ${SAVEQUIT}"
+}
+uptime_reboot()
+{
+        local MAX_UPTIME=86300
+        local PS_UPTIME=$(ps -o etimes= -p $(pgrep bedrock) | xargs)
+        echo "${0}: process uptime ${PS_UPTIME}"
+        if [ $PS_UPTIME -gt $MAX_UPTIME ]; then
+          echo "${0}: Max uptime exceeded"
+          ./mcserver restart
+        fi
+}
+if [ -z $1 ]; then
+        echo $0
+        echo ""
+        echo "    select option"
+        echo ""
+        echo "      reboot        - reboot if up more than MAX_TIME"
+        echo "      update        - check update and reboot if needed"
+        echo ""
+else 
+        if [ "$1" = "update" ]; then
+                update
+        elif [ "$1" = "reboot" ]; then
+                uptime_reboot
+        fi
+fi

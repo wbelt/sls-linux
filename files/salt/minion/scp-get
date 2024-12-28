@@ -9,7 +9,7 @@ banner_help()
 }
 perform_get()
 {
-  HOST=$(hostname -f)
+  local HOST=$(hostname -f)
   scp -P 25022 -i /etc/mytu.key "${HOST}@salt.diydev.io:${1}" .
 }
 if [ -z $1 ]; then

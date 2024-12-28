@@ -41,8 +41,8 @@ include:
 
 {{ defname }} mcbcron file:
   file.managed:
-    - name: /usr/local/bin/mcbcron
-    - source: salt://diydev/files/mcb/mcbcron
+    - name: /usr/local/bin/mccron
+    - source: salt://diydev/files/mcserver/mccron
     - mode: "0755"
 
 {{ defname }} cron path:
@@ -53,7 +53,7 @@ include:
 
 {{ defname }} cron update:
   cron.present:
-    - name: /usr/local/bin/mcbcron update >> update.log 2>&1
+    - name: /usr/local/bin/mccron update >> update.log 2>&1
     - identifier: '{{ defname }} update'
     - user: {{ user }}
     - hour: "3"
@@ -62,7 +62,7 @@ include:
 
 {{ defname }} cron reboot:
   cron.present:
-    - name: /usr/local/bin/mcbcron reboot >> reboot.log 2>&1
+    - name: /usr/local/bin/mccron reboot >> reboot.log 2>&1
     - identifier: '{{ defname }} reboot'
     - user: {{ user }}
     - hour: "3"
