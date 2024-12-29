@@ -6,7 +6,7 @@
   'distro-info', 'file', 'gzip', 'hostname', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'netcat', 'openjdk-21-jre', 'pigz', 'python3',
   'tar', 'tmux', 'unzip', 'util-linux', 'uuid-runtime', 'wget', 'xz-utils'] } ] %}
 {% set creates = userhomedir ~ '/serverfiles/server.properties' %}
-{% include '../install.sls' %}
+{% include '../init.sls' %}
 
 {{ defname }} copy cron script:
   file.managed:
