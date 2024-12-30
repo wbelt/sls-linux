@@ -9,7 +9,7 @@ lgsm {{ defname }} debconf set:
     - data:
         steam/question: {'type': 'select', 'value': 'I AGREE'}
         steam/license: {'type': 'note', 'value': ''}
-{% if pkg_i386 %}
+{% if pkg_i386 is defined %}
 lgsm {{ defname }} i386 install:
   cmd.run:
     - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ pkg_i386 | join(" ") }}'
