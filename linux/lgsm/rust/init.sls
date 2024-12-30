@@ -236,7 +236,6 @@ rust set owners:
     - group: {{ user }}
     - contents:
 {% for owner in salt['pillar.get']('rustserver:owners','') %}
-      - ownerid {{ owner }} "unnamed" "no reason""\r"
+      - ownerid {{ owner }} "unnamed" "no reason"
 {% endfor %}
-
 {% endif %}
