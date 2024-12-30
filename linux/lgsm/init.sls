@@ -1,4 +1,4 @@
-{% if defname %}
+{% if defname is defined %}
 lgsm {{ defname }} package install:
   pkg.latest: {{ pkg_latest }}
 
