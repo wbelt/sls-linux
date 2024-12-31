@@ -14,7 +14,7 @@
   {% set pkg_extra = [ 'binutils' ] %}
 {% endif %}
 
-{% set pkg_latest = [ { 'refresh': True, 'pkgs': pkg_base + pkg_extra } ] %}
+{% set pkg_latest = pkg_base + pkg_extra %}
 {% set pkg_i386 = [ 'libsdl2-2.0-0:i386', 'steamcmd' ] %}
 
 {% set x = salt['grains.set']('lgsm:install:packages:latest',pkg_latest) %}
