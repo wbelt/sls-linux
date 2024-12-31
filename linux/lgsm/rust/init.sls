@@ -2,16 +2,26 @@
 {% if 'rustserver' in pillar %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
+
 {% set creates = userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' %}
+{% set user_present = [ { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True } ] %}
+
 {% set pkg_base = [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ] %}
+
 {% if (grains['os'] == 'Ubuntu') and (grains['osrelease_info'][0] == 22 ) %}
   {% set pkg_extra = [ 'netcat' ] %}
 {% else %}
   {% set pkg_extra = [ 'binutils' ] %}
 {% endif %}
-{% set user_present = [ { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True } ] %}
+
 {% set pkg_latest = [ { 'refresh': True, 'pkgs': pkg_base + pkg_extra } ] %}
 {% set pkg_i386 = [ 'libsdl2-2.0-0:i386', 'steamcmd' ] %}
+
+{% salt['grains.set']('lgsm:install:packages:latest',pkg_latest) %}
+{% salt['grains.set']('lgsm:install:packages:i386',pkg_i386) %}
+{% salt['grains.set']('lgsm:install:user',user_present) %}
+{% salt['grains.set']('lgsm:install:creates',creates) %}
+
 {% include '../init.sls' %}
 {{ defname }} sudo admin command:
   file.managed:
