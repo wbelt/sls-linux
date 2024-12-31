@@ -18,7 +18,7 @@ lgsm {{ defname }} i386 install:
 {% endif %}
 
 lgsm {{ defname }} user creation:
-  user.present: {{ user_present }}
+  user.present: [ {{ user_present }} ]
 
 lgsm {{ defname }} download:
   cmd.run:

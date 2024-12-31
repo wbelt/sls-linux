@@ -4,7 +4,7 @@
 {% set userhomedir = '/home/' ~ user %}
 
 {% set creates = userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' %}
-{% set user_present = [ { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True } ] %}
+{% set user_present = { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True } %}
 
 {% set pkg_base = [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ] %}
 
