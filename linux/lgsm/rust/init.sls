@@ -17,10 +17,10 @@
 {% set pkg_latest = [ { 'refresh': True, 'pkgs': pkg_base + pkg_extra } ] %}
 {% set pkg_i386 = [ 'libsdl2-2.0-0:i386', 'steamcmd' ] %}
 
-{% salt['grains.set']('lgsm:install:packages:latest',pkg_latest) %}
-{% salt['grains.set']('lgsm:install:packages:i386',pkg_i386) %}
-{% salt['grains.set']('lgsm:install:user',user_present) %}
-{% salt['grains.set']('lgsm:install:creates',creates) %}
+{% set x = salt['grains.set']('lgsm:install:packages:latest',pkg_latest) %}
+{% set x = salt['grains.set']('lgsm:install:packages:i386',pkg_i386) %}
+{% set x = salt['grains.set']('lgsm:install:user',user_present) %}
+{% set x = salt['grains.set']('lgsm:install:creates',creates) %}
 
 {% include '../init.sls' %}
 {{ defname }} sudo admin command:
