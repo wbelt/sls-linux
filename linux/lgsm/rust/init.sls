@@ -17,6 +17,7 @@
 {% set pkg_latest = pkg_base + pkg_extra %}
 {% set pkg_i386 = [ 'libsdl2-2.0-0:i386', 'steamcmd' ] %}
 
+{% set x = salt['grains.set']('lgsm:install:name',defname,force=True) %}
 {% set x = salt['grains.set']('lgsm:install:packages:latest',pkg_latest,force=True) %}
 {% set x = salt['grains.set']('lgsm:install:packages:i386',pkg_i386,force=True) %}
 {% set x = salt['grains.set']('lgsm:install:user',user_present,force=True) %}
