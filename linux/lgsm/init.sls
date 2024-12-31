@@ -1,6 +1,6 @@
 {% if defname is defined %}
 lgsm {{ defname }} package install:
-  pkg.latest: { refresh: True, pkgs: {{ pkg_latest }} }
+  pkg.latest: [ { refresh: True, pkgs: {{ pkg_latest }} } ]
 
 {% if grains['os'] == 'Ubuntu' %}
 lgsm {{ defname }} debconf set:
