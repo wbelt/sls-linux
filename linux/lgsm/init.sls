@@ -1,7 +1,7 @@
 {% if defname is defined %}
 
 lgsm {{ defname }} package install:
-  pkg.latest: [ { refresh: True, pkgs: {{ rust_os.packages.latest }} } ]
+  pkg.latest: [ { refresh: True, pkgs: {{ lgsm_os.packages.latest }} } ]
 
 {% if grains['os'] == 'Ubuntu' %}
 lgsm {{ defname }} debconf set:
@@ -13,12 +13,12 @@ lgsm {{ defname }} debconf set:
 
 lgsm {{ defname }} i386 install:
   cmd.run:
-    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ rust_os.packages.i386 | join(" ") }}'
+    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ lgsm_os.packages.i386 | join(" ") }}'
     - creates: /usr/games/steamcmd
 {% endif %}
 
 lgsm {{ defname }} user creation:
-  user.present: [ {{ user_present }} ]
+  user.present: [ {{ lgsm_os.user_present }} ]
 
 lgsm {{ defname }} download:
   cmd.run:
@@ -30,8 +30,8 @@ lgsm {{ defname }} auto-install:
   cmd.run:
     - name: './{{ defname }} auto-install'
     - runas: {{ user }}
-{% if creates %}
-    - creates: {{ creates }}
+{% if lgsm_os.creates %}
+    - creates: {{ lgsm_os.creates }}
 {% endif %}
 
 lgsm {{ defname }} set homedir owner:

@@ -1,7 +1,12 @@
-{% set rust_os = salt['grains.filter_by'] ({
+{% set user = salt['pillar.get'](defname ~ ':user',defname) %}
+{% set userhomedir = '/home/' ~ user %}
+
+{% set lgsm_os = salt['grains.filter_by'] ({
     'common': {
       'disabled': False,
       'testing': False,
+      'user_present': { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True },
+      'creates': { userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' },
       'retry_options': {
         'attempts': 3,
         'until': True,
