@@ -1,6 +1,5 @@
 {% if defname is defined %}
 
-{% from 'rust_os_map.jinja' import rust_os %}
 lgsm {{ defname }} package install:
   pkg.latest: [ { refresh: True, pkgs: {{ rust_os.packages.latest }} } ]
 

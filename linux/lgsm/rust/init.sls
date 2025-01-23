@@ -22,10 +22,7 @@
 {% set x = salt['grains.set']('lgsm:install:user',user_present,force=True) %}
 {% set x = salt['grains.set']('lgsm:install:creates',creates,force=True) %}
 
-#OS Specific
-{% set x = salt['grains.set']('lgsm:install:packages:latest',pkg_latest,force=True) %}
-{% set x = salt['grains.set']('lgsm:install:packages:i386',pkg_i386,force=True) %}
-
+{% from 'rust_os_map.jinja' import rust_os %}
 
 {% include '../init.sls' %}
 {{ defname }} sudo admin command:
