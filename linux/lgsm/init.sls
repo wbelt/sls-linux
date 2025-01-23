@@ -17,7 +17,6 @@ lgsm {{ defname }} i386 install:
     - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ rust_os.packages.i386 | join(" ") }}'
     - creates: /usr/games/steamcmd
 {% endif %}
-{% endif %}
 
 lgsm {{ defname }} user creation:
   user.present: [ {{ user_present }} ]
