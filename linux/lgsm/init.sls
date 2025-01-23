@@ -22,7 +22,7 @@ lgsm {{ lgsm_os.defname }} user creation:
 
 lgsm {{ lgsm_os.defname }} download:
   cmd.run:
-    - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh {{ defname }}'
+    - name: 'wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh {{ lgsm_os.defname }}'
     - runas: {{ lgsm_os.user }}
     - creates: {{ lgsm_os.userhomedir }}/{{ lgsm_os.defname }}
 
