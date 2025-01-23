@@ -1,33 +1,32 @@
-{% set defname = 'rustserver' %}
 {% if 'rustserver' in pillar %}
 {% from './rust_os_map.jinja' import lgsm_os %}
 {% include '../init.sls' %}
 
-{{ defname }} sudo admin command:
+{{ lgsm_os.defname }} sudo admin command:
   file.managed:
     - name: /usr/local/bin/rssudo
     - source: salt://diydev/files/rust/rssudo
     - mode: "0755"
 
-{{ defname }} uptime command:
+{{ lgsm_os.defname }} uptime command:
   file.managed:
     - name: /usr/local/bin/rsuptime
     - source: salt://diydev/files/rust/rsuptime
     - mode: "0755"
 
-{{ defname }} rcon file:
+{{ lgsm_os.defname }} rcon file:
   file.managed:
     - name: /usr/local/bin/rcon
     - source: salt://files/rust/rcon
     - mode: "0755"
 
-{{ defname }} cron SHELL settings:
+{{ lgsm_os.defname }} cron SHELL settings:
   cron.env_present:
     - user: {{ user }}
     - name: SHELL
     - value: /bin/bash
 
-{{ defname }} cron PATH settings:
+{{ lgsm_os.defname }} cron PATH settings:
   cron.env_present:
     - user: {{ user }}
     - name: PATH

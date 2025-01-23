@@ -1,3 +1,4 @@
+{% set defname = 'rustserver' %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
 
