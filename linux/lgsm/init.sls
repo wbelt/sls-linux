@@ -1,6 +1,8 @@
 {% if defname is defined %}
+
+{% from 'rust_os_map.jinja' import rust_os %}
 lgsm {{ defname }} package install:
-  pkg.latest: [ { refresh: True, pkgs: {{ pkg_latest }} } ]
+  pkg.latest: [ { refresh: True, pkgs: {{ rust_os.packages.latest }} } ]
 
 {% if grains['os'] == 'Ubuntu' %}
 lgsm {{ defname }} debconf set:
@@ -9,10 +11,10 @@ lgsm {{ defname }} debconf set:
     - data:
         steam/question: {'type': 'select', 'value': 'I AGREE'}
         steam/license: {'type': 'note', 'value': ''}
-{% if pkg_i386 is defined %}
+
 lgsm {{ defname }} i386 install:
   cmd.run:
-    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ pkg_i386 | join(" ") }}'
+    - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ rust_os.packages.i386 | join(" ") }}'
     - creates: /usr/games/steamcmd
 {% endif %}
 {% endif %}

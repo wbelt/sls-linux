@@ -1,0 +1,48 @@
+{% set rust_os = salt['grains.filter_by'] ({
+    'common': {
+      'disabled': False,
+      'testing': False,
+      'retry_options': {
+        'attempts': 3,
+        'until': True,
+        'interval': 10,
+        'splay': 10,
+      },
+    },
+    'Ubuntu': salt['grains.filter_by']({
+      22: {
+        'packages': {
+          'latest': [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'netcat', 'pigz', 'unzip' ],
+          'i386' : [ 'libsdl2-2.0-0:i386', 'steamcmd' ],
+          },
+      },
+      24: {
+        'packages': {
+          'latest': [ 'binutils', 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ],
+          'i386' : [ 'libsdl2-2.0-0:i386', 'steamcmd' ],
+          },
+      },
+    },
+    grain='osmajorrelease',
+    default=22),
+    'Rocky': salt['grains.filter_by']({
+      8: {
+        'packages': {
+          'latest': [ 'binutils', 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ],
+          'i386' : [ 'libsdl2-2.0-0:i386', 'steamcmd' ],
+          },
+      },
+      9: {
+        'packages': {
+          'latest': [ 'binutils', 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ],
+          'i386' : [ 'libsdl2-2.0-0:i386', 'steamcmd' ],
+          },
+      },
+    },
+    grain='osmajorrelease',
+    default=9)
+  },
+  grain='os',
+  default='Ubuntu',
+  base='common' )
+-%}
