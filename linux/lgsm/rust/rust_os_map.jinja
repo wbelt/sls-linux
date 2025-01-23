@@ -6,7 +6,7 @@
       'disabled': False,
       'testing': False,
       'user_present': { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True },
-      'creates': { userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg' },
+      'creates': userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg',
       'retry_options': {
         'attempts': 3,
         'until': True,
