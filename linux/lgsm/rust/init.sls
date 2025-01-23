@@ -22,7 +22,7 @@
 {% set x = salt['grains.set']('lgsm:install:user',user_present,force=True) %}
 {% set x = salt['grains.set']('lgsm:install:creates',creates,force=True) %}
 
-{% from 'rust_os_map.jinja' import rust_os %}
+{% from './rust_os_map.jinja' import rust_os %}
 
 {% include '../init.sls' %}
 {{ defname }} sudo admin command:
