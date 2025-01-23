@@ -55,7 +55,7 @@
     - group: {{ lgsm_os.user }}
     - mode: "0600"
 
-{{ defname }} maint.conf file:
+{{ lgsm_os.defname }} maint.conf file:
   file.managed:
     - name: {{ lgsm_os.userhomedir }}/maint.conf
     - source: salt://diydev/files/rust/maint.conf
@@ -63,7 +63,7 @@
     - user: {{ lgsm_os.user }}
     - group: {{ lgsm_os.user }}
 
-{{ defname }} rshelper file:
+{{ lgsm_os.defname }} rshelper file:
   file.managed:
     - name: /usr/local/bin/rscon
     - source: salt://diydev/files/rust/rscon
@@ -71,21 +71,21 @@
 
 {% set rconbase = 'RCONPWD=$(cat rconpwd); /usr/local/bin/rcon -t web -a localhost:28016 -p $RCONPWD' %}
 
-{{ defname }} hourly time:
+{{ lgsm_os.defname }} hourly time:
   cron.present:
     - name: /usr/local/bin/rscon saytime >> hourly-time.log 2>&1
     - identifier: "hourly time"
     - user: {{ lgsm_os.user }}
     - minute: "0"
 
-{{ defname }} daily maintenance:
+{{ lgsm_os.defname }} daily maintenance:
   cron.present:
     - name: /usr/local/bin/rscon maint >> daily-maint.log 2>&1
     - identifier: "daily maint"
     - user: {{ lgsm_os.user }}
     - hour: "3"
 
-{{ defname }} config update:
+{{ lgsm_os.defname }} config update:
   file.replace:
     - name: {{ lgsm_os.userhomedir }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
