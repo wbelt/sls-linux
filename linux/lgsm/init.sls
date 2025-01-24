@@ -11,10 +11,12 @@ lgsm {{ lgsm_os.defname }} debconf set:
         steam/question: {'type': 'select', 'value': 'I AGREE'}
         steam/license: {'type': 'note', 'value': ''}
 
+{% if lgsm_os.packages.i386 is defined %}
 lgsm {{ lgsm_os.defname }} i386 install:
   cmd.run:
     - name: 'dpkg --add-architecture i386; apt update; DEBIAN_FRONTEND=noninteractive apt install --yes {{ lgsm_os.packages.i386 | join(" ") }}'
     - creates: /usr/games/steamcmd
+{% endif %}
 {% endif %}
 
 lgsm {{ lgsm_os.defname }} user creation:
