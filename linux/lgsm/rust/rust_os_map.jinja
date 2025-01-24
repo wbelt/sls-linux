@@ -4,19 +4,10 @@
 
 {% set lgsm = salt['grains.filter_by']({
     'common': {
-      'disabled': False,
-      'testing': False,
-      'defname': defname,
-      'user': user,
-      'userhomedir': userhomedir,
-      'user_present': { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash', 'createhome': True },
-      'creates': userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg',
-      'retry_options': {
-        'attempts': 3,
-        'until': True,
-        'interval': 10,
-        'splay': 10,
-      },
+      'app': defname,
+      'os': { 'user': user, 'creates': userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg', 
+      'userhomedir': userhomedir, 'user_present': { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash',
+      'createhome': True } },
     },
     'Ubuntu': salt['grains.filter_by']({
       'common': {

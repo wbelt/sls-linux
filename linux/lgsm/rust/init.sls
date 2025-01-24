@@ -2,37 +2,37 @@
 {% from './rust_os_map.jinja' import lgsm %}
 {% include '../init.sls' %}
 
-{{ lgsm.defname }} sudo admin command:
+{{ lgsm.app }} sudo admin command:
   file.managed:
     - name: /usr/local/bin/rssudo
     - source: salt://diydev/files/rust/rssudo
     - mode: "0755"
 
-{{ lgsm.defname }} uptime command:
+{{ lgsm.app }} uptime command:
   file.managed:
     - name: /usr/local/bin/rsuptime
     - source: salt://diydev/files/rust/rsuptime
     - mode: "0755"
 
-{{ lgsm.defname }} rcon file:
+{{ lgsm.app }} rcon file:
   file.managed:
     - name: /usr/local/bin/rcon
     - source: salt://files/rust/rcon
     - mode: "0755"
 
-{{ lgsm.defname }} cron SHELL settings:
+{{ lgsm.app }} cron SHELL settings:
   cron.env_present:
-    - user: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
     - name: SHELL
     - value: /bin/bash
 
-{{ lgsm.defname }} cron PATH settings:
+{{ lgsm.app }} cron PATH settings:
   cron.env_present:
-    - user: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
     - name: PATH
     - value: /usr/sbin:/usr/bin:/bin
 
-{{ lgsm.defname }}  cron monitor:
+{{ lgsm.app }}  cron monitor:
   cron.present:
 {% if (grains['os'] != 'Ubuntu') or (grains['osrelease_info'][0] != 22 ) %}
     - commented: True
@@ -41,29 +41,29 @@
 {% endif %}
     - name: "./rustserver monitor > /dev/null 2>&1"
     - identifier: "rustserver monitor"
-    - user: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
     - minute: "*/5"
 
 {% if 'rconpassword' in pillar['rustserver'] %}
 
-{{ lgsm.defname }} rconpwd file:
+{{ lgsm.app }} rconpwd file:
   file.managed:
-    - name: {{ lgsm.userhomedir }}/rconpwd
+    - name: {{ lgsm.os.userhomedir }}/rconpwd
     - contents:
       - {{ pillar['rustserver']['rconpassword'] }}
-    - user: {{ lgsm.user }}
-    - group: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
+    - group: {{ lgsm.os.user }}
     - mode: "0600"
 
-{{ lgsm.defname }} maint.conf file:
+{{ lgsm.app }} maint.conf file:
   file.managed:
-    - name: {{ lgsm.userhomedir }}/maint.conf
+    - name: {{ lgsm.os.userhomedir }}/maint.conf
     - source: salt://diydev/files/rust/maint.conf
     - mode: "0600"
-    - user: {{ lgsm.user }}
-    - group: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
+    - group: {{ lgsm.os.user }}
 
-{{ lgsm.defname }} rshelper file:
+{{ lgsm.app }} rshelper file:
   file.managed:
     - name: /usr/local/bin/rscon
     - source: salt://diydev/files/rust/rscon
@@ -71,23 +71,23 @@
 
 {% set rconbase = 'RCONPWD=$(cat rconpwd); /usr/local/bin/rcon -t web -a localhost:28016 -p $RCONPWD' %}
 
-{{ lgsm.defname }} hourly time:
+{{ lgsm.app }} hourly time:
   cron.present:
     - name: /usr/local/bin/rscon saytime >> hourly-time.log 2>&1
     - identifier: "hourly time"
-    - user: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
     - minute: "0"
 
-{{ lgsm.defname }} daily maintenance:
+{{ lgsm.app }} daily maintenance:
   cron.present:
     - name: /usr/local/bin/rscon maint >> daily-maint.log 2>&1
     - identifier: "daily maint"
-    - user: {{ lgsm.user }}
+    - user: {{ lgsm.os.user }}
     - hour: "3"
 
-{{ lgsm.defname }} config update:
+{{ lgsm.app }} config update:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/secrets-rustserver.cfg
     - append_if_not_found: True
     - pattern: ^rconpassword=.*$
     - repl: rconpassword={{ pillar['rustserver']['rconpassword'] }}
@@ -98,7 +98,7 @@
 
 rust set server description:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.description.*$
     - repl: 'server.description "This is a private server ONLY.\\n"'
@@ -108,7 +108,7 @@ rust set server description:
 
 rust set header image:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.headerimage.*$
     - repl: server.headerimage "https://i.imgur.com/uReayFY.jpg"
@@ -118,7 +118,7 @@ rust set header image:
 
 rust set server URL:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.url.*$
     - repl: server.url "https://twitter.com/DoomCrickets"
@@ -128,7 +128,7 @@ rust set server URL:
 
 rust set server tags:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.tags.*$
     - repl: server.tags "monthly,na,vanilla"
@@ -138,7 +138,7 @@ rust set server tags:
 
 rust set worldsize:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^worldsize.*$
     - repl: worldsize="4500"
@@ -148,7 +148,7 @@ rust set worldsize:
 
 rust set maxplayers:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^maxplayers.*$
     - repl: maxplayers="50"
@@ -158,7 +158,7 @@ rust set maxplayers:
 
 rust set server name:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^servername.*$
     - repl: servername="Doom Crickets | Private Server {{ grains['host'] | regex_replace('lgsm([0-9])', '\\1', ignorecase=True) }}"
@@ -170,7 +170,7 @@ rust set server name:
       (grains['host'] in pillar['rustserver']['seeds']) %}
 rust set server seed:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
     - pattern: ^seed=.*$
     - repl: seed="{{ pillar['rustserver']['seeds'][grains['host']] }}"
@@ -180,7 +180,7 @@ rust set server seed:
 {% else %}
 rust remove server seed:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: False
     - pattern: ^seed=.*$
     - repl: ''
@@ -191,7 +191,7 @@ rust remove server seed:
 
 rust set decay:
   file.append:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - text: |
         decay.bracket_0_costfraction 0.01
         decay.bracket_1_costfraction 0.015
@@ -200,14 +200,14 @@ rust set decay:
 
 rust set allow minis and motorboats to spawn:
   file.append:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - text: |
         minicopter.population 1
         motorrowboat.population 1
 
 rust set to no censor:
   file.replace:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
     - append_if_not_found: True
     - pattern: ^server\.censorplayerlist.*$
     - repl: server.censorplayerlist false
@@ -217,9 +217,9 @@ rust set to no censor:
 
 rust set owners:
   file.managed:
-    - name: {{ lgsm.userhomedir }}/serverfiles/server/rustserver/cfg/users.cfg
-    - user: {{ lgsm.user }}
-    - group: {{ lgsm.user }}
+    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/users.cfg
+    - user: {{ lgsm.os.user }}
+    - group: {{ lgsm.os.user }}
     - contents:
 {% for owner in salt['pillar.get']('rustserver:owners','') %}
       - ownerid {{ owner }} "unnamed" "no reason"
