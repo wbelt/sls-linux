@@ -2,7 +2,7 @@
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
 
-{% set lgsm_os = salt['grains.filter_by'] ({
+{% set lgsm = salt['grains.filter_by']({
     'common': {
       'disabled': False,
       'testing': False,
@@ -37,7 +37,7 @@
     'Rocky': salt['grains.filter_by']({
       'common': {
         'packages': {
-          'latest': [ 'bc', 'bzip2', 'epel-release', 'glibc.i686', 'libstdc++.i686', 'nmap-ncat' ],
+          'common': [ 'bc', 'bzip2', 'epel-release', 'glibc.i686', 'libstdc++.i686', 'nmap-ncat' ],
           },
       },
       8: {
