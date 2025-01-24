@@ -31,7 +31,7 @@ lgsm {{ lgsm.app }} download:
 lgsm {{ lgsm.app }} auto-install:
   cmd.run:
     - name: './{{ lgsm.app }} auto-install'
-    - runas: {{ lgsm.user }}
+    - runas: {{ lgsm.os.user }}
 {% if lgsm.creates %}
     - creates: {{ lgsm.os.creates }}
 {% endif %}
