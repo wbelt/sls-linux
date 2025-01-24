@@ -42,17 +42,17 @@
     'Rocky': salt['grains.filter_by']({
       'common': {
         'packages': {
-          'common': [ 'bc', 'bzip2', 'epel-release', 'glibc.i686', 'libstdc++.i686', 'nmap-ncat' ],
+          'common': [ 'bc', 'bzip2', 'epel-release', 'glibc.i686', 'libstdc++.i686', 'nmap-ncat', 'tmux', 'unzip', 'zlib-devel' ],
           },
       },
       8: {
         'packages': {
-          'latest': [ 'tmux', 'unzip', 'zlib-devel' ],
+          'latest': [ 'binutils', 'jq' ],
           },
       },
       9: {
         'packages': {
-          'latest': [ 'tmux', 'unzip', 'zlib-devel' ],
+          'latest': [  ],
           },
       },
     },
