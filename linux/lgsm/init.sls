@@ -32,7 +32,7 @@ lgsm {{ lgsm.app }} auto-install:
   cmd.run:
     - name: './{{ lgsm.app }} auto-install'
     - runas: {{ lgsm.os.user }}
-{% if lgsm.creates %}
+{% if lgsm.os.creates %}
     - creates: {{ lgsm.os.creates }}
 {% endif %}
 
