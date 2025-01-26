@@ -1,0 +1,57 @@
+{% set defname = 'rustserver' %}
+{% set user = salt['pillar.get'](defname ~ ':user',defname) %}
+{% set userhomedir = '/home/' ~ user %}
+
+{% set lgsm = salt['grains.filter_by']({
+    'common': {
+      'game': defname,
+      'os': { 'user': user, 'creates': userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg', 
+      'userhomedir': userhomedir, 'user_present': { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash',
+      'createhome': True } },
+    },
+    'Ubuntu': salt['grains.filter_by']({
+      'common': {
+        'packages': {
+          'common': [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ],
+          'i386' : [ 'libsdl2-2.0-0:i386', 'steamcmd' ],
+          },
+      },
+      22: {
+        'packages': {
+          'latest': [ 'netcat' ],
+          },
+      },
+      24: {
+        'packages': {
+          'latest': [ 'binutils' ],
+          },
+      },
+    },
+    grain='osmajorrelease',
+    default=22,
+    base='common'),
+    'Rocky': salt['grains.filter_by']({
+      'common': {
+        'packages': {
+          'common': [ 'bc', 'bzip2', 'epel-release', 'glibc.i686', 'libstdc++.i686', 'nmap-ncat', 'tmux', 'unzip', 'zlib-devel' ],
+          },
+      },
+      8: {
+        'packages': {
+          'latest': [ 'binutils', 'jq' ],
+          },
+      },
+      9: {
+        'packages': {
+          'latest': [  ],
+          },
+      },
+    },
+    grain='osmajorrelease',
+    default=9,
+    base='common'),
+  },
+  grain='os',
+  default='Ubuntu',
+  base='common' )
+-%}

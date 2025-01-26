@@ -1,19 +1,19 @@
-{% set defname = 'rustserver' %}
+{% set defname = 'mcserver' %}
 {% set user = salt['pillar.get'](defname ~ ':user',defname) %}
 {% set userhomedir = '/home/' ~ user %}
 
 {% set lgsm = salt['grains.filter_by']({
     'common': {
-      'app': defname,
-      'os': { 'user': user, 'creates': userhomedir ~ '/serverfiles/server/rustserver/cfg/server.cfg', 
-      'userhomedir': userhomedir, 'user_present': { 'name': user, 'fullname': 'Rust Server', 'shell': '/bin/bash',
-      'createhome': True } },
+      'game': defname,
+      'os': { 'user': user, 'creates': userhomedir ~ '/serverfiles/server.properties', 
+      'userhomedir': userhomedir, 'user_present': { 'name': user, 'fullname': 'Minecraft Java Server', 'shell': '/bin/bash', 'createhome': True } },
     },
     'Ubuntu': salt['grains.filter_by']({
       'common': {
         'packages': {
-          'common': [ 'bzip2', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'lib32z1', 'pigz', 'unzip' ],
-          'i386' : [ 'libsdl2-2.0-0:i386', 'steamcmd' ],
+          'common': [ 'bc', 'bsdmainutils', 'bzip2', 'ca-certificates', 'cpio', 'curl',
+                    'distro-info', 'file', 'gzip', 'hostname', 'jq', 'lib32gcc-s1', 'lib32stdc++6', 'netcat', 'openjdk-21-jre', 'pigz', 'python3',
+                    'tar', 'tmux', 'unzip', 'util-linux', 'uuid-runtime', 'wget', 'xz-utils' ],
           },
       },
       22: {
