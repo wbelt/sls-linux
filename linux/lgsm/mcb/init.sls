@@ -28,6 +28,3 @@
     - user: {{ user }}
     - hour: "3"
     - minute: "35"
-
-{% endif %}
-
