@@ -1,0 +1,56 @@
+{% set defname = 'mcbserver' %}
+{% set user = salt['pillar.get'](defname ~ ':user',defname) %}
+{% set userhomedir = '/home/' ~ user %}
+
+{% set lgsm = salt['grains.filter_by']({
+    'common': {
+      'game': defname,
+      'os': { 'user': user, 'creates': userhomedir ~ '/serverfiles/server.properties', 
+      'userhomedir': userhomedir, 'user_present': { 'name': user, 'fullname': 'Minecraft Java Server', 'shell': '/bin/bash', 'createhome': True } },
+    },
+    'Ubuntu': salt['grains.filter_by']({
+      'common': {
+        'packages': {
+          'common': [ 'bc', 'binutils','bsdmainutils', 'bzip2', 'ca-certificates', 'cpio', 'curl', 'distro-info file', 'epel-release', 'file', 'gzip','hostname', 'jq',
+                      'lib32gcc-s1', 'lib32stdc++6', 'pigz', 'python3', 'tar', 'tmux', 'unzip', 'util-linux', 'uuid-runtime', 'wget', 'xz-utils' ],
+          },
+      },
+      22: {
+        'packages': {
+          'latest': [ 'netcat' ],
+          },
+      },
+      24: {
+        'packages': {
+          'latest': [ 'netcat-openbsd' ],
+          },
+      },
+    },
+    grain='osmajorrelease',
+    default=22,
+    base='common'),
+    'Rocky': salt['grains.filter_by']({
+      'common': {
+        'packages': {
+          'common': [ 'bc', 'bzip2', 'epel-release', 'glibc.i686', 'libstdc++.i686', 'nmap-ncat', 'tmux', 'unzip', 'zlib-devel' ],
+          },
+      },
+      8: {
+        'packages': {
+          'latest': [ 'binutils', 'jq' ],
+          },
+      },
+      9: {
+        'packages': {
+          'latest': [  ],
+          },
+      },
+    },
+    grain='osmajorrelease',
+    default=9,
+    base='common'),
+  },
+  grain='os',
+  default='Ubuntu',
+  base='common' )
+-%}
