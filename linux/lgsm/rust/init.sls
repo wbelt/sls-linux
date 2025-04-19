@@ -128,10 +128,10 @@ rust set server URL:
 
 rust set server tags:
   file.replace:
-    - name: {{ lgsm.os.userhomedir }}/serverfiles/server/rustserver/cfg/server.cfg
+    - name: {{ lgsm.os.userhomedir }}/lgsm/config-lgsm/rustserver/rustserver.cfg
     - append_if_not_found: True
-    - pattern: ^server\.tags.*$
-    - repl: server.tags "monthly,na,vanilla"
+    - pattern: ^tags=.*$
+    - repl: tags="monthly,premium,NA"
     - count: 1
     - flags: ['IGNORECASE', 'MULTILINE']
     - backup: False
