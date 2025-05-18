@@ -33,18 +33,18 @@ restart ssh if needed:
     - watch:
       - file: /etc/ssh/sshd_config
 
-{% if 'adminuser' in pillar['linux'] %}
-{% set adminref = pillar['linux']['adminuser'] %}
-create adminsuser {{ adminref['id'] }}:
-  user.present: {{ adminref['user.present'] }}
-  ssh_auth.present: {{ adminref['ssh_auth.present'] }}
-add adminsuser {{ adminref['id'] }} to sudo group:
-  user.present.groups:
-    - name: {{ adminref['id'] }}
-    - groups: [ {{ sudo_group }} ]
-wheel group no sudo password:
-  file.append:
-    - name: /etc/sudoers.d/85-{{ sudo_group }}-group
-    - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
-{% endif %}
-{% endif %}
+# {% if 'adminuser' in pillar['linux'] %}
+# {% set adminref = pillar['linux']['adminuser'] %}
+# create adminsuser {{ adminref['id'] }}:
+#   user.present: {{ adminref['user.present'] }}
+#   ssh_auth.present: {{ adminref['ssh_auth.present'] }}
+# add adminsuser {{ adminref['id'] }} to sudo group:
+#   user.present.groups:
+#     - name: {{ adminref['id'] }}
+#     - groups: [ {{ sudo_group }} ]
+# wheel group no sudo password:
+#   file.append:
+#     - name: /etc/sudoers.d/85-{{ sudo_group }}-group
+#     - text: '%{{ sudo_group }}  ALL=(ALL)       NOPASSWD:ALL'
+# {% endif %}
+# {% endif %}
