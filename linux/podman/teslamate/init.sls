@@ -1,6 +1,7 @@
 {% if grains['os_family'] in ['Arch'] %}
   {% set install_packages = [ 'podman', 'podman-compose', 'fuse-overlayfs', 'apache' ]  %}
   {% set apache_service = 'httpd' %}
+  {% set apache_group = 'http' %}
   {% set apache_base = '/etc/' + apache_service %}
   {% set apache_sites = apache_base + '/conf' %}
   {% set key_path = apache_base + '/conf' %}
@@ -9,6 +10,7 @@
 {% elif grains['os_family'] in ['Debian'] %}
   {% set install_packages = [ 'podman', 'podman-compose', 'apache2', 'systemd-container' ] %}
   {% set apache_service = 'apache2' %}
+  {% set apache_group = 'www-data' %}
   {% set apache_base = '/etc/' + apache_service %}
   {% set apache_sites = apache_base + '/sites-available' %}
   {% set key_path = '/etc/ssl/private' %}
@@ -17,6 +19,7 @@
 {% elif grains['os'] == 'Fedora' %}
   {% set install_packages = [ 'podman-compose', 'httpd', 'systemd-container', 'mod_ssl', 'mod_proxy_html', 'patch' ] %}
   {% set apache_service = 'httpd' %}
+  {% set apache_group = 'apache' %}
   {% set apache_base = '/etc/' + apache_service %}
   {% set apache_sites = apache_base + '/conf.d' %}
   {% set key_path = '/etc/pki/tls/private' %}
@@ -88,8 +91,9 @@ teslamate app container setup:
 teslamate apache setup htpasswd:
   file.managed:
     - name: {{ htpasswd_path }}/tslam8-htpasswd
-    - source: salt://files/teslamate/htpasswd
-    - mode: "0644"
+    - source: salt://files/teslamate/tslam8-htpasswd
+    - mode: "0640"
+    - group: {{ apache_group }}
 
 {% if grains['os_family'] in ['Arch','Debian','RedHat'] %}
   {% set seperator = ':' %}
